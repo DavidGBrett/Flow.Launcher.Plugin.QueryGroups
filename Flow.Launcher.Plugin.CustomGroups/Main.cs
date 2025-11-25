@@ -60,12 +60,28 @@ namespace Flow.Launcher.Plugin.CustomGroups
 
                 foreach (var item in group.QueryItems)
                 {
-                    if (item.Name.ToLower().Contains(itemQuery.ToLower()))
+                    string title;
+                    string subTitle;
+
+                    // If no name provided, use query as title and leave subtitle empty
+                    if (string.IsNullOrEmpty(item.Name))
                     {
+                        title = item.Query;
+                        subTitle = "";
+
+                    // Otherwise use name as the title and query as subtitle
+                    } else {
+                        title = item.Name;
+                        subTitle = item.Query;
+                    }
+
+                    if (title.ToLower().Contains(itemQuery.ToLower()))
+                    {
+
                         results.Add(new Result
                         {
-                            Title = item.Name,
-                            SubTitle = item.Query,
+                            Title = title,
+                            SubTitle = subTitle,
                             // IcoPath = "Images/icon.png",
                             Action = _ =>
                             {
