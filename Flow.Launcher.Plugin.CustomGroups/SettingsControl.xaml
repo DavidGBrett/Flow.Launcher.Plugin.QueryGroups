@@ -71,15 +71,8 @@
                                                     BorderThickness="0,0,0,1"
                                                     Padding="10,14,0,14"> <!-- bottom padding gives air before the line -->
                                                 <StackPanel>
-                                                    <!-- Row 1: Name -->
-                                                    <DockPanel Margin="0,0,0,8">
-                                                        <TextBlock Text="Name:" Width="60" VerticalAlignment="Center" />
-                                                        <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
-                                                                HorizontalAlignment="Stretch"
-                                                                MinWidth="200" />
-                                                    </DockPanel>
 
-                                                    <!-- Row 2: Query -->
+                                                    <!-- Row 1: Query -->
                                                     <DockPanel>
                                                         <TextBlock Text="Query:" Width="60" VerticalAlignment="Top" />
 
@@ -88,6 +81,14 @@
                                                                 MinWidth="200"
                                                                 AcceptsReturn="True"
                                                                 TextWrapping="Wrap" />
+                                                    </DockPanel>
+
+                                                    <!-- Row 2: Name -->
+                                                    <DockPanel Margin="0,0,0,8">
+                                                        <TextBlock Text="(Optional) Name:" Width="60" VerticalAlignment="Center" />
+                                                        <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                                                                HorizontalAlignment="Stretch"
+                                                                MinWidth="200" />
                                                     </DockPanel>
 
                                                     <DockPanel>
