@@ -85,7 +85,7 @@
 
                                                     <!-- Row 2: Name -->
                                                     <DockPanel Margin="0,0,0,8">
-                                                        <TextBlock Text="(Optional) Name:" Width="60" VerticalAlignment="Center" />
+                                                        <TextBlock Text="(Optional) Name:" Width="120" VerticalAlignment="Center" />
                                                         <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
                                                                 HorizontalAlignment="Stretch"
                                                                 MinWidth="200" />
