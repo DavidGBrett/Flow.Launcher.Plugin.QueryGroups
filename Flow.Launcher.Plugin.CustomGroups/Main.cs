@@ -88,7 +88,10 @@ namespace Flow.Launcher.Plugin.CustomGroups
             {
                 if (group.Name.ToLower().Contains(query.Search.ToLower()))
                 {
-                    int score = PrioritizedScoring(query.Search, group.Name);
+
+                    int score = 0;
+                    if (_settings.PrioritizeGroupResults)
+                        score = PrioritizedScoring(query.Search, group.Name);
 
                     results.Add(new Result
                     {
@@ -119,7 +122,7 @@ namespace Flow.Launcher.Plugin.CustomGroups
             return results;
         }
 
-        private int PrioritizedScoring(string query, string target, int maxScore=100)
+        private int PrioritizedScoring(string query, string target, int maxScore=1000)
         {
             if (string.IsNullOrEmpty(query) || string.IsNullOrEmpty(target))
                 return 0;
