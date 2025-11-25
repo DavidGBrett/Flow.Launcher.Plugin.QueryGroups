@@ -69,12 +69,7 @@ namespace Flow.Launcher.Plugin.CustomGroups
                             // IcoPath = "Images/icon.png",
                             Action = _ =>
                             {
-                                if (item.Type == QueryType.Query)
-                                    _context.API.ChangeQuery(item.Query);
-
-                                else if (item.Type == QueryType.Cmd){
-                                    
-                                }
+                                _context.API.ChangeQuery(item.Query);
                                 return false;
                             }
                         });
