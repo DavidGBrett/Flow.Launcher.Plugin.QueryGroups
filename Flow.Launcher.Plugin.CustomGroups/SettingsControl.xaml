@@ -13,6 +13,11 @@
     
     <StackPanel Margin="10">
 
+        <!-- Prioritize group results checkbox -->
+        <CheckBox Content="Prioritize Query Groups in Search Results"
+                  IsChecked="{Binding Settings.PrioritizeGroupResults}"
+                  Margin="0,0,0,10" />
+
         <!-- Title -->
         <TextBlock Text="Groups"
                 FontSize="20"

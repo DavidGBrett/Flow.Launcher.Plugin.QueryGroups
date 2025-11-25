@@ -88,12 +88,18 @@ namespace Flow.Launcher.Plugin.CustomGroups
             {
                 if (group.Name.ToLower().Contains(query.Search.ToLower()))
                 {
+
+                    int score = 0;
+                    if (_settings.PrioritizeGroupResults)
+                        score = PrioritizedScoring(query.Search, group.Name);
+
                     results.Add(new Result
                     {
                         Title = group.Name,
                         // SubTitle = $"Group containing: {string.Join(", ", group.Value)}",
                         SubTitle = groupSpecifierKeyword,
                         IcoPath = "Images/icon.png",
+                        Score = score, // so it appears on top
                         Action = _ =>
                         {
                             // Define what happens when the result is selected
@@ -114,6 +120,24 @@ namespace Flow.Launcher.Plugin.CustomGroups
             }
 
             return results;
+        }
+
+        private int PrioritizedScoring(string query, string target, int maxScore=1000)
+        {
+            if (string.IsNullOrEmpty(query) || string.IsNullOrEmpty(target))
+                return 0;
+
+            query = query.ToLower();
+            target = target.ToLower();
+
+            // Compute the percentage of the target string that the query occupies.
+            // Example: query="dev" (3) and target="development" (11) -> 3/11 ~= 27%
+            double matchRatio = (double)query.Length / Math.Max(1, target.Length);
+
+            // Scale this ratio to the scoring range.
+            int score = (int)Math.Round(matchRatio * maxScore);
+
+            return score;
         }
     }
 }

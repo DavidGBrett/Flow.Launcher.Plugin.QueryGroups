@@ -11,6 +11,8 @@ namespace Flow.Launcher.Plugin.CustomGroups
 
         }
 
+        public bool PrioritizeGroupResults { get; set; } = true;
+
         public ObservableCollection<QueryGroup> QueryGroups { get; set; } = new ObservableCollection<QueryGroup>
         {
             
