@@ -1,0 +1,139 @@
+﻿<UserControl
+    x:Class="Flow.Launcher.Plugin.CustomGroups.SettingsControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:Flow.Launcher.Plugin.CustomGroups"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    d:DataContext="{d:DesignInstance vm:SettingsViewModel}"
+    d:DesignHeight="300"
+    d:DesignWidth="500"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <!-- This provider returns all enum values of QueryType -->
+        <ObjectDataProvider x:Key="QueryTypes"
+                            MethodName="GetValues"
+                            ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="vm:QueryType"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </UserControl.Resources>
+    
+    <StackPanel Margin="10">
+
+        <!-- Title -->
+        <TextBlock Text="Groups"
+                FontSize="20"
+                FontWeight="Bold"
+                Margin="0,0,0,10" />
+
+        <!-- Outer list of groups -->
+        <!-- <ScrollViewer VerticalScrollBarVisibility="Auto"> -->
+            <ItemsControl x:Name="groups" ItemsSource="{Binding Settings.QueryGroups}">
+                <!-- Virtualized outer panel -->
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel 
+                            VirtualizingStackPanel.IsVirtualizing="True"
+                            VirtualizingStackPanel.VirtualizationMode="Recycling" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <!-- Group template -->
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Expander IsExpanded="False">
+                            <!-- Header -->
+                            <Expander.Header>
+                                <DockPanel LastChildFill="True">
+                                    <!-- FIX: Use Name instead of GroupName -->
+                                    <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                                            FontWeight="Bold"
+                                            VerticalAlignment="Center"
+                                            Margin="0,0,10,0" />
+
+                                    <!-- Buttons -->
+                                    <StackPanel Orientation="Horizontal"
+                                                DockPanel.Dock="Right"
+                                                HorizontalAlignment="Right">
+                                        <Button Content="Delete"
+                                                Command="{Binding DataContext.DeleteGroupCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                CommandParameter="{Binding}" />
+                                    </StackPanel>
+                                </DockPanel>
+                            </Expander.Header>
+
+                            <!-- Inner content: group items -->
+                            <StackPanel Margin="20,5,0,5">
+                                <ItemsControl ItemsSource="{Binding QueryItems}">
+
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <!-- Divider line + inner padding so content doesn't touch the line -->
+                                            <Border BorderBrush="Gray"
+                                                    BorderThickness="0,0,0,1"
+                                                    Padding="10,14,0,14"> <!-- bottom padding gives air before the line -->
+                                                <StackPanel>
+                                                    <!-- Row 1: Name -->
+                                                    <DockPanel Margin="0,0,0,8">
+                                                        <TextBlock Text="Name:" Width="60" VerticalAlignment="Center" />
+                                                        <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                                                                HorizontalAlignment="Stretch"
+                                                                MinWidth="200" />
+                                                    </DockPanel>
+
+                                                    <!-- Row 2: Query -->
+                                                    <DockPanel>
+                                                        <!-- <TextBlock Text="Query:" Width="60" VerticalAlignment="Top" /> -->
+                                                        <ComboBox   SelectedItem="{Binding Type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                    ItemsSource="{Binding Source={StaticResource QueryTypes}}"
+                                                                    MinWidth="120" />
+
+                                                        <TextBox Text="{Binding Query, UpdateSourceTrigger=PropertyChanged}"
+                                                                HorizontalAlignment="Stretch"
+                                                                MinWidth="200"
+                                                                AcceptsReturn="True"
+                                                                TextWrapping="Wrap" />
+                                                    </DockPanel>
+
+                                                    <DockPanel>
+                                                        <Button Content="Delete"
+                                                                Command="{Binding DataContext.DeleteItemCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                                CommandParameter="{Binding}" />
+                                                    </DockPanel>
+
+                                                </StackPanel>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+
+
+                                <!-- Add new item button -->
+                                <Button Content="Add New Item"
+                                        Margin="0,10,0,0"
+                                        Padding="10,5"
+                                        Command="{Binding DataContext.AddItemCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                        CommandParameter="{Binding}" />
+                            </StackPanel>
+                        </Expander>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        <!-- </ScrollViewer> -->
+
+        <!-- Add group button -->
+        <Button Content="Add New Group"
+                Margin="0,10,0,0"
+                HorizontalAlignment="Left"
+                Padding="10,5"
+                Command="{Binding AddGroupCommand}" />
+
+    </StackPanel>
+
+
+
+</UserControl>

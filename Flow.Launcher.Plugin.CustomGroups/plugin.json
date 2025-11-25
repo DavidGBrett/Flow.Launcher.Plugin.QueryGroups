@@ -1,0 +1,12 @@
+{
+    "ID": "BCAF9CDAE1894F8A995D0FDE3505AB82",
+    "ActionKeywords": ["*", "CustomGroup"],
+    "Name": "CustomGroups",
+    "Description": "a new plugin for Flow",
+    "Author": "DavidGBrett",
+    "Version": "1.0.0",
+    "Language": "csharp",
+    "Website": "https://github.com/DavidGBrett/Flow.Launcher.Plugin.CustomGroups",
+    "IcoPath": "icon.png",
+    "ExecuteFileName": "Flow.Launcher.Plugin.CustomGroups.dll"
+}
