@@ -10,17 +10,6 @@
     d:DesignHeight="300"
     d:DesignWidth="500"
     mc:Ignorable="d">
-
-    <UserControl.Resources>
-        <!-- This provider returns all enum values of QueryType -->
-        <ObjectDataProvider x:Key="QueryTypes"
-                            MethodName="GetValues"
-                            ObjectType="{x:Type sys:Enum}">
-            <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="vm:QueryType"/>
-            </ObjectDataProvider.MethodParameters>
-        </ObjectDataProvider>
-    </UserControl.Resources>
     
     <StackPanel Margin="10">
 
@@ -87,10 +76,7 @@
 
                                                     <!-- Row 2: Query -->
                                                     <DockPanel>
-                                                        <!-- <TextBlock Text="Query:" Width="60" VerticalAlignment="Top" /> -->
-                                                        <ComboBox   SelectedItem="{Binding Type, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                    ItemsSource="{Binding Source={StaticResource QueryTypes}}"
-                                                                    MinWidth="120" />
+                                                        <TextBlock Text="Query:" Width="60" VerticalAlignment="Top" />
 
                                                         <TextBox Text="{Binding Query, UpdateSourceTrigger=PropertyChanged}"
                                                                 HorizontalAlignment="Stretch"
