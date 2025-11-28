@@ -1,6 +1,6 @@
 using System;
 
-namespace Flow.Launcher.Plugin.CustomGroups
+namespace Flow.Launcher.Plugin.QueryGroups
 {
     
     public class QueryItem : BaseModel

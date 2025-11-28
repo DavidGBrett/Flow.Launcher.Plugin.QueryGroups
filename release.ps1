@@ -1,2 +1,2 @@
-dotnet publish Flow.Launcher.Plugin.CustomGroups -c Release -r win-x64 --no-self-contained
-Compress-Archive -LiteralPath Flow.Launcher.Plugin.CustomGroups/bin/Release/win-x64/publish -DestinationPath Flow.Launcher.Plugin.CustomGroups/bin/CustomGroups.zip -Force
+dotnet publish Flow.Launcher.Plugin.QueryGroups -c Release -r win-x64 --no-self-contained
+Compress-Archive -LiteralPath Flow.Launcher.Plugin.QueryGroups/bin/Release/win-x64/publish -DestinationPath Flow.Launcher.Plugin.QueryGroups/bin/QueryGroups.zip -Force

@@ -1,0 +1,12 @@
+{
+    "ID": "BCAF9CDAE1894F8A995D0FDE3505AB83",
+    "ActionKeywords": ["*", "QueryGroup"],
+    "Name": "Query Groups",
+    "Description": "A plugin which lets users create custom groups of queries for Flow Launcher.",
+    "Author": "DavidGBrett",
+    "Version": "1.0.0",
+    "Language": "csharp",
+    "Website": "https://github.com/DavidGBrett/Flow.Launcher.Plugin.QueryGroups",
+    "IcoPath": "icon.png",
+    "ExecuteFileName": "Flow.Launcher.Plugin.QueryGroups.dll"
+}

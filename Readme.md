@@ -1,4 +1,4 @@
-Flow.Launcher.Plugin.CustomGroups
+Flow.Launcher.Plugin.QueryGroups
 ==================
 
 A plugin for the [Flow launcher](https://github.com/Flow-Launcher/Flow.Launcher).

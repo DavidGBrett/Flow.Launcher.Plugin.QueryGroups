@@ -1,4 +1,4 @@
-dotnet publish Flow.Launcher.Plugin.CustomGroups -c Debug -r win-x64 --no-self-contained
+dotnet publish Flow.Launcher.Plugin.QueryGroups -c Debug -r win-x64 --no-self-contained
 
 $AppDataFolder = [Environment]::GetFolderPath("ApplicationData")
 $flowLauncherExe = "$env:LOCALAPPDATA\FlowLauncher\Flow.Launcher.exe"
@@ -7,12 +7,12 @@ if (Test-Path $flowLauncherExe) {
     Stop-Process -Name "Flow.Launcher" -Force -ErrorAction SilentlyContinue
     Start-Sleep -Seconds 2
 
-    if (Test-Path "$AppDataFolder\FlowLauncher\Plugins\CustomGroups") {
-        Remove-Item -Recurse -Force "$AppDataFolder\FlowLauncher\Plugins\CustomGroups"
+    if (Test-Path "$AppDataFolder\FlowLauncher\Plugins\QueryGroups") {
+        Remove-Item -Recurse -Force "$AppDataFolder\FlowLauncher\Plugins\QueryGroups"
     }
 
-    Copy-Item "Flow.Launcher.Plugin.CustomGroups\bin\Debug\win-x64\publish" "$AppDataFolder\FlowLauncher\Plugins\" -Recurse -Force
-    Rename-Item -Path "$AppDataFolder\FlowLauncher\Plugins\publish" -NewName "CustomGroups"
+    Copy-Item "Flow.Launcher.Plugin.QueryGroups\bin\Debug\win-x64\publish" "$AppDataFolder\FlowLauncher\Plugins\" -Recurse -Force
+    Rename-Item -Path "$AppDataFolder\FlowLauncher\Plugins\publish" -NewName "QueryGroups"
 
     Start-Sleep -Seconds 2
     Start-Process $flowLauncherExe
