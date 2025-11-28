@@ -34,14 +34,30 @@ namespace Flow.Launcher.Plugin.QueryGroups
         public List<Result> Query(Query query)
         {
 
-            if (query.Search.StartsWith(groupSpecifierKeyword))
+            // This means the user is looking for items in a group
+            if (query.Search.StartsWith(groupSpecifierKeyword + seperator))
             {
-                return GetGroupItemsResults(query);
+                int numSeparators = query.Search.Split(seperator).Length - 1;
+
+                string queryAfterKeywordAndSep = query.Search.Substring(groupSpecifierKeyword.Length + seperator.Length);
+
+                // if there are at least two separators the user is looking for items in a group
+
+                if (numSeparators >= 2)
+                {
+                    return GetGroupItemsResults(query);
+                }
+
+                // there is already a minimum of one separator here due to the startswith check
+                // but having exactly one seperator means the user likely backspaced in the query after selecting a group
+                // so we should just show the list of all groups again 
+                // and include whatever was left in the query as a filter on it (without the seperators)
+                _context.API.ChangeQuery(groupSpecifierKeyword + " " + queryAfterKeywordAndSep);
+
             }
-            else
-            {
-                return GetGroupsResults(query);
-            }
+            
+            // Otherwise, show the list of groups
+            return GetGroupsResults(query);
         }
 
         private List<Result> GetGroupItemsResults(Query query)
