@@ -7,7 +7,6 @@ namespace Flow.Launcher.Plugin.QueryGroups
 {
     public class SettingsViewModel
     {
-        // public ICommand RenameCommand { get; }
         public ICommand AddItemCommand { get; }
         public ICommand DeleteGroupCommand { get; }
         

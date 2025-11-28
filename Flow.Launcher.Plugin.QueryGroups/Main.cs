@@ -98,7 +98,6 @@ namespace Flow.Launcher.Plugin.QueryGroups
                         {
                             Title = title,
                             SubTitle = subTitle,
-                            // IcoPath = "Images/icon.png",
                             Action = _ =>
                             {
                                 _context.API.ChangeQuery(item.Query);
@@ -118,6 +117,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
 
             foreach (var group in _settings.QueryGroups)
             {
+                // check if group name matches query
                 if (group.Name.ToLower().Contains(query.Search.ToLower()))
                 {
 
@@ -128,23 +128,15 @@ namespace Flow.Launcher.Plugin.QueryGroups
                     results.Add(new Result
                     {
                         Title = group.Name,
-                        // SubTitle = $"Group containing: {string.Join(", ", group.Value)}",
                         SubTitle = groupSpecifierKeyword,
                         IcoPath = "Images/icon.png",
-                        Score = score, // so it appears on top
+                        Score = score, // either 0 or the prioritized score
                         Action = _ =>
                         {
-                            // Define what happens when the result is selected
-                            // _context.API.ShowMsg($"Selected group: {group.Key}");
 
                             var pluginID = _context.CurrentPluginMetadata.ID;
 
-
-                            // _context.API.AddActionKeyword(pluginID, tempKeyword);
                             _context.API.ChangeQuery(groupSpecifierKeyword + seperator + group.Name + seperator, false);
-                            // _context.API.ReQuery();
-                            // _context.API.RemoveActionKeyword(pluginID, tempKeyword);
-
                             return false;
                         }
                     });
