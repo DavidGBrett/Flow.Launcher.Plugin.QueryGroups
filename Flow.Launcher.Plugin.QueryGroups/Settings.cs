@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Text.Json.Serialization;
 
-namespace Flow.Launcher.Plugin.CustomGroups
+namespace Flow.Launcher.Plugin.QueryGroups
 {
     public class Settings : BaseModel
     {

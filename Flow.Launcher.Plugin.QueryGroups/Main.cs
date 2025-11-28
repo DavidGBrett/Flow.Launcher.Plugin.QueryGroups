@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Windows.Controls;
 using Flow.Launcher.Plugin;
 
-namespace Flow.Launcher.Plugin.CustomGroups
+namespace Flow.Launcher.Plugin.QueryGroups
 {
-    public class CustomGroups : IPlugin, ISettingProvider
+    public class QueryGroups : IPlugin, ISettingProvider
     {
         private PluginInitContext _context;
 

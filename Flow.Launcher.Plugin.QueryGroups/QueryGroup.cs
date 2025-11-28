@@ -1,6 +1,6 @@
 using System.Collections.ObjectModel;
 
-namespace Flow.Launcher.Plugin.CustomGroups
+namespace Flow.Launcher.Plugin.QueryGroups
 {
     public class QueryGroup : BaseModel
     {

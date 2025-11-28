@@ -2,11 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>net7.0-windows</TargetFramework>
-    <AssemblyName>Flow.Launcher.Plugin.CustomGroups</AssemblyName>
-    <PackageId>Flow.Launcher.Plugin.CustomGroups</PackageId>
+    <AssemblyName>Flow.Launcher.Plugin.QueryGroups</AssemblyName>
+    <PackageId>Flow.Launcher.Plugin.QueryGroups</PackageId>
     <Authors>DavidGBrett</Authors>
-    <PackageProjectUrl>https://github.com/DavidGBrett/Flow.Launcher.Plugin.CustomGroups</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/DavidGBrett/Flow.Launcher.Plugin.CustomGroups</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/DavidGBrett/Flow.Launcher.Plugin.QueryGroups</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/DavidGBrett/Flow.Launcher.Plugin.QueryGroups</RepositoryUrl>
     <PackageTags>flow-launcher flow-plugin</PackageTags>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>

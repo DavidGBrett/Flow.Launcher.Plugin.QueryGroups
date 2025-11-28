@@ -3,7 +3,7 @@ using System.Windows.Controls;
 using System.ComponentModel;
 using System.Windows.Data;
 
-namespace Flow.Launcher.Plugin.CustomGroups
+namespace Flow.Launcher.Plugin.QueryGroups
 {
     public partial class SettingsControl : UserControl
     {
