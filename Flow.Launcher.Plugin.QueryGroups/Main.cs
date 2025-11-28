@@ -22,7 +22,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
             _settings = _context.API.LoadSettingJsonStorage<Settings>();
             _viewModel = new SettingsViewModel(_settings);
 
-            groupSpecifierKeyword = _context.CurrentPluginMetadata.ActionKeywords[0];
+            groupSpecifierKeyword = _context.CurrentPluginMetadata.ActionKeywords[1];
             seperator = "-";
         }
 
