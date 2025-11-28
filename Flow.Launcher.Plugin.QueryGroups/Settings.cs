@@ -16,23 +16,6 @@ namespace Flow.Launcher.Plugin.QueryGroups
         public ObservableCollection<QueryGroup> QueryGroups { get; set; } = new ObservableCollection<QueryGroup>
         {
             
-            // new QueryGroup{
-            //     Name = "AI Chat",
-            //     QueryItems = new ObservableCollection<QueryItem>{
-            //         new QueryItem{
-            //             Name = "ChatGPT2",
-            //             Query = "ChatGPT"
-            //         },
-            //         new QueryItem{
-            //             Name = "Deepseek",
-            //             Query = "Deepseek"
-            //         },
-            //         new QueryItem{
-            //             Name = "Gemini",
-            //             Query = "g Gemini"
-            //         }
-            //     }
-            // }
         };
 
 
