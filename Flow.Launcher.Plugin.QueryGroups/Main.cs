@@ -117,6 +117,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
 
             foreach (var group in _settings.QueryGroups)
             {
+                // check if group name matches query
                 if (group.Name.ToLower().Contains(query.Search.ToLower()))
                 {
 
@@ -129,7 +130,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                         Title = group.Name,
                         SubTitle = groupSpecifierKeyword,
                         IcoPath = "Images/icon.png",
-                        Score = score, // so it appears on top
+                        Score = score, // either 0 or the prioritized score
                         Action = _ =>
                         {
 

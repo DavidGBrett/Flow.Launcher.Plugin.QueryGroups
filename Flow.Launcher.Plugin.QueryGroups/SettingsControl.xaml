@@ -18,16 +18,14 @@
                   IsChecked="{Binding Settings.PrioritizeGroupResults}"
                   Margin="0,0,0,10" />
 
-        <!-- Title -->
+        <!-- Title for the Groups Section -->
         <TextBlock Text="Groups"
                 FontSize="20"
                 FontWeight="Bold"
                 Margin="0,0,0,10" />
 
-        <!-- Outer list of groups -->
-        <!-- <ScrollViewer VerticalScrollBarVisibility="Auto"> -->
+        <!-- List of Groups -->
             <ItemsControl x:Name="groups" ItemsSource="{Binding Settings.QueryGroups}">
-                <!-- Virtualized outer panel -->
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <VirtualizingStackPanel 
@@ -36,10 +34,10 @@
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
 
-                <!-- ItemContainerStyle for spacing -->
+                <!-- Group List styles -->
                 <ItemsControl.ItemContainerStyle>
                     <Style TargetType="ContentPresenter">
-                        <Setter Property="Margin" Value="0,5" /> <!-- Adjust the value as needed -->
+                        <Setter Property="Margin" Value="0,5" /> 
                     </Style>
                 </ItemsControl.ItemContainerStyle>
 
@@ -47,10 +45,10 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Expander IsExpanded="False">
-                            <!-- Header -->
+                            <!-- Header of expandable section contains the group name and buttons to manage the group  -->
                             <Expander.Header>
                                 <DockPanel LastChildFill="True">
-                                    <!-- FIX: Use Name instead of GroupName -->
+                                    <!-- Editable TextBox for the Group's Name -->
                                     <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
                                             FontWeight="Bold"
                                             VerticalAlignment="Center"
@@ -67,16 +65,19 @@
                                 </DockPanel>
                             </Expander.Header>
 
-                            <!-- Inner content: group items -->
+                            <!-- Inside the expander are the group items as well as an add item button -->
                             <StackPanel Margin="20,5,0,5">
-                                <ItemsControl ItemsSource="{Binding QueryItems}">
 
+                                <!-- Group Items -->
+                                <ItemsControl ItemsSource="{Binding QueryItems}">
+                                    
+                                    
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <!-- Divider line + inner padding so content doesn't touch the line -->
                                             <Border BorderBrush="Gray"
                                                     BorderThickness="0,0,0,1"
-                                                    Padding="10,14,0,14"> <!-- bottom padding gives air before the line -->
+                                                    Padding="10,14,0,14">
                                                 <StackPanel>
 
                                                     <!-- Row 1: Query -->
@@ -98,6 +99,7 @@
                                                                 MinWidth="200" />
                                                     </DockPanel>
 
+                                                    <!-- Delete button for group item -->
                                                     <DockPanel>
                                                         <Button Content="Delete"
                                                                 Command="{Binding DataContext.DeleteItemCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
@@ -110,7 +112,6 @@
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
 
-
                                 <!-- Add new item button -->
                                 <Button Content="Add New Item"
                                         Margin="0,10,0,0"
@@ -122,7 +123,6 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-        <!-- </ScrollViewer> -->
 
         <!-- Add group button -->
         <Button Content="Add New Group"
