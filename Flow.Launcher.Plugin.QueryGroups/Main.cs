@@ -13,7 +13,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
         private SettingsViewModel _viewModel;
 
         private string groupSpecifierKeyword;
-        private string seperator;
+        private string separator;
 
         public void Init(PluginInitContext context)
         {
@@ -23,7 +23,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
             _viewModel = new SettingsViewModel(_settings);
 
             groupSpecifierKeyword = _context.CurrentPluginMetadata.ActionKeywords[1];
-            seperator = "-";
+            separator = "-";
         }
 
         public Control CreateSettingPanel()
@@ -35,11 +35,11 @@ namespace Flow.Launcher.Plugin.QueryGroups
         {
 
             // This means the user is looking for items in a group
-            if (query.Search.StartsWith(groupSpecifierKeyword + seperator))
+            if (query.Search.StartsWith(groupSpecifierKeyword + separator))
             {
-                int numSeparators = query.Search.Split(seperator).Length - 1;
+                int numSeparators = query.Search.Split(separator).Length - 1;
 
-                string queryAfterKeywordAndSep = query.Search.Substring(groupSpecifierKeyword.Length + seperator.Length);
+                string queryAfterKeywordAndSep = query.Search.Substring(groupSpecifierKeyword.Length + separator.Length);
 
                 // if there are at least two separators the user is looking for items in a group
 
@@ -64,9 +64,9 @@ namespace Flow.Launcher.Plugin.QueryGroups
         {
             List<Result> results = new List<Result>();
 
-            var queryAfterKeyword = query.Search.Substring(groupSpecifierKeyword.Length + seperator.Length);
-            var selectedGroup = queryAfterKeyword.Split(seperator)[0];
-            var itemQuery = queryAfterKeyword.Substring(selectedGroup.Length + seperator.Length);
+            var queryAfterKeyword = query.Search.Substring(groupSpecifierKeyword.Length + separator.Length);
+            var selectedGroup = queryAfterKeyword.Split(separator)[0];
+            var itemQuery = queryAfterKeyword.Substring(selectedGroup.Length + separator.Length);
 
             foreach (var group in _settings.QueryGroups)
             {
@@ -137,7 +137,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
 
                             var pluginID = _context.CurrentPluginMetadata.ID;
 
-                            _context.API.ChangeQuery(groupSpecifierKeyword + seperator + group.Name + seperator, false);
+                            _context.API.ChangeQuery(groupSpecifierKeyword + separator + group.Name + separator, false);
                             return false;
                         }
                     });
