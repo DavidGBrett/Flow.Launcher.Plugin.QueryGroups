@@ -99,7 +99,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                         {
                             Title = title,
                             SubTitle = subTitle,
-                            IcoPath = "Assets/query.png",
+                            IcoPath = "Assets/query-icon.png",
                             Action = _ =>
                             {
                                 _context.API.ChangeQuery(item.Query);
