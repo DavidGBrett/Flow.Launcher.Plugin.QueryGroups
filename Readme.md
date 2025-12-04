@@ -45,7 +45,9 @@ A plugin that lets you organize queries into reusable groups for quick access wi
 
     - If the query itself is complex you can use the "Name" field for a shorter name when listing queries in the group.
 
-#### Searching For Query Groups
+#### Searching Query Groups
 - To see all available groups, type ``QueryGroup`` in Flow Launcher
 
 - To search for a specific group, simply type its name, no keyword needed.
+
+Press enter on a group to lists its query items, and press enter on a query to switch to it.
