@@ -99,7 +99,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                         {
                             Title = title,
                             SubTitle = subTitle,
-                            IcoPath = "images/query.png",
+                            IcoPath = "Assets/query-icon.png",
                             Action = _ =>
                             {
                                 _context.API.ChangeQuery(item.Query);
@@ -131,7 +131,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                     {
                         Title = group.Name,
                         SubTitle = groupSpecifierKeyword,
-                        IcoPath = "images/icon.png",
+                        IcoPath = "Assets/icon.png",
                         Score = score, // either 0 or the prioritized score
                         Action = _ =>
                         {
