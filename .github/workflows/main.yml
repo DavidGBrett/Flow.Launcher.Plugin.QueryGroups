@@ -1,5 +1,8 @@
 name: Publish Release
 
+permissions:
+  contents: write
+
 on:
   workflow_dispatch:
   push:
@@ -39,5 +42,3 @@ jobs:
         with:
           files: "Flow.Launcher.Plugin.QueryGroups-v${{steps.version.outputs.prop}}.zip"
           tag_name: "v${{steps.version.outputs.prop}}"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
