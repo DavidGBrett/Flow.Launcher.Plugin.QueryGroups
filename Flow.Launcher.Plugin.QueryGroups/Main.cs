@@ -32,40 +32,42 @@ namespace Flow.Launcher.Plugin.QueryGroups
 
         public List<Result> Query(Query query)
         {
-
-            // This means the user is looking for items in a group
-            if (query.Search.StartsWith(groupSpecifierKeyword + QuerySeparator))
+            // if the query does not start with the group specifier keyword, show the list of groups
+            if (!query.Search.StartsWith(groupSpecifierKeyword + QuerySeparator))
             {
-                int numSeparators = query.Search.Split(QuerySeparator).Length - 1;
-
-                string queryAfterKeywordAndSep = query.Search.Substring(groupSpecifierKeyword.Length + QuerySeparator.Length);
-
-                // if there are at least two separators the user is looking for items in a group
-
-                if (numSeparators >= 2)
-                {
-                    return GetGroupItemsResults(query);
-                }
-
-                // there is already a minimum of one separator here due to the startswith check
-                // but having exactly one seperator means the user likely backspaced in the query after selecting a group
-                // so we should just show the list of all groups again 
-                // and include whatever was left in the query as a filter on it (without the seperators)
-                _context.API.ChangeQuery(groupSpecifierKeyword + " " + queryAfterKeywordAndSep);
-
+                return GetGroupsResults(query.Search);
             }
-            
-            // Otherwise, show the list of groups
-            return GetGroupsResults(query);
+
+            // Otherwise this means the user is looking for items in a group
+
+            // extract the part after the keyword-, should be in the form of "GroupName-ItemQuery" or just "GroupName-"
+            string groupItemQuery = query.Search.Substring(groupSpecifierKeyword.Length + QuerySeparator.Length);
+
+            // when selecting a group, the groupItemQuery will initialy be in the form of "GroupName-"
+            // so if there is no separator after the group name that means the user backspaced after selecting a group
+            // so we rephrase the query to return to group selection mode
+            if (!groupItemQuery.Contains(QuerySeparator))
+            {
+                _context.API.ChangeQuery(groupSpecifierKeyword + " " + groupItemQuery);
+                return new List<Result>();
+            }
+
+            // Now we can safely split the groupItemQuery into group name and item query
+
+            // everything before first separator is the group name
+            var selectedGroup = groupItemQuery.Split(QuerySeparator)[0];
+
+            // everything after the first separator is the item query (written this way to preserve any additional separators in the item query)
+            var itemQuery = groupItemQuery.Substring(selectedGroup.Length + QuerySeparator.Length);
+
+            return GetGroupItemsResults(selectedGroup, itemQuery);
         }
 
-        private List<Result> GetGroupItemsResults(Query query)
+        private List<Result> GetGroupItemsResults(string selectedGroup, string itemQuery)
         {
             List<Result> results = new List<Result>();
 
-            var queryAfterKeyword = query.Search.Substring(groupSpecifierKeyword.Length + QuerySeparator.Length);
-            var selectedGroup = queryAfterKeyword.Split(QuerySeparator)[0];
-            var itemQuery = queryAfterKeyword.Substring(selectedGroup.Length + QuerySeparator.Length);
+            
 
             foreach (var group in _settings.QueryGroups)
             {
@@ -111,19 +113,19 @@ namespace Flow.Launcher.Plugin.QueryGroups
             return results;
         }
 
-        private List<Result> GetGroupsResults(Query query)
+        private List<Result> GetGroupsResults(string queryString)
         {
             List<Result> results = new List<Result>();
 
             foreach (var group in _settings.QueryGroups)
             {
                 // check if group name matches query
-                if (group.Name.ToLower().Contains(query.Search.ToLower()))
+                if (group.Name.ToLower().Contains(queryString.ToLower()))
                 {
 
                     int score = 0;
                     if (_settings.PrioritizeGroupResults)
-                        score = PrioritizedScoring(query.Search, group.Name);
+                        score = PrioritizedScoring(queryString, group.Name);
 
                     results.Add(new Result
                     {
