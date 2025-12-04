@@ -37,7 +37,8 @@ namespace Flow.Launcher.Plugin.QueryGroups
             if (query.Search.StartsWith(groupSpecifierKeyword + QuerySeparator))
             {
                 
-                string queryAfterKeywordAndSep = query.Search.Substring(groupSpecifierKeyword.Length + QuerySeparator.Length);
+                // extract the part after the keyword-, should be in the form of "GroupName-ItemQuery"
+                string groupItemQuery = query.Search.Substring(groupSpecifierKeyword.Length + QuerySeparator.Length);
 
                 int numSeparators = query.Search.Split(QuerySeparator).Length - 1;
 
@@ -48,7 +49,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                 // this will allow backspace to switch back to group selection mode
                 if (numSeparators == 1)
                 {
-                    _context.API.ChangeQuery(groupSpecifierKeyword + " " + queryAfterKeywordAndSep);
+                    _context.API.ChangeQuery(groupSpecifierKeyword + " " + groupItemQuery);
 
                     return new List<Result>();
                 }
@@ -56,8 +57,11 @@ namespace Flow.Launcher.Plugin.QueryGroups
                 // if there are at least two separators the user is looking for items in a group
                 else
                 {
-                    var selectedGroup = queryAfterKeywordAndSep.Split(QuerySeparator)[0];
-                    var itemQuery = queryAfterKeywordAndSep.Substring(selectedGroup.Length + QuerySeparator.Length);
+                    // everything before first separator is the group name
+                    var selectedGroup = groupItemQuery.Split(QuerySeparator)[0];
+
+                    // everything after the first separator is the item query (written this way to preserve any additional separators in the item query)
+                    var itemQuery = groupItemQuery.Substring(selectedGroup.Length + QuerySeparator.Length);
 
                     return GetGroupItemsResults(selectedGroup, itemQuery);
                 }
