@@ -44,7 +44,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
 
                 if (numSeparators >= 2)
                 {
-                    return GetGroupItemsResults(query);
+                    return GetGroupItemsResults(query.Search);
                 }
 
                 // there is already a minimum of one separator here due to the startswith check
@@ -56,14 +56,14 @@ namespace Flow.Launcher.Plugin.QueryGroups
             }
             
             // Otherwise, show the list of groups
-            return GetGroupsResults(query);
+            return GetGroupsResults(query.Search);
         }
 
-        private List<Result> GetGroupItemsResults(Query query)
+        private List<Result> GetGroupItemsResults(string queryString)
         {
             List<Result> results = new List<Result>();
 
-            var queryAfterKeyword = query.Search.Substring(groupSpecifierKeyword.Length + QuerySeparator.Length);
+            var queryAfterKeyword = queryString.Substring(groupSpecifierKeyword.Length + QuerySeparator.Length);
             var selectedGroup = queryAfterKeyword.Split(QuerySeparator)[0];
             var itemQuery = queryAfterKeyword.Substring(selectedGroup.Length + QuerySeparator.Length);
 
@@ -111,19 +111,19 @@ namespace Flow.Launcher.Plugin.QueryGroups
             return results;
         }
 
-        private List<Result> GetGroupsResults(Query query)
+        private List<Result> GetGroupsResults(string queryString)
         {
             List<Result> results = new List<Result>();
 
             foreach (var group in _settings.QueryGroups)
             {
                 // check if group name matches query
-                if (group.Name.ToLower().Contains(query.Search.ToLower()))
+                if (group.Name.ToLower().Contains(queryString.ToLower()))
                 {
 
                     int score = 0;
                     if (_settings.PrioritizeGroupResults)
-                        score = PrioritizedScoring(query.Search, group.Name);
+                        score = PrioritizedScoring(queryString, group.Name);
 
                     results.Add(new Result
                     {
