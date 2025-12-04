@@ -32,43 +32,39 @@ namespace Flow.Launcher.Plugin.QueryGroups
 
         public List<Result> Query(Query query)
         {
-
-            // This means the user is looking for items in a group
-            if (query.Search.StartsWith(groupSpecifierKeyword + QuerySeparator))
+            // if the query does not start with the group specifier keyword, show the list of groups
+            if (!query.Search.StartsWith(groupSpecifierKeyword + QuerySeparator))
             {
-                
-                // extract the part after the keyword-, should be in the form of "GroupName-ItemQuery"
-                string groupItemQuery = query.Search.Substring(groupSpecifierKeyword.Length + QuerySeparator.Length);
-
-                int numSeparators = query.Search.Split(QuerySeparator).Length - 1;
-
-                // there is already a minimum of one separator here due to the startswith check
-                // but having exactly one seperator means the user likely backspaced in the query after selecting a group
-                // so we should just show the list of all groups again 
-                // and include whatever was left in the query as a filter on it (without the seperators)
-                // this will allow backspace to switch back to group selection mode
-                if (numSeparators == 1)
-                {
-                    _context.API.ChangeQuery(groupSpecifierKeyword + " " + groupItemQuery);
-
-                    return new List<Result>();
-                }
-
-                // if there are at least two separators the user is looking for items in a group
-                else
-                {
-                    // everything before first separator is the group name
-                    var selectedGroup = groupItemQuery.Split(QuerySeparator)[0];
-
-                    // everything after the first separator is the item query (written this way to preserve any additional separators in the item query)
-                    var itemQuery = groupItemQuery.Substring(selectedGroup.Length + QuerySeparator.Length);
-
-                    return GetGroupItemsResults(selectedGroup, itemQuery);
-                }
+                return GetGroupsResults(query.Search);
             }
             
-            // Otherwise, show the list of groups
-            return GetGroupsResults(query.Search);
+            // Otherwise this means the user is looking for items in a group
+                
+            // extract the part after the keyword-, should be in the form of "GroupName-ItemQuery"
+            string groupItemQuery = query.Search.Substring(groupSpecifierKeyword.Length + QuerySeparator.Length);
+
+            int numSeparators = query.Search.Split(QuerySeparator).Length - 1;
+
+            // there is already a minimum of one separator here due to the startswith check
+            // but having exactly one seperator means the user likely backspaced in the query after selecting a group
+            // so we should just show the list of all groups again 
+            // and include whatever was left in the query as a filter on it (without the seperators)
+            // this will allow backspace to switch back to group selection mode
+            if (numSeparators == 1)
+            {
+                _context.API.ChangeQuery(groupSpecifierKeyword + " " + groupItemQuery);
+                return new List<Result>();
+            }
+
+            // if there are at least two separators the user is looking for items in a group
+
+            // everything before first separator is the group name
+            var selectedGroup = groupItemQuery.Split(QuerySeparator)[0];
+
+            // everything after the first separator is the item query (written this way to preserve any additional separators in the item query)
+            var itemQuery = groupItemQuery.Substring(selectedGroup.Length + QuerySeparator.Length);
+
+            return GetGroupItemsResults(selectedGroup, itemQuery);
         }
 
         private List<Result> GetGroupItemsResults(string selectedGroup, string itemQuery)
