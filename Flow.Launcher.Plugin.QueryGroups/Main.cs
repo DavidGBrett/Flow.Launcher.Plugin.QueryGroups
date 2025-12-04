@@ -36,36 +36,42 @@ namespace Flow.Launcher.Plugin.QueryGroups
             // This means the user is looking for items in a group
             if (query.Search.StartsWith(groupSpecifierKeyword + QuerySeparator))
             {
-                int numSeparators = query.Search.Split(QuerySeparator).Length - 1;
-
+                
                 string queryAfterKeywordAndSep = query.Search.Substring(groupSpecifierKeyword.Length + QuerySeparator.Length);
 
-                // if there are at least two separators the user is looking for items in a group
-
-                if (numSeparators >= 2)
-                {
-                    return GetGroupItemsResults(query.Search);
-                }
+                int numSeparators = query.Search.Split(QuerySeparator).Length - 1;
 
                 // there is already a minimum of one separator here due to the startswith check
                 // but having exactly one seperator means the user likely backspaced in the query after selecting a group
                 // so we should just show the list of all groups again 
                 // and include whatever was left in the query as a filter on it (without the seperators)
-                _context.API.ChangeQuery(groupSpecifierKeyword + " " + queryAfterKeywordAndSep);
+                // this will allow backspace to switch back to group selection mode
+                if (numSeparators == 1)
+                {
+                    _context.API.ChangeQuery(groupSpecifierKeyword + " " + queryAfterKeywordAndSep);
 
+                    return new List<Result>();
+                }
+
+                // if there are at least two separators the user is looking for items in a group
+                else
+                {
+                    var selectedGroup = queryAfterKeywordAndSep.Split(QuerySeparator)[0];
+                    var itemQuery = queryAfterKeywordAndSep.Substring(selectedGroup.Length + QuerySeparator.Length);
+
+                    return GetGroupItemsResults(selectedGroup, itemQuery);
+                }
             }
             
             // Otherwise, show the list of groups
             return GetGroupsResults(query.Search);
         }
 
-        private List<Result> GetGroupItemsResults(string queryString)
+        private List<Result> GetGroupItemsResults(string selectedGroup, string itemQuery)
         {
             List<Result> results = new List<Result>();
 
-            var queryAfterKeyword = queryString.Substring(groupSpecifierKeyword.Length + QuerySeparator.Length);
-            var selectedGroup = queryAfterKeyword.Split(QuerySeparator)[0];
-            var itemQuery = queryAfterKeyword.Substring(selectedGroup.Length + QuerySeparator.Length);
+            
 
             foreach (var group in _settings.QueryGroups)
             {
