@@ -1,13 +1,13 @@
 Flow.Launcher.Plugin.QueryGroups
 ==================
 
-A plugin that lets you organize queries into reusable groups for quick access within [Flow launcher](https://github.com/Flow-Launcher/Flow.Launcher).
+A plugin that lets you organize queries into groups for quick access within [Flow launcher](https://github.com/Flow-Launcher/Flow.Launcher).
 
 ### Features
-- **Create named query groups** - Organize related search queries together
-- **Easy management** - Intuitive interface for adding, editing, and removing groups/items
+- **Create named query groups** - Organize related search queries together.
+- **Easy management** - Intuitive interface for adding, editing, and removing groups and their queries.
 - **Save complex queries** - Save long queries, under a group and a short display name.
-- **Quick access** - Search groups by name or browse all available groups
+- **Quick access** - Search groups by name or browse all available groups.
 
 
 ### Installation
