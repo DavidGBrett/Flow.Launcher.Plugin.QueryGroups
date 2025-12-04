@@ -7,6 +7,6 @@
     "Version": "1.0.0",
     "Language": "csharp",
     "Website": "https://github.com/DavidGBrett/Flow.Launcher.Plugin.QueryGroups",
-    "IcoPath": "icon.png",
+    "IcoPath": "images/icon.png",
     "ExecuteFileName": "Flow.Launcher.Plugin.QueryGroups.dll"
 }
