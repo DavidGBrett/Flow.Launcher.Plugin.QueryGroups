@@ -36,7 +36,6 @@ namespace Flow.Launcher.Plugin.QueryGroups
 
         private void DeleteGroup(QueryGroup group)
         {
-            // if (group is not null)
             Settings.QueryGroups.Remove(group);
         }
 
