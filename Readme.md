@@ -20,7 +20,7 @@ A plugin that lets you organize queries into groups for quick access within [Flo
 
 #### Manual Debug Install
 1. Download this repository
-2. Run the file "debug.ps1"
+2. Run the file ``debug.ps1``
 
 ### Usage
 #### Creating Groups and Queries
