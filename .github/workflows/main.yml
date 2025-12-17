@@ -33,7 +33,6 @@ jobs:
           Compress-Archive -LiteralPath Flow.Launcher.Plugin.QueryGroups/bin/Release/win-x64/publish -DestinationPath "./Flow.Launcher.Plugin.QueryGroups-v${{steps.version.outputs.prop}}.zip" -Force
 
       - name: Publish
-        if: success()
         uses: softprops/action-gh-release@v1
         with:
           files: "Flow.Launcher.Plugin.QueryGroups-v${{steps.version.outputs.prop}}.zip"
