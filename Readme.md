@@ -13,7 +13,6 @@ A plugin that lets you organize queries into groups for quick access within [Flo
 ### Installation
 
 #### Plugin Store / Manager
-**NOT YET AVAILABLE**
 1. Open Flow Launcher
 2. Search for ``pm install Query Groups`` or use the plugin store   
 3. Install the plugin
