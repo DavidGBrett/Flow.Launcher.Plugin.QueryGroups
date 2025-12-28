@@ -1,4 +1,8 @@
-Flow.Launcher.Plugin.QueryGroups
+<p align="center">
+    <img src="Flow.Launcher.Plugin.QueryGroups\Assets\icon.png" alt="QueryGroups Plugin Icon" height="120">
+</p>
+
+Query Groups for Flow Launcher
 ==================
 
 A plugin that lets you organize queries into groups for quick access within [Flow launcher](https://github.com/Flow-Launcher/Flow.Launcher).
