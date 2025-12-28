@@ -60,6 +60,9 @@ namespace Flow.Launcher.Plugin.QueryGroups
             // everything after the first separator is the item query (written this way to preserve any additional separators in the item query)
             var itemQuery = groupItemQuery.Substring(selectedGroup.Length + QuerySeparator.Length);
 
+            // if the selected group is "Add", then they actually want to add a new group
+            if (selectedGroup == "Add") return GetAddGroupResults(itemQuery);
+
             return GetGroupItemsResults(selectedGroup, itemQuery);
         }
 
@@ -145,8 +148,44 @@ namespace Flow.Launcher.Plugin.QueryGroups
                 }
             }
 
+            // Always include the "Add Group" option at the end
+            results.Add(new Result
+            {
+                Title = "Add Query Group",
+                SubTitle = "",
+                IcoPath = "Assets/icon.png",
+                Score = 0,
+                Action = _ =>
+                {
+                    
+                    _context.API.ChangeQuery(groupSpecifierKeyword + QuerySeparator + "Add" + QuerySeparator, false);
+                    return false;
+                }
+            });
+
             return results;
         }
+
+        private List<Result> GetAddGroupResults(string queryString)
+        {
+            return new List<Result>
+            {
+                new Result
+                {
+                    Title = "Add: " + queryString,
+                    SubTitle = "",
+                    IcoPath = "Assets/icon.png",
+                    Score = 0,
+                    Action = _ =>
+                    {
+                        _settings.QueryGroups.Add(new QueryGroup { Name = queryString });
+                        _context.API.SavePluginSettings();
+                        _context.API.ChangeQuery(groupSpecifierKeyword + QuerySeparator + queryString + QuerySeparator, false);
+                        return false;
+                    }
+                }
+            };
+        }   
 
         private int PrioritizedScoring(string query, string target, int maxScore=1000)
         {
