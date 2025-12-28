@@ -122,7 +122,9 @@ namespace Flow.Launcher.Plugin.QueryGroups
                 // check if group name matches query
                 if (group.Name.ToLower().Contains(queryString.ToLower()))
                 {
-
+                    // if prioritization is enabled, 
+                    // calculate a bonus score based on how well the group name matches the query
+                    // otherwise, (bonus) score is 0
                     int score = 0;
                     if (_settings.PrioritizeGroupResults)
                         score = PrioritizedScoring(queryString, group.Name);
