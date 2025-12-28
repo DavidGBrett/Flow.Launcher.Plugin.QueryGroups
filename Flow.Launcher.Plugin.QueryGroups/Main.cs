@@ -137,9 +137,6 @@ namespace Flow.Launcher.Plugin.QueryGroups
                         Score = score, // either 0 or the prioritized score
                         Action = _ =>
                         {
-
-                            var pluginID = _context.CurrentPluginMetadata.ID;
-
                             _context.API.ChangeQuery(groupSpecifierKeyword + QuerySeparator + group.Name + QuerySeparator, false);
                             return false;
                         }
