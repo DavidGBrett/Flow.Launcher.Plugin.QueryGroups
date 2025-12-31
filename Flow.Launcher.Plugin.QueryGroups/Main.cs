@@ -30,40 +30,92 @@ namespace Flow.Launcher.Plugin.QueryGroups
             return new SettingsControl(_context, _viewModel);
         }
 
+        private enum PluginQueryType
+        {
+            Keywordless,
+            SearchGroups,
+            AddGroup,
+            SearchGroup,
+            AddItem
+        }
+
         public List<Result> Query(Query query)
         {
-            // if the query does not start with the group specifier keyword, show the list of groups
-            if (!query.Search.StartsWith(groupSpecifierKeyword + QuerySeparator))
+            // Split the query into parts based on the separator
+            var queryParts = new List<string>(query.Search.Split(new string[] { QuerySeparator }, StringSplitOptions.None));
+            
+            // Determine the type of query
+            var queryType = MatchQueryType(query, queryParts);
+
+            // Handle the query based on its type
+            switch (queryType)
             {
-                return GetGroupsResults(query.Search);
+                case PluginQueryType.Keywordless:
+                    List<Result> results = GetGroupsResults(query.Search);
+                    results.Add(GetAddGroupResult());
+                    return results;
+
+                case PluginQueryType.SearchGroups:
+                    {
+                        string groupQuery = queryParts.Count > 0 ? queryParts[0] : "";
+                        return GetGroupsResults(groupQuery);
+                    }
+
+                case PluginQueryType.AddGroup:
+                    {
+                        string newGroupName = queryParts.Count > 1 ? queryParts[1] : "";
+                        return GetAddGroupResults(newGroupName);
+                    }
+
+                case PluginQueryType.SearchGroup:
+                    {
+                        string selectedGroup = queryParts[0];
+                        string itemQuery = queryParts.Count > 1 ? queryParts[1] : "";
+                        return GetGroupItemsResults(selectedGroup, itemQuery);
+                    }
+
+                case PluginQueryType.AddItem:
+                    {
+                        // Currently not implemented
+                        return new List<Result>();
+                    }
+
+                default:
+                    return new List<Result>();
+            }
+        }
+
+
+
+        private PluginQueryType MatchQueryType(Query query, List<string> queryParts)
+        {
+            if (query.ActionKeyword != groupSpecifierKeyword)
+            {
+                return PluginQueryType.Keywordless;
+            }
+            
+            if (string.IsNullOrEmpty(queryParts[0]))
+            {
+                return PluginQueryType.SearchGroups;
             }
 
-            // Otherwise this means the user is looking for items in a group
-
-            // extract the part after the keyword-, should be in the form of "GroupName-ItemQuery" or just "GroupName-"
-            string groupItemQuery = query.Search.Substring(groupSpecifierKeyword.Length + QuerySeparator.Length);
-
-            // when selecting a group, the groupItemQuery will initialy be in the form of "GroupName-"
-            // so if there is no separator after the group name that means the user backspaced after selecting a group
-            // so we rephrase the query to return to group selection mode
-            if (!groupItemQuery.Contains(QuerySeparator))
+            if (queryParts[0] == "Add")
             {
-                _context.API.ChangeQuery(groupSpecifierKeyword + " " + groupItemQuery);
-                return new List<Result>();
+                return PluginQueryType.AddGroup;
+            }
+            
+            if (queryParts.Count == 1)
+            {
+                return PluginQueryType.SearchGroups;
             }
 
-            // Now we can safely split the groupItemQuery into group name and item query
+            if (queryParts[1] == "Add")
+            {
+                return PluginQueryType.AddItem;
+            }
 
-            // everything before first separator is the group name
-            var selectedGroup = groupItemQuery.Split(QuerySeparator)[0];
+            return PluginQueryType.SearchGroup;
 
-            // everything after the first separator is the item query (written this way to preserve any additional separators in the item query)
-            var itemQuery = groupItemQuery.Substring(selectedGroup.Length + QuerySeparator.Length);
-
-            // if the selected group is "Add", then they actually want to add a new group
-            if (selectedGroup == "Add") return GetAddGroupResults(itemQuery);
-
-            return GetGroupItemsResults(selectedGroup, itemQuery);
         }
 
         private List<Result> GetGroupItemsResults(string selectedGroup, string itemQuery)
@@ -140,29 +192,32 @@ namespace Flow.Launcher.Plugin.QueryGroups
                         Score = score, // either 0 or the prioritized score
                         Action = _ =>
                         {
-                            _context.API.ChangeQuery(groupSpecifierKeyword + QuerySeparator + group.Name + QuerySeparator, false);
+
+                            var pluginID = _context.CurrentPluginMetadata.ID;
+
+                            _context.API.ChangeQuery(groupSpecifierKeyword + " " + group.Name + QuerySeparator, false);
                             return false;
                         }
                     });
                 }
             }
+            return results;
+        }
 
-            // Always include the "Add Group" option at the end
-            results.Add(new Result
+        private Result GetAddGroupResult()
+        {
+            return new Result
             {
-                Title = "Add Query Group",
-                SubTitle = "",
+                Title = "Add New Group",
+                SubTitle = "Create a new query group",
                 IcoPath = "Assets/icon.png",
                 Score = 0,
                 Action = _ =>
                 {
-                    
-                    _context.API.ChangeQuery(groupSpecifierKeyword + QuerySeparator + "Add" + QuerySeparator, false);
+                    _context.API.ChangeQuery(groupSpecifierKeyword + " Add" + QuerySeparator, false);
                     return false;
                 }
-            });
-
-            return results;
+            };
         }
 
         private List<Result> GetAddGroupResults(string queryString)
@@ -179,7 +234,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                     {
                         _settings.QueryGroups.Add(new QueryGroup { Name = queryString });
                         _context.API.SavePluginSettings();
-                        _context.API.ChangeQuery(groupSpecifierKeyword + QuerySeparator + queryString + QuerySeparator, false);
+                        _context.API.ChangeQuery(groupSpecifierKeyword + " " + queryString + QuerySeparator, false);
                         return false;
                     }
                 }
