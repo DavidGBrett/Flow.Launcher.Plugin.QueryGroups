@@ -51,9 +51,11 @@ namespace Flow.Launcher.Plugin.QueryGroups
             switch (queryType)
             {
                 case PluginQueryType.Keywordless:
+                    {
                     List<Result> results = GetGroupsResults(query.Search);
                     results.Add(GetAddGroupResult());
                     return results;
+                    }
 
                 case PluginQueryType.SearchGroups:
                     {
