@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Controls;
 using Flow.Launcher.Plugin;
 
@@ -73,13 +74,18 @@ namespace Flow.Launcher.Plugin.QueryGroups
                     {
                         string selectedGroup = queryParts[0];
                         string itemQuery = queryParts.Count > 1 ? queryParts[1] : "";
-                        return GetGroupItemsResults(selectedGroup, itemQuery);
+
+                        List<Result> results = GetGroupItemsResults(selectedGroup, itemQuery);
+                        results.Add(GetAddItemResult(selectedGroup));
+
+                        return results;
                     }
 
                 case PluginQueryType.AddItem:
                     {
-                        // Currently not implemented
-                        return new List<Result>();
+                        string selectedGroup = queryParts[0];
+                        string itemQuery = queryParts.Count > 2 ? queryParts[2] : "";
+                        return GetAddItemResults(selectedGroup, itemQuery);
                     }
 
                 default:
@@ -219,6 +225,21 @@ namespace Flow.Launcher.Plugin.QueryGroups
                 }
             };
         }
+        private Result GetAddItemResult(string selectedGroup)
+        {
+            return new Result
+            {
+                Title = "Add New Query",
+                SubTitle = "Add a new query to this group",
+                IcoPath = "Assets/icon.png",
+                Score = 0,
+                Action = _ =>
+                {
+                    _context.API.ChangeQuery(groupSpecifierKeyword +" "+selectedGroup + QuerySeparator+"Add"+QuerySeparator, false);
+                    return false;
+                }
+            };
+        }
 
         private List<Result> GetAddGroupResults(string queryString)
         {
@@ -235,6 +256,27 @@ namespace Flow.Launcher.Plugin.QueryGroups
                         _settings.QueryGroups.Add(new QueryGroup { Name = queryString });
                         _context.API.SavePluginSettings();
                         _context.API.ChangeQuery(groupSpecifierKeyword + " " + queryString + QuerySeparator, false);
+                        return false;
+                    }
+                }
+            };
+        }   
+
+        private List<Result> GetAddItemResults(string selectedGroup, string itemQuery)
+        {
+            return new List<Result>
+            {
+                new Result
+                {
+                    Title = "Add: " + itemQuery,
+                    SubTitle = "",
+                    IcoPath = "Assets/icon.png",
+                    Action = _ =>
+                    {
+                        _settings.QueryGroups.FirstOrDefault(g => g.Name == selectedGroup)
+                        ?.QueryItems.Add(new QueryItem { Query = itemQuery });
+                        _context.API.SavePluginSettings();
+                        _context.API.ChangeQuery(groupSpecifierKeyword + " " + selectedGroup + QuerySeparator, false);
                         return false;
                     }
                 }
