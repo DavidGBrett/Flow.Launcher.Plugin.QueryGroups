@@ -217,7 +217,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                 Title = "Add New Group",
                 SubTitle = "Create a new query group",
                 IcoPath = "Assets/icon.png",
-                Score = 0,
+                Score = -100, // Low score to appear at the bottom (make sure real matches come first)
                 Action = _ =>
                 {
                     _context.API.ChangeQuery(groupSpecifierKeyword + " Add" + QuerySeparator, false);
@@ -232,7 +232,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                 Title = "Add New Query",
                 SubTitle = "Add a new query to this group",
                 IcoPath = "Assets/icon.png",
-                Score = 0,
+                Score = -100, // Low score to appear at the bottom (make sure real matches come first)
                 Action = _ =>
                 {
                     _context.API.ChangeQuery(groupSpecifierKeyword +" "+selectedGroup + QuerySeparator+"Add"+QuerySeparator, false);
