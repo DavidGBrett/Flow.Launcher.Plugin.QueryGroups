@@ -322,7 +322,10 @@ namespace Flow.Launcher.Plugin.QueryGroups
                     Action = _ =>
                     {
                         _settings.QueryGroups.Remove(queryGroup);
-                        return true;
+                        
+                        _context.API.ReQuery();
+
+                        return false;
                     }
                 });
                 return results;
@@ -340,7 +343,9 @@ namespace Flow.Launcher.Plugin.QueryGroups
                         )
                         .QueryItems.Remove(queryItem);
 
-                        return true;
+                        _context.API.ReQuery();
+
+                        return false;
                     }
                 });
                 return results;
