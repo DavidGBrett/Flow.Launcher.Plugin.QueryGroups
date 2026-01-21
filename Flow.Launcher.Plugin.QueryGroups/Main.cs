@@ -309,16 +309,18 @@ namespace Flow.Launcher.Plugin.QueryGroups
         
         public List<Result> LoadContextMenus(Result selectedResult)
         {
+            var results = new List<Result>();
+
             switch (selectedResult.ContextData)
             {
                 case QueryGroup queryGroup:
-                return new List<Result>();
+                return results;
                 
                 case QueryItem queryItem:
-                return new List<Result>();
+                return results;
 
                 default:
-                return new List<Result>();
+                return results;
             }
         }
     }
