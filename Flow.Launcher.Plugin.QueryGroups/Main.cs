@@ -6,7 +6,7 @@ using Flow.Launcher.Plugin;
 
 namespace Flow.Launcher.Plugin.QueryGroups
 {
-    public class QueryGroups : IPlugin, ISettingProvider
+    public class QueryGroups : IPlugin, ISettingProvider, IContextMenu
     {
         private PluginInitContext _context;
 
@@ -165,6 +165,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                             Title = title,
                             SubTitle = subTitle,
                             IcoPath = "Assets/query-icon.png",
+                            ContextData = item,
                             Action = _ =>
                             {
                                 _context.API.ChangeQuery(item.Query);
@@ -200,6 +201,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                         SubTitle = groupSpecifierKeyword,
                         IcoPath = "Assets/icon.png",
                         Score = score, // either 0 or the prioritized score
+                        ContextData = group,
                         Action = _ =>
                         {
 
@@ -303,6 +305,21 @@ namespace Flow.Launcher.Plugin.QueryGroups
             int score = (int)Math.Round(matchRatio * maxScore);
 
             return score;
+        }
+        
+        public List<Result> LoadContextMenus(Result selectedResult)
+        {
+            switch (selectedResult.ContextData)
+            {
+                case QueryGroup queryGroup:
+                return new List<Result>();
+                
+                case QueryItem queryItem:
+                return new List<Result>();
+
+                default:
+                return new List<Result>();
+            }
         }
     }
 }
