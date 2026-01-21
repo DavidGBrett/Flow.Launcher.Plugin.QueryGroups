@@ -37,7 +37,8 @@ namespace Flow.Launcher.Plugin.QueryGroups
             SearchGroups,
             AddGroup,
             SearchGroup,
-            AddItem
+            AddItem,
+            RenameGroup
         }
 
         public List<Result> Query(Query query)
@@ -90,6 +91,13 @@ namespace Flow.Launcher.Plugin.QueryGroups
                         return GetAddItemResults(selectedGroup, itemQuery);
                     }
 
+                case PluginQueryType.RenameGroup:
+                    {
+                        string selectedGroup = queryParts[0];
+                        string newName = queryParts.Count > 2 ? queryParts[2] : "";
+                        return GetRenameGroupResults(selectedGroup,newName);
+                    }
+
                 default:
                     return new List<Result>();
             }
@@ -122,6 +130,10 @@ namespace Flow.Launcher.Plugin.QueryGroups
             if (queryParts[1] == "Add")
             {
                 return PluginQueryType.AddItem;
+            }
+            if (queryParts[1] == "Rename")
+            {
+                return PluginQueryType.RenameGroup;
             }
 
             return PluginQueryType.SearchGroup;
@@ -287,6 +299,30 @@ namespace Flow.Launcher.Plugin.QueryGroups
                     }
                 }
             };
+        }  
+        private List<Result> GetRenameGroupResults(string selectedGroup, string newName)
+        {
+            return new List<Result>
+            {
+                new Result
+                {
+                    Title = "Rename To: " + newName,
+                    SubTitle = "",
+                    Glyph = new GlyphInfo("sans-serif","R"),
+                    Action = _ =>
+                    {
+                        var group =_settings.QueryGroups.FirstOrDefault(g => g.Name == selectedGroup);
+                        if (group is not null)
+                        {
+                            group.Name = newName;
+                        }
+
+                        _context.API.SavePluginSettings();
+                        _context.API.ChangeQuery(groupSpecifierKeyword + " " + newName + QuerySeparator, false);
+                        return false;
+                    }
+                }
+            };
         }   
 
         private int PrioritizedScoring(string query, string target, int maxScore=1000)
@@ -325,6 +361,19 @@ namespace Flow.Launcher.Plugin.QueryGroups
                         
                         _context.API.ReQuery();
 
+                        return false;
+                    }
+                });
+                results.Add(new Result
+                {
+                    Title = "Rename Group",
+                    SubTitle = "Rename this query group",
+                    Glyph = new GlyphInfo("sans-serif"," R"),
+                    Action = _ =>
+                    {
+                        _context.API.ReQuery();
+                        _context.API.ChangeQuery(groupSpecifierKeyword + " " + queryGroup.Name + QuerySeparator + "Rename" + QuerySeparator + queryGroup.Name, false);
+                        
                         return false;
                     }
                 });
