@@ -222,7 +222,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
             {
                 Title = "Add New Group",
                 SubTitle = "Create a new query group",
-                IcoPath = "Assets/icon.png",
+                Glyph = new GlyphInfo("sans-serif","＋"),
                 Score = -100, // Low score to appear at the bottom (make sure real matches come first)
                 Action = _ =>
                 {
@@ -237,7 +237,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
             {
                 Title = "Add New Query",
                 SubTitle = "Add a new query to this group",
-                IcoPath = "Assets/icon.png",
+                Glyph = new GlyphInfo("sans-serif","＋"),
                 Score = -100, // Low score to appear at the bottom (make sure real matches come first)
                 Action = _ =>
                 {
@@ -255,7 +255,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                 {
                     Title = "Add: " + queryString,
                     SubTitle = "",
-                    IcoPath = "Assets/icon.png",
+                    Glyph = new GlyphInfo("sans-serif","＋"),
                     Score = 0,
                     Action = _ =>
                     {
@@ -276,7 +276,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                 {
                     Title = "Add: " + itemQuery,
                     SubTitle = "",
-                    IcoPath = "Assets/icon.png",
+                    Glyph = new GlyphInfo("sans-serif","＋"),
                     Action = _ =>
                     {
                         _settings.QueryGroups.FirstOrDefault(g => g.Name == selectedGroup)
