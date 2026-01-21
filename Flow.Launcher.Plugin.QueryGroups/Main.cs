@@ -358,6 +358,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                     Action = _ =>
                     {
                         _settings.QueryGroups.Remove(queryGroup);
+                        _context.API.SavePluginSettings();
                         
                         _context.API.ReQuery();
 
@@ -391,6 +392,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                             qg.QueryItems.Contains(queryItem)
                         )
                         .QueryItems.Remove(queryItem);
+                        _context.API.SavePluginSettings();
 
                         _context.API.ReQuery();
 
