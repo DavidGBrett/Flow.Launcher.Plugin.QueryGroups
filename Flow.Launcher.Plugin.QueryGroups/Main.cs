@@ -306,7 +306,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
 
             return score;
         }
-        
+
         public List<Result> LoadContextMenus(Result selectedResult)
         {
             var results = new List<Result>();
@@ -314,6 +314,17 @@ namespace Flow.Launcher.Plugin.QueryGroups
             switch (selectedResult.ContextData)
             {
                 case QueryGroup queryGroup:
+                results.Add(new Result
+                {
+                    Title = "Delete Group",
+                    SubTitle = "Delete this query group",
+                    Glyph = new GlyphInfo("sans-serif"," X"),
+                    Action = _ =>
+                    {
+                        _settings.QueryGroups.Remove(queryGroup);
+                        return true;
+                    }
+                });
                 return results;
                 
                 case QueryItem queryItem:
