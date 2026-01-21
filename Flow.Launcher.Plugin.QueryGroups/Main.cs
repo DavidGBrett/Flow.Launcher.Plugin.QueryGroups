@@ -328,6 +328,21 @@ namespace Flow.Launcher.Plugin.QueryGroups
                 return results;
                 
                 case QueryItem queryItem:
+                results.Add(new Result
+                {
+                    Title = "Delete Query",
+                    SubTitle = "Delete this query item",
+                    Glyph = new GlyphInfo("sans-serif"," X"),
+                    Action = _ =>
+                    {
+                        _settings.QueryGroups.FirstOrDefault((QueryGroup qg)=>
+                            qg.QueryItems.Contains(queryItem)
+                        )
+                        .QueryItems.Remove(queryItem);
+
+                        return true;
+                    }
+                });
                 return results;
 
                 default:
