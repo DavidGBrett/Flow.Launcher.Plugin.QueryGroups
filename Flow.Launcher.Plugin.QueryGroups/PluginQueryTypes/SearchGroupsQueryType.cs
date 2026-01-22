@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Flow.Launcher.Plugin.QueryGroups.PluginQueryType
+namespace Flow.Launcher.Plugin.QueryGroups.PluginQueryTypes
 {
     class SearchGroupsQueryType : IQueryType
     {
+        public static PluginQueryType GetQueryType(){return PluginQueryType.SearchGroups;}
+
         public static bool Matches(Query query, IReadOnlyList<string> queryParts)
         {
             // one part and no seperator after it

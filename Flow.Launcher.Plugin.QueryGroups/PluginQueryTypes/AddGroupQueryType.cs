@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Flow.Launcher.Plugin.QueryGroups.PluginQueryType
+namespace Flow.Launcher.Plugin.QueryGroups.PluginQueryTypes
 {
     class AddGroupQueryType : IQueryType
     {
+        public static PluginQueryType GetQueryType(){return PluginQueryType.AddGroup;}
         public static bool Matches(Query query, IReadOnlyList<string> queryParts)
         {
             return queryParts[0] == "Add";
