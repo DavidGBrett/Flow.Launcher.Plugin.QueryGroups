@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
 using Flow.Launcher.Plugin;
+using Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax;
 
 namespace Flow.Launcher.Plugin.QueryGroups
 {
@@ -31,36 +32,33 @@ namespace Flow.Launcher.Plugin.QueryGroups
             return new SettingsControl(_context, _viewModel);
         }
 
-        private enum PluginQueryType
-        {
-            Keywordless,
-            SearchGroups,
-            AddGroup,
-            SearchGroup,
-            AddItem,
-            RenameGroup
-        }
-
         public List<Result> Query(Query query)
         {
             // Split the query into parts based on the separator
-            var queryParts = new List<string>(query.Search.Split(new string[] { QuerySeparator }, StringSplitOptions.None));
+            var queryPartsInfo = new QueryPartsInfo(
+                rawSearchString: query.Search,
+                actionKeyword: query.ActionKeyword,
+                separator: QuerySeparator
+            );
             
             // Determine the type of query
-            var queryType = MatchQueryType(query, queryParts);
+            var queryTypeMatcher = new QueryTypeMatcher();
+            var queryType = queryTypeMatcher.MatchQueryType(queryPartsInfo);
 
             // Handle the query based on its type
             switch (queryType)
             {
                 case PluginQueryType.Keywordless:
                     {
-                    List<Result> results = GetGroupsResults(query.Search);
-                    return results;
+                        string search = new KeywordlessQueryDefinition().ParseQuery(queryPartsInfo);
+                        List<Result> results = GetGroupsResults(search);
+                        return results;
                     }
 
                 case PluginQueryType.SearchGroups:
                     {
-                        string groupQuery = queryParts.Count > 0 ? queryParts[0] : "";
+                        string groupQuery = new SearchGroupsQueryDefinition().ParseQuery(queryPartsInfo);
+
                         List<Result> results = GetGroupsResults(groupQuery);
                         results.Add(GetAddGroupResult());
 
@@ -69,14 +67,13 @@ namespace Flow.Launcher.Plugin.QueryGroups
 
                 case PluginQueryType.AddGroup:
                     {
-                        string newGroupName = queryParts.Count > 1 ? queryParts[1] : "";
+                        string newGroupName = new AddGroupQueryDefinition().ParseQuery(queryPartsInfo);
                         return GetAddGroupResults(newGroupName);
                     }
 
                 case PluginQueryType.SearchGroup:
                     {
-                        string selectedGroup = queryParts[0];
-                        string itemQuery = queryParts.Count > 1 ? queryParts[1] : "";
+                        (string selectedGroup, string itemQuery) = new SearchGroupQueryDefinition().ParseQuery(queryPartsInfo);
 
                         List<Result> results = GetGroupItemsResults(selectedGroup, itemQuery);
                         results.Add(GetAddItemResult(selectedGroup));
@@ -86,58 +83,21 @@ namespace Flow.Launcher.Plugin.QueryGroups
 
                 case PluginQueryType.AddItem:
                     {
-                        string selectedGroup = queryParts[0];
-                        string itemQuery = queryParts.Count > 2 ? queryParts[2] : "";
+                        (string selectedGroup, string itemQuery) = new AddItemQueryDefinition().ParseQuery(queryPartsInfo);
+
                         return GetAddItemResults(selectedGroup, itemQuery);
                     }
 
                 case PluginQueryType.RenameGroup:
                     {
-                        string selectedGroup = queryParts[0];
-                        string newName = queryParts.Count > 2 ? queryParts[2] : "";
+                        (string selectedGroup, string newName) = new RenameGroupQueryDefinition().ParseQuery(queryPartsInfo);
+
                         return GetRenameGroupResults(selectedGroup,newName);
                     }
 
                 default:
                     return new List<Result>();
             }
-        }
-
-
-
-        private PluginQueryType MatchQueryType(Query query, List<string> queryParts)
-        {
-            if (query.ActionKeyword != groupSpecifierKeyword)
-            {
-                return PluginQueryType.Keywordless;
-            }
-            
-            if (string.IsNullOrEmpty(queryParts[0]))
-            {
-                return PluginQueryType.SearchGroups;
-            }
-
-            if (queryParts[0] == "Add")
-            {
-                return PluginQueryType.AddGroup;
-            }
-            
-            if (queryParts.Count == 1)
-            {
-                return PluginQueryType.SearchGroups;
-            }
-
-            if (queryParts[1] == "Add")
-            {
-                return PluginQueryType.AddItem;
-            }
-            if (queryParts[1] == "Rename")
-            {
-                return PluginQueryType.RenameGroup;
-            }
-
-            return PluginQueryType.SearchGroup;
-
         }
 
         private List<Result> GetGroupItemsResults(string selectedGroup, string itemQuery)
@@ -180,6 +140,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                             ContextData = item,
                             Action = _ =>
                             {
+                                // Change to the selected query item's set search query
                                 _context.API.ChangeQuery(item.Query);
                                 return false;
                             }
@@ -219,7 +180,12 @@ namespace Flow.Launcher.Plugin.QueryGroups
 
                             var pluginID = _context.CurrentPluginMetadata.ID;
 
-                            _context.API.ChangeQuery(groupSpecifierKeyword + " " + group.Name + QuerySeparator, false);
+                            // Change to the selected group's search query
+                            _context.API.ChangeQuery(new SearchGroupQueryDefinition().BuildQuery(
+                                pluginKeyword: groupSpecifierKeyword,
+                                separator: QuerySeparator,
+                                queryGroup:  group.Name
+                            ), false);
                             return false;
                         }
                     });
@@ -238,7 +204,11 @@ namespace Flow.Launcher.Plugin.QueryGroups
                 Score = -100, // Low score to appear at the bottom (make sure real matches come first)
                 Action = _ =>
                 {
-                    _context.API.ChangeQuery(groupSpecifierKeyword + " Add" + QuerySeparator, false);
+                    // Change to the add group query
+                    _context.API.ChangeQuery(new AddGroupQueryDefinition().BuildQuery(
+                        pluginKeyword: groupSpecifierKeyword,
+                        separator: QuerySeparator
+                    ), false);
                     return false;
                 }
             };
@@ -253,7 +223,13 @@ namespace Flow.Launcher.Plugin.QueryGroups
                 Score = -100, // Low score to appear at the bottom (make sure real matches come first)
                 Action = _ =>
                 {
-                    _context.API.ChangeQuery(groupSpecifierKeyword +" "+selectedGroup + QuerySeparator+"Add"+QuerySeparator, false);
+                    // Change to the add item query for the selected group
+                    _context.API.ChangeQuery(new AddItemQueryDefinition().BuildQuery(
+                        pluginKeyword: groupSpecifierKeyword,
+                        separator: QuerySeparator,
+                        queryGroup: selectedGroup
+                    ), false);
+
                     return false;
                 }
             };
@@ -273,7 +249,14 @@ namespace Flow.Launcher.Plugin.QueryGroups
                     {
                         _settings.QueryGroups.Add(new QueryGroup { Name = queryString });
                         _context.API.SavePluginSettings();
-                        _context.API.ChangeQuery(groupSpecifierKeyword + " " + queryString + QuerySeparator, false);
+                        
+                        // Change to the new group's search query
+                        _context.API.ChangeQuery(new SearchGroupQueryDefinition().BuildQuery(
+                            pluginKeyword: groupSpecifierKeyword,
+                            separator: QuerySeparator,
+                            queryGroup: queryString
+                        ), false);
+
                         return false;
                     }
                 }
@@ -294,7 +277,13 @@ namespace Flow.Launcher.Plugin.QueryGroups
                         _settings.QueryGroups.FirstOrDefault(g => g.Name == selectedGroup)
                         ?.QueryItems.Add(new QueryItem { Query = itemQuery });
                         _context.API.SavePluginSettings();
-                        _context.API.ChangeQuery(groupSpecifierKeyword + " " + selectedGroup + QuerySeparator, false);
+
+                        // Go back to the modified group's search query
+                        _context.API.ChangeQuery(new SearchGroupQueryDefinition().BuildQuery(
+                            pluginKeyword: groupSpecifierKeyword,
+                            separator: QuerySeparator,
+                            queryGroup: selectedGroup
+                        ), false);
                         return false;
                     }
                 }
@@ -318,7 +307,13 @@ namespace Flow.Launcher.Plugin.QueryGroups
                         }
 
                         _context.API.SavePluginSettings();
-                        _context.API.ChangeQuery(groupSpecifierKeyword + " " + newName + QuerySeparator, false);
+
+                        // Go back to group search and filter by the new name
+                        _context.API.ChangeQuery(new SearchGroupsQueryDefinition().BuildQuery(
+                            pluginKeyword: groupSpecifierKeyword,
+                            groupSearch: newName
+                        ), false);
+
                         return false;
                     }
                 }
@@ -373,7 +368,14 @@ namespace Flow.Launcher.Plugin.QueryGroups
                     Action = _ =>
                     {
                         _context.API.ReQuery();
-                        _context.API.ChangeQuery(groupSpecifierKeyword + " " + queryGroup.Name + QuerySeparator + "Rename" + QuerySeparator + queryGroup.Name, false);
+
+                        // Change to the rename group query for the selected group
+                        _context.API.ChangeQuery(new RenameGroupQueryDefinition().BuildQuery(
+                            pluginKeyword: groupSpecifierKeyword,
+                            separator: QuerySeparator,
+                            queryGroup: queryGroup.Name,
+                            newGroupName: queryGroup.Name
+                        ), false);
                         
                         return false;
                     }
