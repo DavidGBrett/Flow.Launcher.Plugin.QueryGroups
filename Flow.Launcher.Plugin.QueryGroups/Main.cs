@@ -35,24 +35,32 @@ namespace Flow.Launcher.Plugin.QueryGroups
         public List<Result> Query(Query query)
         {
             // Split the query into parts based on the separator
-            var queryParts = new List<string>(query.Search.Split(new string[] { QuerySeparator }, StringSplitOptions.None));
+            var queryParts = query.Search.Split(new string[] { QuerySeparator }, StringSplitOptions.None);
+
+            var queryPartsInfo = new QueryPartsInfo(
+                RawSearchString: query.Search,
+                ActionKeyword: query.ActionKeyword,
+                Seperator: QuerySeparator,
+                Parts: queryParts,
+                EndsWithSeparator: query.Search.EndsWith(QuerySeparator)
+            );
             
             // Determine the type of query
-            var queryType = MatchQueryType(query, queryParts);
+            var queryType = MatchQueryType(queryPartsInfo);
 
             // Handle the query based on its type
             switch (queryType)
             {
                 case PluginQueryType.Keywordless:
                     {
-                        string search = new KeywordlessQueryDefinition().ParseQuery(query, queryParts);
+                        string search = new KeywordlessQueryDefinition().ParseQuery(queryPartsInfo);
                         List<Result> results = GetGroupsResults(search);
                         return results;
                     }
 
                 case PluginQueryType.SearchGroups:
                     {
-                        string groupQuery = new SearchGroupsQueryDefinition().ParseQuery(query, queryParts);
+                        string groupQuery = new SearchGroupsQueryDefinition().ParseQuery(queryPartsInfo);
 
                         List<Result> results = GetGroupsResults(groupQuery);
                         results.Add(GetAddGroupResult());
@@ -62,13 +70,13 @@ namespace Flow.Launcher.Plugin.QueryGroups
 
                 case PluginQueryType.AddGroup:
                     {
-                        string newGroupName = new AddGroupQueryDefinition().ParseQuery(query, queryParts);
+                        string newGroupName = new AddGroupQueryDefinition().ParseQuery(queryPartsInfo);
                         return GetAddGroupResults(newGroupName);
                     }
 
                 case PluginQueryType.SearchGroup:
                     {
-                        (string selectedGroup, string itemQuery) = new SearchGroupQueryDefinition().ParseQuery(query, queryParts);
+                        (string selectedGroup, string itemQuery) = new SearchGroupQueryDefinition().ParseQuery(queryPartsInfo);
 
                         List<Result> results = GetGroupItemsResults(selectedGroup, itemQuery);
                         results.Add(GetAddItemResult(selectedGroup));
@@ -78,14 +86,14 @@ namespace Flow.Launcher.Plugin.QueryGroups
 
                 case PluginQueryType.AddItem:
                     {
-                        (string selectedGroup, string itemQuery) = new AddItemQueryDefinition().ParseQuery(query, queryParts);
+                        (string selectedGroup, string itemQuery) = new AddItemQueryDefinition().ParseQuery(queryPartsInfo);
 
                         return GetAddItemResults(selectedGroup, itemQuery);
                     }
 
                 case PluginQueryType.RenameGroup:
                     {
-                        (string selectedGroup, string newName) = new RenameGroupQueryDefinition().ParseQuery(query, queryParts);
+                        (string selectedGroup, string newName) = new RenameGroupQueryDefinition().ParseQuery(queryPartsInfo);
 
                         return GetRenameGroupResults(selectedGroup,newName);
                     }
@@ -97,7 +105,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
 
 
 
-        private PluginQueryType MatchQueryType(Query query, List<string> queryParts)
+        private PluginQueryType MatchQueryType(QueryPartsInfo queryPartsInfo)
         {
             var matchOrder = new List<IQueryDefinition>{
                 new KeywordlessQueryDefinition(),
@@ -110,7 +118,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
 
             foreach (var definition in matchOrder)
             {
-                if (definition.Matches(query, queryParts))
+                if (definition.Matches(queryPartsInfo))
                 {
                     return definition.GetQueryType();
                 }

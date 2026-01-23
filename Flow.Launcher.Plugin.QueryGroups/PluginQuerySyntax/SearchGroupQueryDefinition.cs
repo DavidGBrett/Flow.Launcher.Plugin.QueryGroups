@@ -8,10 +8,10 @@ namespace Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax
     {
         public PluginQueryType GetQueryType(){return PluginQueryType.SearchGroup;}
 
-        public bool Matches(Query query, IReadOnlyList<string> queryParts)
+        public bool Matches(QueryPartsInfo queryPartsInfo)
         {
-            bool isEmptyGroupSearch = queryParts.Count == 1 && query.Search != queryParts[0];
-            return isEmptyGroupSearch || queryParts.Count == 2;
+            bool isEmptyGroupSearch = queryPartsInfo.Parts.Count == 1 && queryPartsInfo.RawSearchString != queryPartsInfo.Parts[0];
+            return isEmptyGroupSearch || queryPartsInfo.Parts.Count == 2;
         }
 
         public string BuildQuery(string pluginKeyword, string seperator, string queryGroup)
@@ -19,10 +19,10 @@ namespace Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax
             return $"{pluginKeyword} {queryGroup}{seperator}";
         }
 
-        public (string selectedGroup, string itemQuery) ParseQuery(Query query, IReadOnlyList<string> queryParts)
+        public (string selectedGroup, string itemQuery) ParseQuery(QueryPartsInfo queryPartsInfo)
         {
-            string selectedGroup = queryParts[0];
-            string itemQuery = queryParts.Count > 1 ? queryParts[1] : "";
+            string selectedGroup = queryPartsInfo.Parts[0];
+            string itemQuery = queryPartsInfo.Parts.Count > 1 ? queryPartsInfo.Parts[1] : "";
 
             return (
                 selectedGroup,

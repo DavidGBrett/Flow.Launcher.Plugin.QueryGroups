@@ -8,9 +8,9 @@ namespace Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax
     {
         public PluginQueryType GetQueryType(){return PluginQueryType.Keywordless;}
 
-        public bool Matches(Query query,IReadOnlyList<string> queryParts)
+        public bool Matches(QueryPartsInfo queryPartsInfo)
         {
-            return query.ActionKeyword == "";
+            return queryPartsInfo.ActionKeyword == "";
         }
 
         public string BuildQuery()
@@ -18,10 +18,10 @@ namespace Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax
             return "";
         }
 
-        public string ParseQuery(Query query, IReadOnlyList<string> queryParts)
+        public string ParseQuery(QueryPartsInfo queryPartsInfo)
         {
             return (
-                query.Search
+                queryPartsInfo.RawSearchString
             );
         }
 

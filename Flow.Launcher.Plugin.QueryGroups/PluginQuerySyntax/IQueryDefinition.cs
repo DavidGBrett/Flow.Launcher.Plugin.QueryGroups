@@ -6,6 +6,6 @@ namespace Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax
     interface IQueryDefinition
     {
         PluginQueryType GetQueryType();
-        bool Matches(Query query, IReadOnlyList<string> queryParts);
+        bool Matches(QueryPartsInfo queryPartsInfo);
     }
 }

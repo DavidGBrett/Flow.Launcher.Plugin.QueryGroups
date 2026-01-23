@@ -8,9 +8,9 @@ namespace Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax
     {
         public PluginQueryType GetQueryType(){return PluginQueryType.RenameGroup;}
 
-        public bool Matches(Query query, IReadOnlyList<string> queryParts)
+        public bool Matches(QueryPartsInfo queryPartsInfo)
         {
-            return queryParts[1] == "Rename";
+            return queryPartsInfo.Parts[1] == "Rename";
         }
 
         public string BuildQuery(string pluginKeyword, string seperator, string queryGroup)
@@ -18,10 +18,10 @@ namespace Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax
             return $"{pluginKeyword} {queryGroup}{seperator}Rename{seperator}";
         }
 
-        public (string selectedGroup, string newName) ParseQuery(Query query, IReadOnlyList<string> queryParts)
+        public (string selectedGroup, string newName) ParseQuery(QueryPartsInfo queryPartsInfo)
         {
-            string selectedGroup = queryParts[0];
-            string newName = queryParts.Count > 2 ? queryParts[2] : "";
+            string selectedGroup = queryPartsInfo.Parts[0];
+            string newName = queryPartsInfo.Parts.Count > 2 ? queryPartsInfo.Parts[2] : "";
 
             return (
                 selectedGroup,

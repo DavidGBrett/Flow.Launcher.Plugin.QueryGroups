@@ -8,10 +8,10 @@ namespace Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax
     {
         public PluginQueryType GetQueryType(){return PluginQueryType.SearchGroups;}
 
-        public bool Matches(Query query, IReadOnlyList<string> queryParts)
+        public bool Matches(QueryPartsInfo queryPartsInfo)
         {
             // one part and no seperator after it
-            return queryParts.Count == 1 && query.Search == queryParts[0];
+            return queryPartsInfo.Parts.Count == 1 && queryPartsInfo.RawSearchString == queryPartsInfo.Parts[0];
         }
 
         public string BuildQuery(string pluginKeyword)
@@ -19,9 +19,9 @@ namespace Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax
             return $"{pluginKeyword} ";
         }
 
-        public string ParseQuery(Query query, IReadOnlyList<string> queryParts)
+        public string ParseQuery(QueryPartsInfo queryPartsInfo)
         {
-            string groupQuery = queryParts.Count > 0 ? queryParts[0] : "";
+            string groupQuery = queryPartsInfo.Parts.Count > 0 ? queryPartsInfo.Parts[0] : "";
 
             return (
                 groupQuery

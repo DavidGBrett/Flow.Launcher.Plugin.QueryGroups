@@ -7,9 +7,9 @@ namespace Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax
     class AddGroupQueryDefinition : IQueryDefinition
     {
         public PluginQueryType GetQueryType(){return PluginQueryType.AddGroup;}
-        public bool Matches(Query query, IReadOnlyList<string> queryParts)
+        public bool Matches(QueryPartsInfo queryPartsInfo)
         {
-            return queryParts[0] == "Add";
+            return queryPartsInfo.Parts[0] == "Add";
         }
 
         public string BuildQuery(string pluginKeyword, string seperator)
@@ -17,10 +17,10 @@ namespace Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax
             return $"{pluginKeyword} Add{seperator}";
         }
 
-        public string ParseQuery(Query query, IReadOnlyList<string> queryParts)
+        public string ParseQuery(QueryPartsInfo queryPartsInfo)
         {
             return (
-                queryParts.Count > 1 ? queryParts[1] : ""
+                queryPartsInfo.Parts.Count > 1 ? queryPartsInfo.Parts[1] : ""
             );
         }
 
