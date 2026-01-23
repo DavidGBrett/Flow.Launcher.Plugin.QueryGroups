@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Flow.Launcher.Plugin.QueryGroups.PluginQueryTypes
+namespace Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax
 {
     class RenameGroupQueryDefinition : IQueryDefinition
     {

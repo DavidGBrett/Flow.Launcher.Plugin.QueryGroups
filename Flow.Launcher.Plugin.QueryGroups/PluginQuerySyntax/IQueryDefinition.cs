@@ -1,7 +1,7 @@
 
 using System.Collections.Generic;
 
-namespace Flow.Launcher.Plugin.QueryGroups.PluginQueryTypes
+namespace Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax
 {
     interface IQueryDefinition
     {

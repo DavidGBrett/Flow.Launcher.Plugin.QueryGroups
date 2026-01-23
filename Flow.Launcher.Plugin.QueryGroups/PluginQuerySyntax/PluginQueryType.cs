@@ -1,5 +1,5 @@
 
-namespace Flow.Launcher.Plugin.QueryGroups.PluginQueryTypes
+namespace Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax
 {
     public enum PluginQueryType
         {
