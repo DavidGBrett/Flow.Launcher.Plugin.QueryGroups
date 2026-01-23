@@ -6,14 +6,14 @@ namespace Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax
 {
     class RenameGroupQueryDefinition : IQueryDefinition
     {
-        public static PluginQueryType GetQueryType(){return PluginQueryType.RenameGroup;}
+        public PluginQueryType GetQueryType(){return PluginQueryType.RenameGroup;}
 
-        public static bool Matches(Query query, IReadOnlyList<string> queryParts)
+        public bool Matches(Query query, IReadOnlyList<string> queryParts)
         {
             return queryParts[1] == "Rename";
         }
 
-        public static string BuildQuery(string pluginKeyword, string seperator, string queryGroup)
+        public string BuildQuery(string pluginKeyword, string seperator, string queryGroup)
         {
             return $"{pluginKeyword} {queryGroup}{seperator}Rename{seperator}";
         }
