@@ -14,9 +14,9 @@ namespace Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax
             return isEmptyGroupSearch || queryPartsInfo.Parts.Count == 2;
         }
 
-        public string BuildQuery(string pluginKeyword, string seperator, string queryGroup)
+        public string BuildQuery(string pluginKeyword, string separator, string queryGroup)
         {
-            return $"{pluginKeyword} {queryGroup}{seperator}";
+            return $"{pluginKeyword} {queryGroup}{separator}";
         }
 
         public (string selectedGroup, string itemQuery) ParseQuery(QueryPartsInfo queryPartsInfo)

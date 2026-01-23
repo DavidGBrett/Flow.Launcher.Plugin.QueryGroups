@@ -10,7 +10,7 @@ namespace Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax
 
         public bool Matches(QueryPartsInfo queryPartsInfo)
         {
-            // one part and no seperator after it
+            // one part and no separator after it
             return queryPartsInfo.Parts.Count == 1 && queryPartsInfo.RawSearchString == queryPartsInfo.Parts[0];
         }
 

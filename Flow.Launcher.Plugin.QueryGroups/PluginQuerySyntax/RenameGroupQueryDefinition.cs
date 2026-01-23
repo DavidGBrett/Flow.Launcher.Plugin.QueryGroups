@@ -13,9 +13,9 @@ namespace Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax
             return queryPartsInfo.Parts[1] == "Rename";
         }
 
-        public string BuildQuery(string pluginKeyword, string seperator, string queryGroup)
+        public string BuildQuery(string pluginKeyword, string separator, string queryGroup)
         {
-            return $"{pluginKeyword} {queryGroup}{seperator}Rename{seperator}";
+            return $"{pluginKeyword} {queryGroup}{separator}Rename{separator}";
         }
 
         public (string selectedGroup, string newName) ParseQuery(QueryPartsInfo queryPartsInfo)
