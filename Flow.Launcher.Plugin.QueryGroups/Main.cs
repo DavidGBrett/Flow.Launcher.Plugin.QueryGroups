@@ -35,14 +35,10 @@ namespace Flow.Launcher.Plugin.QueryGroups
         public List<Result> Query(Query query)
         {
             // Split the query into parts based on the separator
-            var queryParts = query.Search.Split(new string[] { QuerySeparator }, StringSplitOptions.None);
-
             var queryPartsInfo = new QueryPartsInfo(
-                RawSearchString: query.Search,
-                ActionKeyword: query.ActionKeyword,
-                Seperator: QuerySeparator,
-                Parts: queryParts,
-                EndsWithSeparator: query.Search.EndsWith(QuerySeparator)
+                rawSearchString: query.Search,
+                actionKeyword: query.ActionKeyword,
+                separator: QuerySeparator
             );
             
             // Determine the type of query
