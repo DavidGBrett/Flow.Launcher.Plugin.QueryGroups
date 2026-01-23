@@ -14,9 +14,9 @@ namespace Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax
             return queryPartsInfo.Parts.Count == 1 && queryPartsInfo.RawSearchString == queryPartsInfo.Parts[0];
         }
 
-        public string BuildQuery(string pluginKeyword)
+        public string BuildQuery(string pluginKeyword, string groupSearch = "")
         {
-            return $"{pluginKeyword} ";
+            return $"{pluginKeyword} {groupSearch}";
         }
 
         public string ParseQuery(QueryPartsInfo queryPartsInfo)

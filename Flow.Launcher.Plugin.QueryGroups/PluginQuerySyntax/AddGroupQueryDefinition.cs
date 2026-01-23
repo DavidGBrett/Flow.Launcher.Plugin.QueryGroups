@@ -12,9 +12,9 @@ namespace Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax
             return queryPartsInfo.Parts[0] == "Add";
         }
 
-        public string BuildQuery(string pluginKeyword, string separator)
+        public string BuildQuery(string pluginKeyword, string separator, string newGroupName = "")
         {
-            return $"{pluginKeyword} Add{separator}";
+            return $"{pluginKeyword} Add{separator}{newGroupName}";
         }
 
         public string ParseQuery(QueryPartsInfo queryPartsInfo)

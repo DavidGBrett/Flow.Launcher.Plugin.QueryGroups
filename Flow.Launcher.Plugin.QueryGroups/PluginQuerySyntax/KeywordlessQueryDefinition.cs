@@ -13,9 +13,9 @@ namespace Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax
             return queryPartsInfo.ActionKeyword == "";
         }
 
-        public string BuildQuery()
+        public string BuildQuery(string rawSearchString = "")
         {
-            return "";
+            return rawSearchString;
         }
 
         public string ParseQuery(QueryPartsInfo queryPartsInfo)
