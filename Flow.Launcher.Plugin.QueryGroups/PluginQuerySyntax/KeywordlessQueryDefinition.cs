@@ -18,5 +18,12 @@ namespace Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax
             return "";
         }
 
+        public string ParseQuery(Query query, IReadOnlyList<string> queryParts)
+        {
+            return (
+                query.Search
+            );
+        }
+
     }
 }

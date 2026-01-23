@@ -45,13 +45,15 @@ namespace Flow.Launcher.Plugin.QueryGroups
             {
                 case PluginQueryType.Keywordless:
                     {
-                    List<Result> results = GetGroupsResults(query.Search);
-                    return results;
+                        string search = new KeywordlessQueryDefinition().ParseQuery(query, queryParts);
+                        List<Result> results = GetGroupsResults(search);
+                        return results;
                     }
 
                 case PluginQueryType.SearchGroups:
                     {
-                        string groupQuery = queryParts.Count > 0 ? queryParts[0] : "";
+                        string groupQuery = new SearchGroupsQueryDefinition().ParseQuery(query, queryParts);
+
                         List<Result> results = GetGroupsResults(groupQuery);
                         results.Add(GetAddGroupResult());
 
@@ -60,14 +62,13 @@ namespace Flow.Launcher.Plugin.QueryGroups
 
                 case PluginQueryType.AddGroup:
                     {
-                        string newGroupName = queryParts.Count > 1 ? queryParts[1] : "";
+                        string newGroupName = new AddGroupQueryDefinition().ParseQuery(query, queryParts);
                         return GetAddGroupResults(newGroupName);
                     }
 
                 case PluginQueryType.SearchGroup:
                     {
-                        string selectedGroup = queryParts[0];
-                        string itemQuery = queryParts.Count > 1 ? queryParts[1] : "";
+                        (string selectedGroup, string itemQuery) = new SearchGroupQueryDefinition().ParseQuery(query, queryParts);
 
                         List<Result> results = GetGroupItemsResults(selectedGroup, itemQuery);
                         results.Add(GetAddItemResult(selectedGroup));
@@ -77,15 +78,15 @@ namespace Flow.Launcher.Plugin.QueryGroups
 
                 case PluginQueryType.AddItem:
                     {
-                        string selectedGroup = queryParts[0];
-                        string itemQuery = queryParts.Count > 2 ? queryParts[2] : "";
+                        (string selectedGroup, string itemQuery) = new AddItemQueryDefinition().ParseQuery(query, queryParts);
+
                         return GetAddItemResults(selectedGroup, itemQuery);
                     }
 
                 case PluginQueryType.RenameGroup:
                     {
-                        string selectedGroup = queryParts[0];
-                        string newName = queryParts.Count > 2 ? queryParts[2] : "";
+                        (string selectedGroup, string newName) = new RenameGroupQueryDefinition().ParseQuery(query, queryParts);
+
                         return GetRenameGroupResults(selectedGroup,newName);
                     }
 

@@ -19,5 +19,15 @@ namespace Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax
             return $"{pluginKeyword} {queryGroup}{seperator}";
         }
 
+        public (string selectedGroup, string itemQuery) ParseQuery(Query query, IReadOnlyList<string> queryParts)
+        {
+            string selectedGroup = queryParts[0];
+            string itemQuery = queryParts.Count > 1 ? queryParts[1] : "";
+
+            return (
+                selectedGroup,
+                itemQuery
+            );
+        }
     }
 }
