@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
 using Flow.Launcher.Plugin;
+using Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax;
 
 namespace Flow.Launcher.Plugin.QueryGroups
 {
@@ -29,16 +30,6 @@ namespace Flow.Launcher.Plugin.QueryGroups
         public Control CreateSettingPanel()
         {
             return new SettingsControl(_context, _viewModel);
-        }
-
-        private enum PluginQueryType
-        {
-            Keywordless,
-            SearchGroups,
-            AddGroup,
-            SearchGroup,
-            AddItem,
-            RenameGroup
         }
 
         public List<Result> Query(Query query)
@@ -107,33 +98,21 @@ namespace Flow.Launcher.Plugin.QueryGroups
 
         private PluginQueryType MatchQueryType(Query query, List<string> queryParts)
         {
-            if (query.ActionKeyword != groupSpecifierKeyword)
-            {
-                return PluginQueryType.Keywordless;
-            }
-            
-            if (string.IsNullOrEmpty(queryParts[0]))
-            {
-                return PluginQueryType.SearchGroups;
-            }
+            var matchOrder = new List<IQueryDefinition>{
+                new KeywordlessQueryDefinition(),
+                new SearchGroupsQueryDefinition(),
+                new AddGroupQueryDefinition(),
+                new AddItemQueryDefinition(),
+                new RenameGroupQueryDefinition(),
+                new SearchGroupQueryDefinition(),
+            };
 
-            if (queryParts[0] == "Add")
+            foreach (var definition in matchOrder)
             {
-                return PluginQueryType.AddGroup;
-            }
-            
-            if (queryParts.Count == 1)
-            {
-                return PluginQueryType.SearchGroups;
-            }
-
-            if (queryParts[1] == "Add")
-            {
-                return PluginQueryType.AddItem;
-            }
-            if (queryParts[1] == "Rename")
-            {
-                return PluginQueryType.RenameGroup;
+                if (definition.Matches(query, queryParts))
+                {
+                    return definition.GetQueryType();
+                }
             }
 
             return PluginQueryType.SearchGroup;
