@@ -42,7 +42,8 @@ namespace Flow.Launcher.Plugin.QueryGroups
             );
             
             // Determine the type of query
-            var queryType = MatchQueryType(queryPartsInfo);
+            var queryTypeMatcher = new QueryTypeMatcher();
+            var queryType = queryTypeMatcher.MatchQueryType(queryPartsInfo);
 
             // Handle the query based on its type
             switch (queryType)
@@ -97,31 +98,6 @@ namespace Flow.Launcher.Plugin.QueryGroups
                 default:
                     return new List<Result>();
             }
-        }
-
-
-
-        private PluginQueryType MatchQueryType(QueryPartsInfo queryPartsInfo)
-        {
-            var matchOrder = new List<IQueryDefinition>{
-                new KeywordlessQueryDefinition(),
-                new SearchGroupsQueryDefinition(),
-                new AddGroupQueryDefinition(),
-                new AddItemQueryDefinition(),
-                new RenameGroupQueryDefinition(),
-                new SearchGroupQueryDefinition(),
-            };
-
-            foreach (var definition in matchOrder)
-            {
-                if (definition.Matches(queryPartsInfo))
-                {
-                    return definition.GetQueryType();
-                }
-            }
-
-            return PluginQueryType.SearchGroup;
-
         }
 
         private List<Result> GetGroupItemsResults(string selectedGroup, string itemQuery)
