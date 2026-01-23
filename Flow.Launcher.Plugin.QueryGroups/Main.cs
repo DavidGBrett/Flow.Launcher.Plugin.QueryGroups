@@ -308,11 +308,10 @@ namespace Flow.Launcher.Plugin.QueryGroups
 
                         _context.API.SavePluginSettings();
 
-                        // Go back to the renamed group's search query
-                        _context.API.ChangeQuery(new SearchGroupQueryDefinition().BuildQuery(
+                        // Go back to group search and filter by the new name
+                        _context.API.ChangeQuery(new SearchGroupsQueryDefinition().BuildQuery(
                             pluginKeyword: groupSpecifierKeyword,
-                            separator: QuerySeparator,
-                            queryGroup: newName
+                            groupSearch: newName
                         ), false);
 
                         return false;
