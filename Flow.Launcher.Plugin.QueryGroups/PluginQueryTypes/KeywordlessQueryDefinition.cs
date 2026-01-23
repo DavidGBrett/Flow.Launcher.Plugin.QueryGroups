@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace Flow.Launcher.Plugin.QueryGroups.PluginQueryTypes
 {
-    class KeywordlessQueryTypeHandler : IQueryType
+    class KeywordlessQueryDefinition : IQueryDefinition
     {
         public static PluginQueryType GetQueryType(){return PluginQueryType.Keywordless;}
 

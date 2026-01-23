@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace Flow.Launcher.Plugin.QueryGroups.PluginQueryTypes
 {
-    class SearchGroupsQueryType : IQueryType
+    class SearchGroupsQueryDefinition : IQueryDefinition
     {
         public static PluginQueryType GetQueryType(){return PluginQueryType.SearchGroups;}
 

@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace Flow.Launcher.Plugin.QueryGroups.PluginQueryTypes
 {
-    class RenameGroupQueryType : IQueryType
+    class RenameGroupQueryDefinition : IQueryDefinition
     {
         public static PluginQueryType GetQueryType(){return PluginQueryType.RenameGroup;}
 

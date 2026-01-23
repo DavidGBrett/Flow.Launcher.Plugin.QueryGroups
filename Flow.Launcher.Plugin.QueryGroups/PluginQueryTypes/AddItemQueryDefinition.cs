@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace Flow.Launcher.Plugin.QueryGroups.PluginQueryTypes
 {
-    class AddItemQueryType : IQueryType
+    class AddItemQueryDefinition : IQueryDefinition
     {
         public static PluginQueryType GetQueryType(){return PluginQueryType.AddItem;}
         public static bool Matches(Query query, IReadOnlyList<string> queryParts)
