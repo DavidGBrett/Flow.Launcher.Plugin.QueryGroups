@@ -6,7 +6,7 @@ namespace Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax
 {
     class AddGroupQueryDefinition : IQueryDefinition
     {
-        private const string QUERY_KEYWORD = "Add";
+        private const string QUERY_KEYWORD = "add";
         public PluginQueryType GetQueryType(){return PluginQueryType.AddGroup;}
 
         public bool Matches(QueryPartsInfo queryPartsInfo)

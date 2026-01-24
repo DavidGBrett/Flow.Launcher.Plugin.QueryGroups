@@ -6,7 +6,7 @@ namespace Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax
 {
     class RenameGroupQueryDefinition : IQueryDefinition
     {
-        private const string QUERY_KEYWORD = "Rename";
+        private const string QUERY_KEYWORD = "name";
         public PluginQueryType GetQueryType(){return PluginQueryType.RenameGroup;}
 
 
