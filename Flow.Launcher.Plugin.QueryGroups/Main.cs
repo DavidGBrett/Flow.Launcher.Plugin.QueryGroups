@@ -431,7 +431,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                     
                     results.Add(new Result
                     {
-                        Title = "Delete Query",
+                        Title = "Delete",
                         SubTitle = "Delete this query item",
                         Glyph = new GlyphInfo("sans-serif"," X"),
                         Action = _ =>
@@ -449,7 +449,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                     });
                     results.Add(new Result
                     {
-                        Title = "Rename Query",
+                        Title = "Rename",
                         SubTitle = "Rename this query item",
                         Glyph = new GlyphInfo("sans-serif"," R"),
                         Action = _ =>
