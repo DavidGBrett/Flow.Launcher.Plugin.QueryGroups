@@ -45,6 +45,9 @@ namespace Flow.Launcher.Plugin.QueryGroups
             var queryTypeMatcher = new QueryTypeMatcher();
             var queryType = queryTypeMatcher.MatchQueryType(queryPartsInfo);
 
+
+            // _context.API.ShowMsg($"Debug: Query Type - {queryType}");
+
             // Handle the query based on its type
             switch (queryType)
             {
@@ -100,6 +103,13 @@ namespace Flow.Launcher.Plugin.QueryGroups
                         (string selectedGroup, string selectedItem, string newItemName) = new RenameItemDefinition().ParseQuery(queryPartsInfo);
 
                         return GetRenameItemResults(selectedGroup, selectedItem, newItemName);
+                    }
+                
+                case PluginQueryType.SetItemQuery:
+                    {
+                        (string selectedGroup, string selectedItem, string newItemQuery) = new ItemQueryAssignmentQueryDefinition().ParseQuery(queryPartsInfo);
+
+                        return GetSetItemQueryResults(selectedGroup, selectedItem, newItemQuery);
                     }
 
                 default:
@@ -360,6 +370,39 @@ namespace Flow.Launcher.Plugin.QueryGroups
                 }
             };
         }
+        private List<Result> GetSetItemQueryResults(string selectedGroup, string selectedItem, string newItemQuery)
+        {
+            return new List<Result>
+            {
+                new Result
+                {
+                    Title = "Set query to: " + newItemQuery,
+                    SubTitle = "",
+                    Glyph = new GlyphInfo("sans-serif","Q"),
+                    Action = _ =>
+                    {
+                        var group =_settings.QueryGroups.FirstOrDefault(g => g.Name == selectedGroup);
+                        var item = group?.QueryItems.FirstOrDefault(i => i.Name == selectedItem);
+                        if (item is not null)
+                        {
+                            item.Query = newItemQuery;
+                        }
+
+                        _context.API.SavePluginSettings();
+
+                        // Go back to the group search query filtered for the modified item
+                        _context.API.ChangeQuery(new SearchGroupQueryDefinition().BuildQuery(
+                            pluginKeyword: groupSpecifierKeyword,
+                            separator: QuerySeparator,
+                            queryGroup: selectedGroup,
+                            querySearch: selectedItem
+                        ), false);
+
+                        return false;
+                    }
+                }
+            };
+        }
 
         private int PrioritizedScoring(string query, string target, int maxScore=1000)
         {
@@ -467,6 +510,31 @@ namespace Flow.Launcher.Plugin.QueryGroups
                                 queryGroup: parentGroup.Name,
                                 queryItem: queryItem.Name,
                                 newItemName: queryItem.Name
+                            ), false);
+                            
+                            return false;
+                        }
+                    });
+                    results.Add(new Result
+                    {
+                        Title = "Change Query",
+                        SubTitle = "Current query: " + queryItem.Query,
+                        Glyph = new GlyphInfo("sans-serif"," Q"),
+                        Action = _ =>
+                        {
+                            var parentGroup = _settings.QueryGroups.FirstOrDefault((QueryGroup qg)=>
+                                qg.QueryItems.Contains(queryItem)
+                            );
+
+                            _context.API.ReQuery();
+
+                            // Change to the set item query query for the selected item
+                            _context.API.ChangeQuery(new ItemQueryAssignmentQueryDefinition().BuildQuery(
+                                pluginKeyword: groupSpecifierKeyword,
+                                separator: QuerySeparator,
+                                queryGroup: parentGroup.Name,
+                                queryItem: queryItem.Name,
+                                newItemQuery: queryItem.Query
                             ), false);
                             
                             return false;
