@@ -6,15 +6,17 @@ namespace Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax
 {
     class AddGroupQueryDefinition : IQueryDefinition
     {
+        private const string QUERY_KEYWORD = "Add";
         public PluginQueryType GetQueryType(){return PluginQueryType.AddGroup;}
+
         public bool Matches(QueryPartsInfo queryPartsInfo)
         {
-            return queryPartsInfo.Parts[0] == "Add";
+            return queryPartsInfo.Parts[0] == QUERY_KEYWORD;
         }
 
         public string BuildQuery(string pluginKeyword, string separator, string newGroupName = "")
         {
-            return $"{pluginKeyword} Add{separator}{newGroupName}";
+            return $"{pluginKeyword} {QUERY_KEYWORD}{separator}{newGroupName}";
         }
 
         public string ParseQuery(QueryPartsInfo queryPartsInfo)

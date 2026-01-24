@@ -6,17 +6,18 @@ namespace Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax
 {
     class RenameItemDefinition : IQueryDefinition
     {
+        private const string QUERY_KEYWORD = "Rename";
         public PluginQueryType GetQueryType(){return PluginQueryType.RenameItem;}
 
         public bool Matches(QueryPartsInfo queryPartsInfo)
         {
-            return queryPartsInfo.Parts.Count >= 3 && queryPartsInfo.Parts[2] == "Rename";
+            return queryPartsInfo.Parts.Count >= 3 && queryPartsInfo.Parts[2] == QUERY_KEYWORD;
         }
 
         public string BuildQuery(string pluginKeyword, string separator, string queryGroup, string queryItem, string newItemName = "")
         {
             var sep = separator;
-            return $"{pluginKeyword} {queryGroup}{sep}{queryItem}{sep}Rename{sep}{newItemName}";
+            return $"{pluginKeyword} {queryGroup}{sep}{queryItem}{sep}{QUERY_KEYWORD}{sep}{newItemName}";
         }
 
         public (string selectedGroup, string selectedItem, string newItemName) ParseQuery(QueryPartsInfo queryPartsInfo)
