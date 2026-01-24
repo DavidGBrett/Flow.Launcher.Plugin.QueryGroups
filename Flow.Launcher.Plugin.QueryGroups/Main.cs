@@ -450,7 +450,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                     results.Add(new Result
                     {
                         Title = "Rename",
-                        SubTitle = "Rename this query item",
+                        SubTitle = "Current name: " + queryItem.Name,
                         Glyph = new GlyphInfo("sans-serif"," R"),
                         Action = _ =>
                         {
