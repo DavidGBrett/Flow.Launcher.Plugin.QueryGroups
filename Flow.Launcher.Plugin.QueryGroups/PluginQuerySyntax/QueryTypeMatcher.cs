@@ -15,6 +15,7 @@ namespace Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax
                 new AddGroupQueryDefinition(),
                 new AddItemQueryDefinition(),
                 new RenameGroupQueryDefinition(),
+                new RenameItemDefinition(),
                 new SearchGroupQueryDefinition(),
             }.AsReadOnly();
         }

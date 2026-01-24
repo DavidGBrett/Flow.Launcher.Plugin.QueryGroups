@@ -95,6 +95,13 @@ namespace Flow.Launcher.Plugin.QueryGroups
                         return GetRenameGroupResults(selectedGroup,newName);
                     }
 
+                case PluginQueryType.RenameItem:
+                    {
+                        (string selectedGroup, string selectedItem, string newItemName) = new RenameItemDefinition().ParseQuery(queryPartsInfo);
+
+                        return GetRenameItemResults(selectedGroup, selectedItem, newItemName);
+                    }
+
                 default:
                     return new List<Result>();
             }
@@ -320,6 +327,40 @@ namespace Flow.Launcher.Plugin.QueryGroups
             };
         }   
 
+        private List<Result> GetRenameItemResults(string selectedGroup, string selectedItem, string newItemName)
+        {
+            return new List<Result>
+            {
+                new Result
+                {
+                    Title = "Rename To: " + newItemName,
+                    SubTitle = "",
+                    Glyph = new GlyphInfo("sans-serif","R"),
+                    Action = _ =>
+                    {
+                        var group =_settings.QueryGroups.FirstOrDefault(g => g.Name == selectedGroup);
+                        var item = group?.QueryItems.FirstOrDefault(i => i.Query == selectedItem);
+                        if (item is not null)
+                        {
+                            item.Name = newItemName;
+                        }
+
+                        _context.API.SavePluginSettings();
+
+                        // Go back to the group search query filtered for the modified item
+                        _context.API.ChangeQuery(new SearchGroupQueryDefinition().BuildQuery(
+                            pluginKeyword: groupSpecifierKeyword,
+                            separator: QuerySeparator,
+                            queryGroup: selectedGroup,
+                            querySearch: newItemName
+                        ), false);
+
+                        return false;
+                    }
+                }
+            };
+        }
+
         private int PrioritizedScoring(string query, string target, int maxScore=1000)
         {
             if (string.IsNullOrEmpty(query) || string.IsNullOrEmpty(target))
@@ -398,6 +439,31 @@ namespace Flow.Launcher.Plugin.QueryGroups
 
                         _context.API.ReQuery();
 
+                        return false;
+                    }
+                });
+                results.Add(new Result
+                {
+                    Title = "Rename Query",
+                    SubTitle = "Rename this query item",
+                    Glyph = new GlyphInfo("sans-serif"," R"),
+                    Action = _ =>
+                    {
+                        var parentGroup = _settings.QueryGroups.FirstOrDefault((QueryGroup qg)=>
+                            qg.QueryItems.Contains(queryItem)
+                        );
+
+                        _context.API.ReQuery();
+
+                        // Change to the rename item query for the selected item
+                        _context.API.ChangeQuery(new RenameItemDefinition().BuildQuery(
+                            pluginKeyword: groupSpecifierKeyword,
+                            separator: QuerySeparator,
+                            queryGroup: parentGroup.Name,
+                            queryItem: queryItem.Query,
+                            newItemName: queryItem.Query
+                        ), false);
+                        
                         return false;
                     }
                 });
