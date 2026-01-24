@@ -339,7 +339,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                     Action = _ =>
                     {
                         var group =_settings.QueryGroups.FirstOrDefault(g => g.Name == selectedGroup);
-                        var item = group?.QueryItems.FirstOrDefault(i => i.Query == selectedItem);
+                        var item = group?.QueryItems.FirstOrDefault(i => i.Name == selectedItem);
                         if (item is not null)
                         {
                             item.Name = newItemName;
@@ -460,8 +460,8 @@ namespace Flow.Launcher.Plugin.QueryGroups
                             pluginKeyword: groupSpecifierKeyword,
                             separator: QuerySeparator,
                             queryGroup: parentGroup.Name,
-                            queryItem: queryItem.Query,
-                            newItemName: queryItem.Query
+                            queryItem: queryItem.Name,
+                            newItemName: queryItem.Name
                         ), false);
                         
                         return false;
