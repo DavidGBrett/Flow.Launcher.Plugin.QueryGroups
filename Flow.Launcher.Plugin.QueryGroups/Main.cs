@@ -386,91 +386,100 @@ namespace Flow.Launcher.Plugin.QueryGroups
             switch (selectedResult.ContextData)
             {
                 case QueryGroup queryGroup:
-                results.Add(new Result
                 {
-                    Title = "Delete Group",
-                    SubTitle = "Delete this query group",
-                    Glyph = new GlyphInfo("sans-serif"," X"),
-                    Action = _ =>
+                    results.Add(new Result
                     {
-                        _settings.QueryGroups.Remove(queryGroup);
-                        _context.API.SavePluginSettings();
-                        
-                        _context.API.ReQuery();
+                        Title = "Delete Group",
+                        SubTitle = "Delete this query group",
+                        Glyph = new GlyphInfo("sans-serif"," X"),
+                        Action = _ =>
+                        {
+                            _settings.QueryGroups.Remove(queryGroup);
+                            _context.API.SavePluginSettings();
+                            
+                            _context.API.ReQuery();
 
-                        return false;
-                    }
-                });
-                results.Add(new Result
-                {
-                    Title = "Rename Group",
-                    SubTitle = "Rename this query group",
-                    Glyph = new GlyphInfo("sans-serif"," R"),
-                    Action = _ =>
+                            return false;
+                        }
+                    });
+                    results.Add(new Result
                     {
-                        _context.API.ReQuery();
+                        Title = "Rename Group",
+                        SubTitle = "Rename this query group",
+                        Glyph = new GlyphInfo("sans-serif"," R"),
+                        Action = _ =>
+                        {
+                            _context.API.ReQuery();
 
-                        // Change to the rename group query for the selected group
-                        _context.API.ChangeQuery(new RenameGroupQueryDefinition().BuildQuery(
-                            pluginKeyword: groupSpecifierKeyword,
-                            separator: QuerySeparator,
-                            queryGroup: queryGroup.Name,
-                            newGroupName: queryGroup.Name
-                        ), false);
-                        
-                        return false;
-                    }
-                });
-                return results;
+                            // Change to the rename group query for the selected group
+                            _context.API.ChangeQuery(new RenameGroupQueryDefinition().BuildQuery(
+                                pluginKeyword: groupSpecifierKeyword,
+                                separator: QuerySeparator,
+                                queryGroup: queryGroup.Name,
+                                newGroupName: queryGroup.Name
+                            ), false);
+                            
+                            return false;
+                        }
+                    });
+                    return results;
+                }
+                
                 
                 case QueryItem queryItem:
-                results.Add(new Result
                 {
-                    Title = "Delete Query",
-                    SubTitle = "Delete this query item",
-                    Glyph = new GlyphInfo("sans-serif"," X"),
-                    Action = _ =>
+                    
+                    results.Add(new Result
                     {
-                        _settings.QueryGroups.FirstOrDefault((QueryGroup qg)=>
-                            qg.QueryItems.Contains(queryItem)
-                        )
-                        .QueryItems.Remove(queryItem);
-                        _context.API.SavePluginSettings();
+                        Title = "Delete Query",
+                        SubTitle = "Delete this query item",
+                        Glyph = new GlyphInfo("sans-serif"," X"),
+                        Action = _ =>
+                        {
+                            _settings.QueryGroups.FirstOrDefault((QueryGroup qg)=>
+                                qg.QueryItems.Contains(queryItem)
+                            )
+                            .QueryItems.Remove(queryItem);
+                            _context.API.SavePluginSettings();
 
-                        _context.API.ReQuery();
+                            _context.API.ReQuery();
 
-                        return false;
-                    }
-                });
-                results.Add(new Result
-                {
-                    Title = "Rename Query",
-                    SubTitle = "Rename this query item",
-                    Glyph = new GlyphInfo("sans-serif"," R"),
-                    Action = _ =>
+                            return false;
+                        }
+                    });
+                    results.Add(new Result
                     {
-                        var parentGroup = _settings.QueryGroups.FirstOrDefault((QueryGroup qg)=>
-                            qg.QueryItems.Contains(queryItem)
-                        );
+                        Title = "Rename Query",
+                        SubTitle = "Rename this query item",
+                        Glyph = new GlyphInfo("sans-serif"," R"),
+                        Action = _ =>
+                        {
+                            var parentGroup = _settings.QueryGroups.FirstOrDefault((QueryGroup qg)=>
+                                qg.QueryItems.Contains(queryItem)
+                            );
 
-                        _context.API.ReQuery();
+                            _context.API.ReQuery();
 
-                        // Change to the rename item query for the selected item
-                        _context.API.ChangeQuery(new RenameItemDefinition().BuildQuery(
-                            pluginKeyword: groupSpecifierKeyword,
-                            separator: QuerySeparator,
-                            queryGroup: parentGroup.Name,
-                            queryItem: queryItem.Name,
-                            newItemName: queryItem.Name
-                        ), false);
-                        
-                        return false;
-                    }
-                });
-                return results;
+                            // Change to the rename item query for the selected item
+                            _context.API.ChangeQuery(new RenameItemDefinition().BuildQuery(
+                                pluginKeyword: groupSpecifierKeyword,
+                                separator: QuerySeparator,
+                                queryGroup: parentGroup.Name,
+                                queryItem: queryItem.Name,
+                                newItemName: queryItem.Name
+                            ), false);
+                            
+                            return false;
+                        }
+                    });
+                    return results;
+                }
 
                 default:
-                return results;
+                {
+                    return results;
+                }
+                
             }
         }
     }
