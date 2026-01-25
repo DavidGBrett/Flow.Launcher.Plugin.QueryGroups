@@ -357,7 +357,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                 {
                     Title = "Rename To: " + newName,
                     SubTitle = "",
-                    Glyph = new GlyphInfo("sans-serif","Ｒ"),
+                    Glyph = new GlyphInfo("sans-serif","R"),
                     Action = _ =>
                     {
                         var group =_settings.QueryGroups.FirstOrDefault(g => g.Name == selectedGroup);
@@ -388,7 +388,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                 {
                     Title = "Rename To: " + newItemName,
                     SubTitle = "",
-                    Glyph = new GlyphInfo("sans-serif","Ｒ"),
+                    Glyph = new GlyphInfo("sans-serif","R"),
                     Action = _ =>
                     {
                         var group =_settings.QueryGroups.FirstOrDefault(g => g.Name == selectedGroup);
@@ -421,7 +421,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                 {
                     Title = "Set query to: " + newItemQuery,
                     SubTitle = "",
-                    Glyph = new GlyphInfo("sans-serif","Ｑ"),
+                    Glyph = new GlyphInfo("sans-serif","Q"),
                     Action = _ =>
                     {
                         var group =_settings.QueryGroups.FirstOrDefault(g => g.Name == selectedGroup);
@@ -477,7 +477,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                     {
                         Title = "Delete Group",
                         SubTitle = "Delete this query group",
-                        Glyph = new GlyphInfo("sans-serif","Ｘ"),
+                        Glyph = new GlyphInfo("sans-serif","X"),
                         Action = _ =>
                         {
                             _settings.QueryGroups.Remove(queryGroup);
@@ -492,7 +492,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                     {
                         Title = "Rename Group",
                         SubTitle = "Rename this query group",
-                        Glyph = new GlyphInfo("sans-serif","Ｒ"),
+                        Glyph = new GlyphInfo("sans-serif","R"),
                         Action = _ =>
                         {
                             _context.API.ReQuery();
@@ -519,7 +519,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                     {
                         Title = "Delete",
                         SubTitle = "Delete this query item",
-                        Glyph = new GlyphInfo("sans-serif","Ｘ"),
+                        Glyph = new GlyphInfo("sans-serif","X"),
                         Action = _ =>
                         {
                             _settings.QueryGroups.FirstOrDefault((QueryGroup qg)=>
@@ -537,7 +537,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                     {
                         Title = "Rename",
                         SubTitle = "Current name: " + queryItem.Name,
-                        Glyph = new GlyphInfo("sans-serif","Ｒ"),
+                        Glyph = new GlyphInfo("sans-serif","R"),
                         Action = _ =>
                         {
                             var parentGroup = _settings.QueryGroups.FirstOrDefault((QueryGroup qg)=>
@@ -562,7 +562,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                     {
                         Title = "Change Query",
                         SubTitle = "Current query: " + queryItem.Query,
-                        Glyph = new GlyphInfo("sans-serif","Ｑ"),
+                        Glyph = new GlyphInfo("sans-serif","Q"),
                         Action = _ =>
                         {
                             var parentGroup = _settings.QueryGroups.FirstOrDefault((QueryGroup qg)=>
