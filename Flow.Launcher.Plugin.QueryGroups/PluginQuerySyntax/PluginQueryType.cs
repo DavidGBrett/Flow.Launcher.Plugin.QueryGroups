@@ -8,6 +8,7 @@ namespace Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax
             AddGroup,
             SearchGroup,
             AddItem,
+            AddItemName,
             RenameGroup,
             RenameItem,
             SetItemQuery,

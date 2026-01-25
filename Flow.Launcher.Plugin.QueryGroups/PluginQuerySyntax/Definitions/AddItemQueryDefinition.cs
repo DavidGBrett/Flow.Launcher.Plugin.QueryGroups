@@ -11,7 +11,11 @@ namespace Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax
 
         public bool Matches(QueryPartsInfo queryPartsInfo)
         {
-            return queryPartsInfo.Parts[1] == QUERY_KEYWORD;
+            bool isRightLength = queryPartsInfo.Parts.Count == 3;
+
+            bool hasKeywordInRightPart = queryPartsInfo.Parts[1] == QUERY_KEYWORD;
+
+            return hasKeywordInRightPart && isRightLength;
         }
 
         public string BuildQuery(string pluginKeyword, string separator, string queryGroup, string newQueryName = "")

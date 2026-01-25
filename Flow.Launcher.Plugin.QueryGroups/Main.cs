@@ -91,6 +91,13 @@ namespace Flow.Launcher.Plugin.QueryGroups
                         return GetAddItemResults(selectedGroup, itemQuery);
                     }
 
+                case PluginQueryType.AddItemName:
+                    {
+                        (string selectedGroup, string itemQuery, string itemName) = new AddItemNameQueryDefinition().ParseQuery(queryPartsInfo);
+
+                        return GetAddItemNameResults(selectedGroup, itemQuery, itemName);
+                    }
+
                 case PluginQueryType.RenameGroup:
                     {
                         (string selectedGroup, string newName) = new RenameGroupQueryDefinition().ParseQuery(queryPartsInfo);
@@ -286,13 +293,48 @@ namespace Flow.Launcher.Plugin.QueryGroups
             {
                 new Result
                 {
-                    Title = "Add: " + itemQuery,
+                    Title = "Add Query: " + itemQuery,
                     SubTitle = "",
                     Glyph = new GlyphInfo("sans-serif","＋"),
                     Action = _ =>
                     {
+                        // Prompt for optional name
+                        _context.API.ChangeQuery(new AddItemNameQueryDefinition().BuildQuery(
+                            pluginKeyword: groupSpecifierKeyword,
+                            separator: QuerySeparator,
+                            queryGroup: selectedGroup,
+                            newItemQuery: itemQuery
+                        ), false);
+                        return false;
+
+                        // _settings.QueryGroups.FirstOrDefault(g => g.Name == selectedGroup)
+                        // ?.QueryItems.Add(new QueryItem { Query = itemQuery });
+                        // _context.API.SavePluginSettings();
+
+                        // // Go back to the modified group's search query
+                        // _context.API.ChangeQuery(new SearchGroupQueryDefinition().BuildQuery(
+                        //     pluginKeyword: groupSpecifierKeyword,
+                        //     separator: QuerySeparator,
+                        //     queryGroup: selectedGroup
+                        // ), false);
+                        // return false;
+                    }
+                }
+            };
+        }
+        private List<Result> GetAddItemNameResults(string selectedGroup, string itemQuery, string itemName)
+        {
+            return new List<Result>
+            {
+                new Result
+                {
+                    Title = "With Name: " + itemName,
+                    SubTitle = "Optional, press Enter to skip (use query as name)",
+                    Glyph = new GlyphInfo("sans-serif","＋"),
+                    Action = _ =>
+                    {
                         _settings.QueryGroups.FirstOrDefault(g => g.Name == selectedGroup)
-                        ?.QueryItems.Add(new QueryItem { Query = itemQuery });
+                        ?.QueryItems.Add(new QueryItem { Query = itemQuery, Name = itemName });
                         _context.API.SavePluginSettings();
 
                         // Go back to the modified group's search query
@@ -305,7 +347,8 @@ namespace Flow.Launcher.Plugin.QueryGroups
                     }
                 }
             };
-        }  
+        }
+
         private List<Result> GetRenameGroupResults(string selectedGroup, string newName)
         {
             return new List<Result>
