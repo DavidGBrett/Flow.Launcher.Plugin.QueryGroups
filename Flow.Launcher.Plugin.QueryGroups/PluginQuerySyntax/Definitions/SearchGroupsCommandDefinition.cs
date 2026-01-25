@@ -4,9 +4,9 @@ using System.Diagnostics;
 
 namespace Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax
 {
-    class SearchGroupsQueryDefinition : IQueryDefinition
+    class SearchGroupsCommandDefinition : ICommandDefinition
     {
-        public PluginQueryType GetQueryType(){return PluginQueryType.SearchGroups;}
+        public CommandType GetCommandType(){return CommandType.SearchGroups;}
 
         public bool Matches(QueryPartsInfo queryPartsInfo)
         {

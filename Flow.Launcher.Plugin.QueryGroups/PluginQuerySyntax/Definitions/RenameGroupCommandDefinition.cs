@@ -4,10 +4,10 @@ using System.Diagnostics;
 
 namespace Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax
 {
-    class RenameGroupQueryDefinition : IQueryDefinition
+    class RenameGroupCommandDefinition : ICommandDefinition
     {
         private const string QUERY_KEYWORD = "name";
-        public PluginQueryType GetQueryType(){return PluginQueryType.RenameGroup;}
+        public CommandType GetCommandType(){return CommandType.RenameGroup;}
 
 
         public bool Matches(QueryPartsInfo queryPartsInfo)

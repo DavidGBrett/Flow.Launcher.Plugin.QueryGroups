@@ -1,7 +1,7 @@
 
 namespace Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax
 {
-    public enum PluginQueryType
+    public enum CommandType
         {
             Keywordless,
             SearchGroups,

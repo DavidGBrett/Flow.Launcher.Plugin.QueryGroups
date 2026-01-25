@@ -41,26 +41,26 @@ namespace Flow.Launcher.Plugin.QueryGroups
                 separator: QuerySeparator
             );
             
-            // Determine the type of query
-            var queryTypeMatcher = new QueryTypeMatcher();
-            var queryType = queryTypeMatcher.MatchQueryType(queryPartsInfo);
+            // Determine the type of command
+            var commandTypeMatcher = new CommandTypeMatcher();
+            var queryCommandType = commandTypeMatcher.MatchCommand(queryPartsInfo);
 
 
             // _context.API.ShowMsg($"Debug: Query Type - {queryType}");
 
-            // Handle the query based on its type
-            switch (queryType)
+            // Handle the query command based on its type
+            switch (queryCommandType)
             {
-                case PluginQueryType.Keywordless:
+                case CommandType.Keywordless:
                     {
-                        string search = new KeywordlessQueryDefinition().ParseQuery(queryPartsInfo);
+                        string search = new KeywordlessCommandDefinition().ParseQuery(queryPartsInfo);
                         List<Result> results = GetGroupsResults(search);
                         return results;
                     }
 
-                case PluginQueryType.SearchGroups:
+                case CommandType.SearchGroups:
                     {
-                        string groupQuery = new SearchGroupsQueryDefinition().ParseQuery(queryPartsInfo);
+                        string groupQuery = new SearchGroupsCommandDefinition().ParseQuery(queryPartsInfo);
 
                         List<Result> results = GetGroupsResults(groupQuery);
                         results.Add(GetAddGroupResult());
@@ -68,15 +68,15 @@ namespace Flow.Launcher.Plugin.QueryGroups
                         return results;
                     }
 
-                case PluginQueryType.AddGroup:
+                case CommandType.AddGroup:
                     {
-                        string newGroupName = new AddGroupQueryDefinition().ParseQuery(queryPartsInfo);
+                        string newGroupName = new AddGroupCommandDefinition().ParseQuery(queryPartsInfo);
                         return GetAddGroupResults(newGroupName);
                     }
 
-                case PluginQueryType.SearchGroup:
+                case CommandType.SearchGroup:
                     {
-                        (string selectedGroup, string itemQuery) = new SearchGroupQueryDefinition().ParseQuery(queryPartsInfo);
+                        (string selectedGroup, string itemQuery) = new SearchGroupCommandDefinition().ParseQuery(queryPartsInfo);
 
                         List<Result> results = GetGroupItemsResults(selectedGroup, itemQuery);
                         results.Add(GetAddItemResult(selectedGroup));
@@ -84,37 +84,37 @@ namespace Flow.Launcher.Plugin.QueryGroups
                         return results;
                     }
 
-                case PluginQueryType.AddItem:
+                case CommandType.AddItem:
                     {
-                        (string selectedGroup, string itemQuery) = new AddItemQueryDefinition().ParseQuery(queryPartsInfo);
+                        (string selectedGroup, string itemQuery) = new AddItemCommandDefinition().ParseQuery(queryPartsInfo);
 
                         return GetAddItemResults(selectedGroup, itemQuery);
                     }
 
-                case PluginQueryType.AddItemName:
+                case CommandType.AddItemName:
                     {
-                        (string selectedGroup, string itemQuery, string itemName) = new AddItemNameQueryDefinition().ParseQuery(queryPartsInfo);
+                        (string selectedGroup, string itemQuery, string itemName) = new AddItemNameCommandDefinition().ParseQuery(queryPartsInfo);
 
                         return GetAddItemNameResults(selectedGroup, itemQuery, itemName);
                     }
 
-                case PluginQueryType.RenameGroup:
+                case CommandType.RenameGroup:
                     {
-                        (string selectedGroup, string newName) = new RenameGroupQueryDefinition().ParseQuery(queryPartsInfo);
+                        (string selectedGroup, string newName) = new RenameGroupCommandDefinition().ParseQuery(queryPartsInfo);
 
                         return GetRenameGroupResults(selectedGroup,newName);
                     }
 
-                case PluginQueryType.RenameItem:
+                case CommandType.RenameItem:
                     {
-                        (string selectedGroup, string selectedItem, string newItemName) = new RenameItemDefinition().ParseQuery(queryPartsInfo);
+                        (string selectedGroup, string selectedItem, string newItemName) = new RenameItemCommandDefinition().ParseQuery(queryPartsInfo);
 
                         return GetRenameItemResults(selectedGroup, selectedItem, newItemName);
                     }
                 
-                case PluginQueryType.SetItemQuery:
+                case CommandType.SetItemQuery:
                     {
-                        (string selectedGroup, string selectedItem, string newItemQuery) = new ItemQueryAssignmentQueryDefinition().ParseQuery(queryPartsInfo);
+                        (string selectedGroup, string selectedItem, string newItemQuery) = new ItemQueryAssignmentCommandDefinition().ParseQuery(queryPartsInfo);
 
                         return GetSetItemQueryResults(selectedGroup, selectedItem, newItemQuery);
                     }
@@ -205,7 +205,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                             var pluginID = _context.CurrentPluginMetadata.ID;
 
                             // Change to the selected group's search query
-                            _context.API.ChangeQuery(new SearchGroupQueryDefinition().BuildQuery(
+                            _context.API.ChangeQuery(new SearchGroupCommandDefinition().BuildQuery(
                                 pluginKeyword: groupSpecifierKeyword,
                                 separator: QuerySeparator,
                                 queryGroup:  group.Name
@@ -229,7 +229,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                 Action = _ =>
                 {
                     // Change to the add group query
-                    _context.API.ChangeQuery(new AddGroupQueryDefinition().BuildQuery(
+                    _context.API.ChangeQuery(new AddGroupCommandDefinition().BuildQuery(
                         pluginKeyword: groupSpecifierKeyword,
                         separator: QuerySeparator
                     ), false);
@@ -248,7 +248,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                 Action = _ =>
                 {
                     // Change to the add item query for the selected group
-                    _context.API.ChangeQuery(new AddItemQueryDefinition().BuildQuery(
+                    _context.API.ChangeQuery(new AddItemCommandDefinition().BuildQuery(
                         pluginKeyword: groupSpecifierKeyword,
                         separator: QuerySeparator,
                         queryGroup: selectedGroup
@@ -275,7 +275,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                         _context.API.SavePluginSettings();
                         
                         // Change to the new group's search query
-                        _context.API.ChangeQuery(new SearchGroupQueryDefinition().BuildQuery(
+                        _context.API.ChangeQuery(new SearchGroupCommandDefinition().BuildQuery(
                             pluginKeyword: groupSpecifierKeyword,
                             separator: QuerySeparator,
                             queryGroup: queryString
@@ -299,7 +299,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                     Action = _ =>
                     {
                         // Prompt for optional name
-                        _context.API.ChangeQuery(new AddItemNameQueryDefinition().BuildQuery(
+                        _context.API.ChangeQuery(new AddItemNameCommandDefinition().BuildQuery(
                             pluginKeyword: groupSpecifierKeyword,
                             separator: QuerySeparator,
                             queryGroup: selectedGroup,
@@ -338,7 +338,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                         _context.API.SavePluginSettings();
 
                         // Go back to the modified group's search query
-                        _context.API.ChangeQuery(new SearchGroupQueryDefinition().BuildQuery(
+                        _context.API.ChangeQuery(new SearchGroupCommandDefinition().BuildQuery(
                             pluginKeyword: groupSpecifierKeyword,
                             separator: QuerySeparator,
                             queryGroup: selectedGroup
@@ -369,7 +369,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                         _context.API.SavePluginSettings();
 
                         // Go back to group search and filter by the new name
-                        _context.API.ChangeQuery(new SearchGroupsQueryDefinition().BuildQuery(
+                        _context.API.ChangeQuery(new SearchGroupsCommandDefinition().BuildQuery(
                             pluginKeyword: groupSpecifierKeyword,
                             groupSearch: newName
                         ), false);
@@ -401,7 +401,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                         _context.API.SavePluginSettings();
 
                         // Go back to the group search query filtered for the modified item
-                        _context.API.ChangeQuery(new SearchGroupQueryDefinition().BuildQuery(
+                        _context.API.ChangeQuery(new SearchGroupCommandDefinition().BuildQuery(
                             pluginKeyword: groupSpecifierKeyword,
                             separator: QuerySeparator,
                             queryGroup: selectedGroup,
@@ -434,7 +434,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                         _context.API.SavePluginSettings();
 
                         // Go back to the group search query filtered for the modified item
-                        _context.API.ChangeQuery(new SearchGroupQueryDefinition().BuildQuery(
+                        _context.API.ChangeQuery(new SearchGroupCommandDefinition().BuildQuery(
                             pluginKeyword: groupSpecifierKeyword,
                             separator: QuerySeparator,
                             queryGroup: selectedGroup,
@@ -498,7 +498,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                             _context.API.ReQuery();
 
                             // Change to the rename group query for the selected group
-                            _context.API.ChangeQuery(new RenameGroupQueryDefinition().BuildQuery(
+                            _context.API.ChangeQuery(new RenameGroupCommandDefinition().BuildQuery(
                                 pluginKeyword: groupSpecifierKeyword,
                                 separator: QuerySeparator,
                                 queryGroup: queryGroup.Name,
@@ -547,7 +547,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                             _context.API.ReQuery();
 
                             // Change to the rename item query for the selected item
-                            _context.API.ChangeQuery(new RenameItemDefinition().BuildQuery(
+                            _context.API.ChangeQuery(new RenameItemCommandDefinition().BuildQuery(
                                 pluginKeyword: groupSpecifierKeyword,
                                 separator: QuerySeparator,
                                 queryGroup: parentGroup.Name,
@@ -572,7 +572,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                             _context.API.ReQuery();
 
                             // Change to the set item query query for the selected item
-                            _context.API.ChangeQuery(new ItemQueryAssignmentQueryDefinition().BuildQuery(
+                            _context.API.ChangeQuery(new ItemQueryAssignmentCommandDefinition().BuildQuery(
                                 pluginKeyword: groupSpecifierKeyword,
                                 separator: QuerySeparator,
                                 queryGroup: parentGroup.Name,

@@ -4,10 +4,10 @@ using System.Diagnostics;
 
 namespace Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax
 {
-    class AddGroupQueryDefinition : IQueryDefinition
+    class AddGroupCommandDefinition : ICommandDefinition
     {
         private const string QUERY_KEYWORD = "add";
-        public PluginQueryType GetQueryType(){return PluginQueryType.AddGroup;}
+        public CommandType GetCommandType(){return CommandType.AddGroup;}
 
         public bool Matches(QueryPartsInfo queryPartsInfo)
         {

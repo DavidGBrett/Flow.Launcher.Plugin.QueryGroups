@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax
 {
-    public interface IQueryDefinition
+    public interface ICommandDefinition
     {
-        PluginQueryType GetQueryType();
+        CommandType GetCommandType();
         bool Matches(QueryPartsInfo queryPartsInfo);
     }
 }

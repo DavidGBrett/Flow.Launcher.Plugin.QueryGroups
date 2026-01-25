@@ -5,10 +5,10 @@ using System.Runtime.CompilerServices;
 
 namespace Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax
 {
-    class AddItemNameQueryDefinition : IQueryDefinition
+    class AddItemNameCommandDefinition : ICommandDefinition
     {
         private const string QUERY_KEYWORD = "add";
-        public PluginQueryType GetQueryType(){return PluginQueryType.AddItemName;}
+        public CommandType GetCommandType(){return CommandType.AddItemName;}
 
         public bool Matches(QueryPartsInfo queryPartsInfo)
         {
