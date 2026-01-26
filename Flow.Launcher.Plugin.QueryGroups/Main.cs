@@ -192,10 +192,15 @@ namespace Flow.Launcher.Plugin.QueryGroups
                     if (_settings.PrioritizeGroupResults)
                         score = PrioritizedScoring(queryString, group.Name);
 
+                    List<string> itemNamesInGroup = group.QueryItems
+                    .Select((i)=>i.Name)
+                    .ToList();
+                    string itemNamesInGroupString = string.Join(", ",itemNamesInGroup);
+
                     results.Add(new Result
                     {
                         Title = group.Name,
-                        SubTitle = groupSpecifierKeyword,
+                        SubTitle = itemNamesInGroupString,
                         IcoPath = "Assets/icon.png",
                         Score = score, // either 0 or the prioritized score
                         ContextData = group,
