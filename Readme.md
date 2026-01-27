@@ -26,37 +26,22 @@ A plugin that lets you organize queries into groups for quick access within [Flo
 2. Run the file ``debug.ps1``
 
 ### Usage
-#### Creating Groups and Queries
-1. Open Settings:
-    - Query Settings in Flow Launcher, or
 
-    - Right-click the Flow Launcher system tray icon and select "Settings"
+Query Groups can be managed in two places:
+- **The Settings page** (useful for bulk or structured edits)
+- **The Flow Launcher search interface** (faster and more intuitive for day-to-day use)
 
-2. Navigate to the Plugin:
+#### Managing via Search (recommended)
 
-    - Click the "Plugins" tab
+Typing ``qg`` lists your existing query groups and includes an option to add a new one.
+Any groups you create will show up in the defualt search as well.
 
-    - Find "Query Groups" in the list and click it
+- Selecting a **group** shows the queries it contains, along with an option to add another.
+- Selecting a **query** item replaces the current input with its stored query. 
 
-3. Create a Group:
+- Right-click a **group** to rename or delete it.
+- Right-click a **query** to rename it, change its query, or delete it.
 
-    - Click the "Add New Group" button
+#### Managing via Settings
 
-    - Type a name for your group in the text box
-
-4. Add Queries to the Group:
-
-    - Click the arrow next to your group to expand it
-
-    - Click "Add New Item"
-
-    - In the "Query" text box, type the exact query you want to save
-
-    - If the query itself is complex you can use the "Name" field for a shorter name when listing queries in the group.
-
-#### Searching Query Groups
-- To see all available groups, type ``qg`` in Flow Launcher
-
-- To search for a specific group, simply type its name, no keyword needed.
-
-Press enter on a group to lists its query items, and press enter on a query to switch to it.
+Groups and queries can also be created and edited from Flow Launcher's Settings under Plugins -> Query Groups.
