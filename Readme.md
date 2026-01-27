@@ -44,3 +44,7 @@ Any groups you create will show up in the defualt search as well.
 ### Managing via Settings
 
 Groups and queries can also be created and edited from Flow Launcher's Settings under Plugins -> Query Groups.
+
+License
+-------
+MIT - See LICENSE file for details.
