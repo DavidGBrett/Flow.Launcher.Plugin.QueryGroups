@@ -1,6 +1,6 @@
 {
     "ID": "BCAF9CDAE1894F8A995D0FDE3505AB83",
-    "ActionKeywords": ["*", "QueryGroup"],
+    "ActionKeywords": ["*", "qg"],
     "Name": "Query Groups",
     "Description": "A plugin for creating custom groups of queries",
     "Author": "DavidGBrett",

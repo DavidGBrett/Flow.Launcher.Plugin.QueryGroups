@@ -55,7 +55,7 @@ A plugin that lets you organize queries into groups for quick access within [Flo
     - If the query itself is complex you can use the "Name" field for a shorter name when listing queries in the group.
 
 #### Searching Query Groups
-- To see all available groups, type ``QueryGroup`` in Flow Launcher
+- To see all available groups, type ``qg`` in Flow Launcher
 
 - To search for a specific group, simply type its name, no keyword needed.
 
