@@ -45,9 +45,6 @@ namespace Flow.Launcher.Plugin.QueryGroups
             var commandTypeMatcher = new CommandTypeMatcher();
             var queryCommandType = commandTypeMatcher.MatchCommand(queryPartsInfo);
 
-
-            // _context.API.ShowMsg($"Debug: Query Type - {queryType}");
-
             // Handle the query command based on its type
             switch (queryCommandType)
             {
@@ -311,18 +308,6 @@ namespace Flow.Launcher.Plugin.QueryGroups
                             newItemQuery: itemQuery
                         ), false);
                         return false;
-
-                        // _settings.QueryGroups.FirstOrDefault(g => g.Name == selectedGroup)
-                        // ?.QueryItems.Add(new QueryItem { Query = itemQuery });
-                        // _context.API.SavePluginSettings();
-
-                        // // Go back to the modified group's search query
-                        // _context.API.ChangeQuery(new SearchGroupQueryDefinition().BuildQuery(
-                        //     pluginKeyword: groupSpecifierKeyword,
-                        //     separator: QuerySeparator,
-                        //     queryGroup: selectedGroup
-                        // ), false);
-                        // return false;
                     }
                 }
             };
