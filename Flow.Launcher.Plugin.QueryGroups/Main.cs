@@ -177,10 +177,24 @@ namespace Flow.Launcher.Plugin.QueryGroups
         {
             List<Result> results = new List<Result>();
 
+            var queryFilter = queryString.ToLower();
+
             foreach (var group in _settings.QueryGroups)
             {
-                // check if group name matches query
-                if (group.Name.ToLower().Contains(queryString.ToLower()))
+                // get names of all the items in the group
+                List<string> itemNamesInGroup = group.QueryItems
+                    .Select((i)=>i.Name)
+                    .ToList();
+                
+
+                bool doesItemNameMatch = itemNamesInGroup.Any(
+                    name => name.Contains(queryFilter, StringComparison.OrdinalIgnoreCase)
+                );
+
+                bool doesGroupNameMatch = group.Name.ToLower().Contains(queryFilter);
+
+                // check if the group name or one of its items matches the query
+                if (doesItemNameMatch || doesGroupNameMatch)
                 {
                     // if prioritization is enabled, 
                     // calculate a bonus score based on how well the group name matches the query
@@ -189,9 +203,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                     if (_settings.PrioritizeGroupResults)
                         score = PrioritizedScoring(queryString, group.Name);
 
-                    List<string> itemNamesInGroup = group.QueryItems
-                    .Select((i)=>i.Name)
-                    .ToList();
+                    // make string from item names
                     string itemNamesInGroupString = string.Join(", ",itemNamesInGroup);
 
                     results.Add(new Result
