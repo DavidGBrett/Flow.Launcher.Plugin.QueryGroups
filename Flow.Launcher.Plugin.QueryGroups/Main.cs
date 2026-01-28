@@ -200,7 +200,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                     // calculate a bonus score based on how well the group name matches the query
                     // otherwise, (bonus) score is 0
                     int score = 0;
-                    if (_settings.PrioritizeGroupResults)
+                    if (_settings.PrioritizeGroupResults && doesGroupNameMatch)
                         score = PrioritizedScoring(queryString, group.Name);
 
                     // make string from item names
