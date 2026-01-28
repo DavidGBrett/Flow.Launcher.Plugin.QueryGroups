@@ -215,9 +215,6 @@ namespace Flow.Launcher.Plugin.QueryGroups
                         ContextData = group,
                         Action = _ =>
                         {
-
-                            var pluginID = _context.CurrentPluginMetadata.ID;
-
                             // Change to the selected group's search query
                             _context.API.ChangeQuery(new SearchGroupCommandDefinition().BuildQuery(
                                 pluginKeyword: mainPluginKeyword,
