@@ -11,7 +11,7 @@
     d:DesignWidth="500"
     mc:Ignorable="d">
     
-    <StackPanel Margin="10">
+    <StackPanel Margin="{StaticResource SettingPanelMargin}">
 
         <!-- Prioritize group results checkbox -->
         <CheckBox Content="Prioritize Query Groups in Search Results"
