@@ -11,13 +11,15 @@
     d:DesignWidth="500"
     mc:Ignorable="d">
     
-    <StackPanel Margin="10">
+    <StackPanel Margin="{StaticResource SettingPanelMargin}">
 
         <!-- Prioritize group results checkbox -->
         <CheckBox Content="Prioritize Query Groups in Search Results"
                   IsChecked="{Binding Settings.PrioritizeGroupResults}"
                   Margin="0,0,0,10" />
 
+
+        <Separator Style="{StaticResource SettingPanelSeparatorStyle}" />
         <!-- Title for the Groups Section -->
         <TextBlock Text="Groups"
                 FontSize="20"
@@ -44,82 +46,95 @@
             <!-- Group template -->
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <Expander IsExpanded="False">
-                        <!-- Header of expandable section contains the group name and buttons to manage the group  -->
-                        <Expander.Header>
-                            <DockPanel LastChildFill="True">
-                                <!-- Editable TextBox for the Group's Name -->
-                                <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
-                                        FontWeight="Bold"
-                                        VerticalAlignment="Center"
-                                        Margin="0,0,10,0" />
+                    <!-- Add Background, Border etc to each Query Group section-->
+                    <Border
+                        Background="#10000000" 
+                        CornerRadius="10"
+                        Padding="10"
+                        BorderThickness="1"
+                        BorderBrush="#30000000"
+                    >
+                        <Expander IsExpanded="False">
+                            <!-- Header of expandable section contains the group name and buttons to manage the group  -->
+                            <Expander.Header>
+                                <DockPanel LastChildFill="True">
+                                    <!-- Editable TextBox for the Group's Name -->
+                                    <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                                            FontWeight="Bold"
+                                            VerticalAlignment="Center"
+                                            Margin="0,0,10,0" />
 
-                                <!-- Buttons -->
-                                <StackPanel Orientation="Horizontal"
-                                            DockPanel.Dock="Right"
-                                            HorizontalAlignment="Right">
-                                    <Button Content="Delete"
-                                            Command="{Binding DataContext.DeleteGroupCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                            CommandParameter="{Binding}" />
-                                </StackPanel>
-                            </DockPanel>
-                        </Expander.Header>
+                                    <!-- Buttons -->
+                                    <StackPanel Orientation="Horizontal"
+                                                DockPanel.Dock="Right"
+                                                HorizontalAlignment="Right">
+                                        <Button Content="Delete"
+                                                Command="{Binding DataContext.DeleteGroupCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                CommandParameter="{Binding}" />
+                                    </StackPanel>
+                                </DockPanel>
+                            </Expander.Header>
 
-                        <!-- Inside the expander are the group items as well as an add item button -->
-                        <StackPanel Margin="20,5,0,5">
+                            <!-- Inside the expander are the group items as well as an add item button -->
+                            <StackPanel Margin="20,5,0,5">
 
-                            <!-- Group Items -->
-                            <ItemsControl ItemsSource="{Binding QueryItems}">
-                                
-                                
-                                <ItemsControl.ItemTemplate>
-                                    <DataTemplate>
-                                        <!-- Divider line + inner padding so content doesn't touch the line -->
-                                        <Border BorderBrush="Gray"
-                                                BorderThickness="0,0,0,1"
-                                                Padding="10,14,0,14">
-                                            <StackPanel>
+                                <!-- Group Items -->
+                                <ItemsControl ItemsSource="{Binding QueryItems}">
+                                    
+                                    
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <!-- Add Background, Border etc to each Query Item section-->
+                                            <Border
+                                                    Background="#10000000" 
+                                                    CornerRadius="10"
+                                                    Padding="10"
+                                                    BorderThickness="1"
+                                                    BorderBrush="#30000000"
+                                                    Margin="0,0,0,10">
+                                                <StackPanel>
 
-                                                <!-- Row 1: Query -->
-                                                <DockPanel>
-                                                    <TextBlock Text="Query:" Width="60" VerticalAlignment="Top" />
+                                                    <!-- Row 1: Query -->
+                                                    <DockPanel Margin="0,0,0,5">
+                                                        <TextBlock Text="Query:" Width="60" VerticalAlignment="Center" />
 
-                                                    <TextBox Text="{Binding Query, UpdateSourceTrigger=PropertyChanged}"
-                                                            HorizontalAlignment="Stretch"
-                                                            MinWidth="200"
-                                                            AcceptsReturn="True"
-                                                            TextWrapping="Wrap" />
-                                                </DockPanel>
+                                                        <TextBox Text="{Binding Query, UpdateSourceTrigger=PropertyChanged}"
+                                                                HorizontalAlignment="Stretch"
+                                                                MinWidth="200"
+                                                                AcceptsReturn="True"
+                                                                TextWrapping="Wrap" />
+                                                    </DockPanel>
 
-                                                <!-- Row 2: Name -->
-                                                <DockPanel Margin="0,0,0,8">
-                                                    <TextBlock Text="(Optional) Name:" Width="120" VerticalAlignment="Center" />
-                                                    <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
-                                                            HorizontalAlignment="Stretch"
-                                                            MinWidth="200" />
-                                                </DockPanel>
+                                                    <!-- Row 2: Name -->
+                                                    <DockPanel Margin="0,0,0,5">
+                                                        <TextBlock Text="(Optional) Name:" Width="120" VerticalAlignment="Center" />
+                                                        <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                                                                HorizontalAlignment="Stretch"
+                                                                MinWidth="200" />
+                                                    </DockPanel>
 
-                                                <!-- Delete button for group item -->
-                                                <DockPanel>
-                                                    <Button Content="Delete"
-                                                            Command="{Binding DataContext.DeleteItemCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                                            CommandParameter="{Binding}" />
-                                                </DockPanel>
+                                                    <!-- Delete button for group item -->
+                                                    <DockPanel>
+                                                        <Button Content="Delete"
+                                                                Command="{Binding DataContext.DeleteItemCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                                CommandParameter="{Binding}" />
+                                                    </DockPanel>
 
-                                            </StackPanel>
-                                        </Border>
-                                    </DataTemplate>
-                                </ItemsControl.ItemTemplate>
-                            </ItemsControl>
+                                                </StackPanel>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
 
-                            <!-- Add new item button -->
-                            <Button Content="Add New Item"
-                                    Margin="0,10,0,0"
-                                    Padding="10,5"
-                                    Command="{Binding DataContext.AddItemCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                    CommandParameter="{Binding}" />
-                        </StackPanel>
-                    </Expander>
+                                <!-- Add new item button -->
+                                <Button Content="Add New Item"
+                                        Margin="0,10,0,0"
+                                        Padding="10,5"
+                                        Command="{Binding DataContext.AddItemCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                        CommandParameter="{Binding}" />
+                            </StackPanel>
+                        </Expander>
+                    </Border>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
