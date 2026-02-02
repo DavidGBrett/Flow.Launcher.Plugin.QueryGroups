@@ -95,7 +95,7 @@
                                                 <StackPanel>
 
                                                     <!-- Row 1: Query -->
-                                                    <DockPanel>
+                                                    <DockPanel Margin="0,0,0,5">
                                                         <TextBlock Text="Query:" Width="60" VerticalAlignment="Center" />
 
                                                         <TextBox Text="{Binding Query, UpdateSourceTrigger=PropertyChanged}"
@@ -106,7 +106,7 @@
                                                     </DockPanel>
 
                                                     <!-- Row 2: Name -->
-                                                    <DockPanel Margin="0,0,0,8">
+                                                    <DockPanel Margin="0,0,0,5">
                                                         <TextBlock Text="(Optional) Name:" Width="120" VerticalAlignment="Center" />
                                                         <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
                                                                 HorizontalAlignment="Stretch"
