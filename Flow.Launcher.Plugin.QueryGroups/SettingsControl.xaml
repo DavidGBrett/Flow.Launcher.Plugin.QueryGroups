@@ -18,6 +18,28 @@
                   IsChecked="{Binding Settings.PrioritizeGroupResults}"
                   Margin="0,0,0,10" />
 
+        <StackPanel Orientation="Horizontal">
+            <TextBlock 
+                HorizontalAlignment="Left"
+                Text="Term Separator:"
+                Margin="0,0,10,10"
+                VerticalAlignment="Center"
+            />
+
+            <TextBox 
+                HorizontalAlignment="Right"
+                Text="{
+                    Binding Settings.TermSeparator,
+                    Mode=TwoWay,
+                    UpdateSourceTrigger=PropertyChanged
+                }"
+                Margin="0,0,0,10"
+                MaxLength="1"
+                Width="1"
+                ToolTip="Character used to separate query terms e.g. group-add-item using - as the seperator"
+            />
+        </StackPanel>
+
         <!-- Title for the Groups Section -->
         <TextBlock Text="Groups"
                 FontSize="20"
