@@ -76,10 +76,14 @@
                                 
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
-                                        <!-- Divider line + inner padding so content doesn't touch the line -->
-                                        <Border BorderBrush="Gray"
-                                                BorderThickness="0,0,0,1"
-                                                Padding="10,14,0,14">
+                                        <!-- Add Background, Border etc to each Query Item section-->
+                                        <Border
+                                                Background="#10000000" 
+                                                CornerRadius="10"
+                                                Padding="10"
+                                                BorderThickness="1"
+                                                BorderBrush="#30000000"
+                                                Margin="0,0,0,10">
                                             <StackPanel>
 
                                                 <!-- Row 1: Query -->
