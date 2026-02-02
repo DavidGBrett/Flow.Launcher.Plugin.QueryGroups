@@ -13,6 +13,8 @@ namespace Flow.Launcher.Plugin.QueryGroups
 
         public bool PrioritizeGroupResults { get; set; } = true;
 
+        public string TermSeparator { get; set; } = "-";
+
         public ObservableCollection<QueryGroup> QueryGroups { get; set; } = new ObservableCollection<QueryGroup>
         {
             

@@ -15,7 +15,11 @@ namespace Flow.Launcher.Plugin.QueryGroups
         private SettingsViewModel _viewModel;
 
         private string mainPluginKeyword;
-        private const string TermSeparator = "-";
+        private string TermSeparator {
+            get {
+                return _settings.TermSeparator;
+            }
+        }
 
         public void Init(PluginInitContext context)
         {
