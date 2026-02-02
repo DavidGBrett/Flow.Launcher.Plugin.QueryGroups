@@ -18,6 +18,8 @@
                   IsChecked="{Binding Settings.PrioritizeGroupResults}"
                   Margin="0,0,0,10" />
 
+
+        <Separator Style="{StaticResource SettingPanelSeparatorStyle}" />
         <!-- Title for the Groups Section -->
         <TextBlock Text="Groups"
                 FontSize="20"
