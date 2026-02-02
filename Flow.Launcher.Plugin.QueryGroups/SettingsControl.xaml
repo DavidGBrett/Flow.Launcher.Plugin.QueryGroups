@@ -96,7 +96,7 @@
 
                                                     <!-- Row 1: Query -->
                                                     <DockPanel>
-                                                        <TextBlock Text="Query:" Width="60" VerticalAlignment="Top" />
+                                                        <TextBlock Text="Query:" Width="60" VerticalAlignment="Center" />
 
                                                         <TextBox Text="{Binding Query, UpdateSourceTrigger=PropertyChanged}"
                                                                 HorizontalAlignment="Stretch"
