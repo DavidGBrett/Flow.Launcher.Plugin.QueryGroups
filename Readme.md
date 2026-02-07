@@ -4,6 +4,11 @@
 
 # Query Groups for Flow Launcher
 
+<p align="center">
+<a href="https://github.com/DavidGBrett/Flow.Launcher.Plugin.QueryGroups/releases"><img src="https://img.shields.io/github/downloads/DavidGBrett/Flow.Launcher.Plugin.QueryGroups/total.svg"></a>
+<a href="https://github.com/DavidGBrett/Flow.Launcher.Plugin.QueryGroups/releases/latest"><img src="https://img.shields.io/github/v/release/DavidGBrett/Flow.Launcher.Plugin.QueryGroups"></a>
+</p>
+
 A plugin that lets you organize queries into groups for quick access within [Flow launcher](https://github.com/Flow-Launcher/Flow.Launcher).
 
 ## Features
