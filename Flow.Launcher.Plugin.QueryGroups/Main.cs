@@ -372,9 +372,9 @@ namespace Flow.Launcher.Plugin.QueryGroups
             {
                 new Result
                 {
-                    Title = "Rename To: " + newItemName,
+                    Title = "Set name to: " + newItemName,
                     SubTitle = "",
-                    Glyph = new GlyphInfo("sans-serif","R"),
+                    Glyph = new GlyphInfo("sans-serif","N"),
                     Action = _ =>
                     {
                         var group =_settings.QueryGroups.FirstOrDefault(g => g.Name == selectedGroup);
@@ -521,9 +521,9 @@ namespace Flow.Launcher.Plugin.QueryGroups
                     });
                     results.Add(new Result
                     {
-                        Title = "Rename",
+                        Title = "Change Name",
                         SubTitle = "Current name: " + queryItem.Name,
-                        Glyph = new GlyphInfo("sans-serif","R"),
+                        Glyph = new GlyphInfo("sans-serif","N"),
                         Action = _ =>
                         {
                             var parentGroup = _settings.QueryGroups.FirstOrDefault((QueryGroup qg)=>
