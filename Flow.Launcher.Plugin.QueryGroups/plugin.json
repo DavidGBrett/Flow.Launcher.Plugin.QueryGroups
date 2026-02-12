@@ -4,7 +4,7 @@
     "Name": "Query Groups",
     "Description": "A plugin for creating custom groups of queries",
     "Author": "DavidGBrett",
-    "Version": "2.1.0",
+    "Version": "2.1.1",
     "Language": "csharp",
     "Website": "https://github.com/DavidGBrett/Flow.Launcher.Plugin.QueryGroups",
     "IcoPath": "Assets/icon.png",
