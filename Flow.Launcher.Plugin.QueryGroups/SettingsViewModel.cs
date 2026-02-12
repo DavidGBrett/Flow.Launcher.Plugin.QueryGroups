@@ -41,7 +41,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
 
         private void AddItem(QueryGroup group)
         {
-            group.QueryItems.Add(new QueryItem());
+            group.AddItem();
         }
 
         private void DeleteItem(QueryItem item)

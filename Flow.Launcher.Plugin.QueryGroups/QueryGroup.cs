@@ -1,4 +1,7 @@
+using System;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Printing;
 
 namespace Flow.Launcher.Plugin.QueryGroups
 {
@@ -10,6 +13,54 @@ namespace Flow.Launcher.Plugin.QueryGroups
         {
 
         };
+
+        public void AddItem(string Query="")
+        {
+            string nextDefaultName = GetNextDefaultItemName();
+            
+            AddItem(
+                Name:nextDefaultName,
+                Query:Query
+            );
+        }
+        public void AddItem(string Name,string Query="")
+        {
+            if (! isNewItemNameValid(Name))
+            {
+                throw new ArgumentException($"Invalid Name:{Name}");
+            }
+
+            QueryItems.Add(new QueryItem(
+                Name:Name,
+                Query:Query
+            ));
+        }
+
+        public bool isNewItemNameValid(string Name)
+        {
+            if (! QueryItem.isValidName(Name)) 
+                return false;
+
+            if (QueryItems.Any(i => i.Name == Name )) 
+                return false;
+
+            return true;
+        }
+
+        public string GetNextDefaultItemName()
+        {
+            int i = 0;
+            string defaultPrefix = "query";
+            string itemName;
+            
+            do {
+                i+=1;
+                itemName = $"{defaultPrefix}{i}";
+            }
+            while (QueryItems.Any(i => i.Name == itemName ));
+
+            return itemName;
+        }
 
     }
 }

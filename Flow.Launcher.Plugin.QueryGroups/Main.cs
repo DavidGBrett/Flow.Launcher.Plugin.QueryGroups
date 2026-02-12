@@ -317,7 +317,8 @@ namespace Flow.Launcher.Plugin.QueryGroups
                         while (group.QueryItems.Any(i => i.Name == itemName ));
 
                         
-                        group.QueryItems.Add(new QueryItem { Query = itemQuery, Name = itemName });
+                        group.AddItem(Name:itemName,Query:itemQuery);
+
                         _context.API.SavePluginSettings();
                         
                         // change to rename query for the new item
