@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Controls;
 using Flow.Launcher.Plugin;
 using Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax;
@@ -86,13 +87,6 @@ namespace Flow.Launcher.Plugin.QueryGroups
                         (string selectedGroup, string itemQuery) = new AddItemCommandDefinition().ParseQuery(queryPartsInfo);
 
                         return GetAddItemResults(selectedGroup, itemQuery);
-                    }
-
-                case CommandType.AddItemName:
-                    {
-                        (string selectedGroup, string itemQuery, string itemName) = new AddItemNameCommandDefinition().ParseQuery(queryPartsInfo);
-
-                        return GetAddItemNameResults(selectedGroup, itemQuery, itemName);
                     }
 
                 case CommandType.RenameGroup:
@@ -309,31 +303,21 @@ namespace Flow.Launcher.Plugin.QueryGroups
                     Glyph = new GlyphInfo("sans-serif","＋"),
                     Action = _ =>
                     {
-                        // Prompt for optional name
-                        _context.API.ChangeQuery(new AddItemNameCommandDefinition().BuildQuery(
-                            pluginKeyword: mainPluginKeyword,
-                            separator: QuerySeparator,
-                            queryGroup: selectedGroup,
-                            newItemQuery: itemQuery
-                        ), false);
-                        return false;
-                    }
-                }
-            };
-        }
-        private List<Result> GetAddItemNameResults(string selectedGroup, string itemQuery, string itemName)
-        {
-            return new List<Result>
-            {
-                new Result
-                {
-                    Title = "With Name: " + itemName,
-                    SubTitle = "Optional, press Enter to skip (use query as name)",
-                    Glyph = new GlyphInfo("sans-serif","＋"),
-                    Action = _ =>
-                    {
-                        _settings.QueryGroups.FirstOrDefault(g => g.Name == selectedGroup)
-                        ?.QueryItems.Add(new QueryItem { Query = itemQuery, Name = itemName });
+                        var group = _settings.QueryGroups.FirstOrDefault(g => g.Name == selectedGroup);
+                        if (group is null) return false;
+
+                        int i = 0;
+                        string defaultPrefix = "query";
+                        string itemName;
+                        
+                        do {
+                            i+=1;
+                            itemName = $"{defaultPrefix}{i}";
+                        }
+                        while (group.QueryItems.Any(i => i.Name == itemName ));
+
+                        
+                        group.QueryItems.Add(new QueryItem { Query = itemQuery, Name = itemName });
                         _context.API.SavePluginSettings();
 
                         // Go back to the modified group's search query
