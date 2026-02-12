@@ -319,13 +319,16 @@ namespace Flow.Launcher.Plugin.QueryGroups
                         
                         group.QueryItems.Add(new QueryItem { Query = itemQuery, Name = itemName });
                         _context.API.SavePluginSettings();
-
-                        // Go back to the modified group's search query
-                        _context.API.ChangeQuery(new SearchGroupCommandDefinition().BuildQuery(
+                        
+                        // change to rename query for the new item
+                        _context.API.ChangeQuery(new RenameItemCommandDefinition().BuildQuery(
                             pluginKeyword: mainPluginKeyword,
                             separator: QuerySeparator,
-                            queryGroup: selectedGroup
+                            queryGroup: group.Name,
+                            queryItem: itemName,
+                            newItemName: itemName
                         ), false);
+
                         return false;
                     }
                 }
