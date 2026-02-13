@@ -304,7 +304,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                     Score = 0,
                     Action = _ =>
                     {
-                        _settings.QueryGroups.Add(new QueryGroup { Name = queryString });
+                        _settings.AddGroup(Name:queryString);
                         _context.API.SavePluginSettings();
                         
                         // Change to the new group's search query

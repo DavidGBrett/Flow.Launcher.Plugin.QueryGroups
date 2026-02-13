@@ -38,6 +38,38 @@ namespace Flow.Launcher.Plugin.QueryGroups
             return true;
         }
 
+        public void AddGroup(string Name = null)
+        {
+            if (Name is null)
+            {
+                Name = GetNextDefaultGroupName();
+            }
+            else if(!isNewGroupNameValid(Name))
+            {
+                throw new ArgumentException($"Invalid Name:{Name}");
+            }
 
+            QueryGroups.Add(
+                new QueryGroup
+                {
+                    Name=Name
+                }
+            );
+        }
+
+        public string GetNextDefaultGroupName()
+        {
+            int i = 0;
+            string defaultPrefix = "group";
+            string itemName;
+            
+            do {
+                i+=1;
+                itemName = $"{defaultPrefix}{i}";
+            }
+            while (QueryGroups.Any(g => g.Name == itemName ));
+
+            return itemName;
+        }
     }
 }

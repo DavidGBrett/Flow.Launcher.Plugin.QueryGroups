@@ -29,9 +29,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
 
         private void AddGroup()
         {
-            Settings.QueryGroups.Add(
-                new QueryGroup()
-            );
+            Settings.AddGroup();
         }
 
         private void DeleteGroup(QueryGroup group)
