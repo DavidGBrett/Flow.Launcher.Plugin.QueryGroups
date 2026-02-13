@@ -31,7 +31,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
 
         public static bool isValidName(string Name)
         {
-            if (string.IsNullOrEmpty(Name)){
+            if (string.IsNullOrWhiteSpace(Name)){
                 return false;
             }
             

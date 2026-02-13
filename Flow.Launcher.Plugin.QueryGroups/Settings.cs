@@ -20,7 +20,12 @@ namespace Flow.Launcher.Plugin.QueryGroups
         };
 
         public bool isNewGroupNameValid(string newGroupName)
-        {
+        {   
+            if (string.IsNullOrWhiteSpace(newGroupName))
+            {
+                return false;
+            }
+
             if (newGroupName.Contains("-"))
             {
                 return false;
