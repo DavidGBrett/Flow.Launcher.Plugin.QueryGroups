@@ -21,12 +21,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
 
         public bool isNewGroupNameValid(string newGroupName)
         {   
-            if (string.IsNullOrWhiteSpace(newGroupName))
-            {
-                return false;
-            }
-
-            if (newGroupName.Contains(PluginConstants.QuerySeparator))
+            if (! QueryGroup.IsGroupNameValid(newGroupName))
             {
                 return false;
             }

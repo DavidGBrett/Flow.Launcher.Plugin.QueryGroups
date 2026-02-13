@@ -81,5 +81,20 @@ namespace Flow.Launcher.Plugin.QueryGroups
             return itemName;
         }
 
+        public static bool IsGroupNameValid(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                return false;
+            }
+
+            if (name.Contains(PluginConstants.QuerySeparator))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
     }
 }
