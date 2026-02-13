@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text.Json.Serialization;
 
 namespace Flow.Launcher.Plugin.QueryGroups
@@ -17,6 +18,20 @@ namespace Flow.Launcher.Plugin.QueryGroups
         {
             
         };
+
+        public bool isNewGroupNameValid(string newGroupName)
+        {
+            if (newGroupName.Contains("-"))
+            {
+                return false;
+            }
+
+            if (QueryGroups.Any(qg => qg.Name == newGroupName)){
+                return false;
+            }
+
+            return true;
+        }
 
 
     }

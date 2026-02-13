@@ -266,6 +266,20 @@ namespace Flow.Launcher.Plugin.QueryGroups
 
         private List<Result> GetAddGroupResults(string queryString)
         {
+            // show error if name is not valid, eg is duplicate
+            if (! _settings.isNewGroupNameValid(queryString))
+            {
+                return new List<Result>
+                {
+                    new Result
+                    {
+                        Title = "Invalid Name!",
+                        SubTitle = queryString,
+                        Glyph = new GlyphInfo("sans-serif","X"),
+                    }
+                };
+            }
+
             return new List<Result>
             {
                 new Result
@@ -338,6 +352,22 @@ namespace Flow.Launcher.Plugin.QueryGroups
 
         private List<Result> GetRenameGroupResults(string selectedGroup, string newName)
         {
+            var group =_settings.QueryGroups.FirstOrDefault(g => g.Name == selectedGroup);
+
+            // show error if name is not valid, eg is duplicate
+            if (selectedGroup!=newName && ! _settings.isNewGroupNameValid(newName))
+            {
+                return new List<Result>
+                {
+                    new Result
+                    {
+                        Title = "Invalid Name!",
+                        SubTitle = newName,
+                        Glyph = new GlyphInfo("sans-serif","X"),
+                    }
+                };
+            }
+
             return new List<Result>
             {
                 new Result
@@ -347,7 +377,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                     Glyph = new GlyphInfo("sans-serif","N"),
                     Action = _ =>
                     {
-                        var group =_settings.QueryGroups.FirstOrDefault(g => g.Name == selectedGroup);
+                        
                         if (group is not null)
                         {
                             group.Name = newName;
