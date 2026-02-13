@@ -62,24 +62,44 @@
                             <!-- Header of expandable section contains the group name and buttons to manage the group  -->
                             <Expander.Header>
                                 <DockPanel LastChildFill="True">
-                                    <!-- Editable TextBox for the Group's Name -->
-                                    <TextBox Text="{Binding EditName, UpdateSourceTrigger=PropertyChanged}"
+
+                                    <!-- Red Outline if Invalid EditName for Group -->
+                                    <Border CornerRadius="3" Margin="0,0,0,0">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Setter Property="BorderThickness" Value="0"/>
+                                                <Setter Property="BorderBrush" Value="Transparent"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding isEditNameInvalid}" Value="True">
+                                                        <Setter Property="BorderThickness" Value="2"/>
+                                                        <Setter Property="BorderBrush" Value="Red"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+
+                                        <!-- Editable TextBox for the Group's Name -->
+                                        <TextBox 
+                                            Text="{Binding EditName, UpdateSourceTrigger=PropertyChanged}"
                                             FontWeight="Bold"
                                             VerticalAlignment="Center"
-                                            Margin="0,0,10,0" />
+                                            Margin="0,0,0,0" 
+                                        />
+                                    </Border>
                                 
-
+                                    <!-- Warning Message that shows if EditName is not a valid Name -->
                                     <TextBlock
                                         Text="Invalid!"
                                         FontWeight="Bold"
                                         VerticalAlignment="Center"
-                                        Margin="0,0,10,0" 
+                                        Margin="10,0,0,0" 
                                         Foreground="Red"
                                         Visibility="{Binding isEditNameInvalid, Converter={StaticResource BoolToVis}, ConverterParameter=False}"
                                     />
 
                                     <!-- Buttons -->
                                     <StackPanel Orientation="Horizontal"
+                                                Margin="10,0,0,0" 
                                                 DockPanel.Dock="Right"
                                                 HorizontalAlignment="Right">
                                         <Button Content="Delete"
