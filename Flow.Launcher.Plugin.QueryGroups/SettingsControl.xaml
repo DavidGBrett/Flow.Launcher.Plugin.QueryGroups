@@ -10,6 +10,10 @@
     d:DesignHeight="300"
     d:DesignWidth="500"
     mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis"/>
+    </UserControl.Resources>
     
     <StackPanel Margin="{StaticResource SettingPanelMargin}">
 
@@ -63,6 +67,16 @@
                                             FontWeight="Bold"
                                             VerticalAlignment="Center"
                                             Margin="0,0,10,0" />
+                                
+
+                                    <TextBlock
+                                        Text="Invalid!"
+                                        FontWeight="Bold"
+                                        VerticalAlignment="Center"
+                                        Margin="0,0,10,0" 
+                                        Foreground="Red"
+                                        Visibility="{Binding isEditNameInvalid, Converter={StaticResource BoolToVis}, ConverterParameter=False}"
+                                    />
 
                                     <!-- Buttons -->
                                     <StackPanel Orientation="Horizontal"
