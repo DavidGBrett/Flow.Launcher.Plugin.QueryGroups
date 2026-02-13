@@ -266,6 +266,20 @@ namespace Flow.Launcher.Plugin.QueryGroups
 
         private List<Result> GetAddGroupResults(string queryString)
         {
+            // Explain to user they need to start
+            if (string.IsNullOrEmpty(queryString))
+            {
+                return new List<Result>
+                {
+                    new Result
+                    {
+                        Title = "Add:",
+                        SubTitle = "Start typing!",
+                        Glyph = new GlyphInfo("sans-serif","＋"),
+                    }
+                };
+            }
+
             // show error if name is not valid, eg is duplicate
             if (! _settings.isNewGroupNameValid(queryString))
             {
