@@ -38,7 +38,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
             return true;
         }
 
-        public void AddGroup(string Name = null)
+        public QueryGroup AddGroup(string Name = null)
         {
             if (Name is null)
             {
@@ -49,12 +49,16 @@ namespace Flow.Launcher.Plugin.QueryGroups
                 throw new ArgumentException($"Invalid Name:{Name}");
             }
 
-            QueryGroups.Add(
-                new QueryGroup
+            var newGroup = new QueryGroup
                 {
                     Name=Name
-                }
+                };
+
+            QueryGroups.Add(
+                newGroup
             );
+
+            return newGroup;
         }
 
         public string GetNextDefaultGroupName()
