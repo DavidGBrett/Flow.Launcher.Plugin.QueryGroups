@@ -379,11 +379,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                     Action = _ =>
                     {
                         var group =_settings.QueryGroups.FirstOrDefault(g => g.Name == selectedGroup);
-                        var item = group?.QueryItems.FirstOrDefault(i => i.Name == selectedItem);
-                        if (item is not null)
-                        {
-                            item.Name = newItemName;
-                        }
+                        group.RenameItem(selectedItem,newItemName);
 
                         _context.API.SavePluginSettings();
 

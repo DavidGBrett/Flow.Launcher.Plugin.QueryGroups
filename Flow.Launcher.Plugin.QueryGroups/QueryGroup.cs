@@ -36,6 +36,18 @@ namespace Flow.Launcher.Plugin.QueryGroups
             ));
         }
 
+        public void RenameItem(string existingName, string newName)
+        {
+            if (! isNewItemNameValid(newName))
+            {
+                throw new ArgumentException($"Invalid Name:{newName}");
+            }
+
+            var item = QueryItems.FirstOrDefault(i => i.Name == existingName);
+
+            item.Name = newName;
+        }
+
         public bool isNewItemNameValid(string Name)
         {
             if (! QueryItem.isValidName(Name)) 
