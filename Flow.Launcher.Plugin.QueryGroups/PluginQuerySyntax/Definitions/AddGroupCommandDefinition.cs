@@ -23,7 +23,7 @@ namespace Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax
 
         public string ParseQuery(QueryPartsInfo queryPartsInfo)
         {
-            // item query is everything after the first separator
+            // groupName is everything after the first separator
             // this will catch separators that we dont want, but its important to show an error than silently ignore
             string groupName = "";
             if (queryPartsInfo.Parts.Count > 1)
