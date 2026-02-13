@@ -14,11 +14,11 @@ namespace Flow.Launcher.Plugin.QueryGroups
 
         };
 
-        public void AddItem(string Query="")
+        public QueryItem AddItem(string Query="")
         {
             string nextDefaultName = GetNextDefaultItemName();
             
-            AddItem(
+            return AddItem(
                 Name:nextDefaultName,
                 Query:Query
             );
