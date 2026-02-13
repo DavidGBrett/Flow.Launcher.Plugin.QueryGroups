@@ -140,7 +140,7 @@
                                                     <!-- Delete button for group item -->
                                                     <DockPanel>
                                                         <Button Content="Delete"
-                                                                Command="{Binding DataContext.DeleteItemCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                                                Command="{Binding ParentGroup.DeleteItemCommand}"
                                                                 CommandParameter="{Binding}" />
                                                     </DockPanel>
 
@@ -151,11 +151,12 @@
                                 </ItemsControl>
 
                                 <!-- Add new item button -->
-                                <Button Content="Add New Item"
-                                        Margin="0,10,0,0"
-                                        Padding="10,5"
-                                        Command="{Binding DataContext.AddItemCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                        CommandParameter="{Binding}" />
+                                <Button 
+                                    Content="Add New Item"
+                                    Margin="0,10,0,0"
+                                    Padding="10,5"
+                                    Command="{Binding AddItemCommand}"
+                                />
                             </StackPanel>
                         </Expander>
                     </Border>

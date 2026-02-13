@@ -1,15 +1,21 @@
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Input;
+using CommunityToolkit.Mvvm.Input;
 
 namespace Flow.Launcher.Plugin.QueryGroups
 {
     public class QueryGroupViewModel: BaseModel
     {
         public QueryGroup QueryGroup;
-
         public ObservableCollection<QueryItemViewModel> QueryItems {get; set;}
 
         private SettingsViewModel _settings;
+
+
+        public ICommand AddItemCommand { get; }
+        
+        public ICommand DeleteItemCommand { get; }
 
         private string _editName;
 
@@ -58,6 +64,22 @@ namespace Flow.Launcher.Plugin.QueryGroups
             QueryItems = new ObservableCollection<QueryItemViewModel>(
                 queryGroup.QueryItems
                     .Select(qi => new QueryItemViewModel(qi, this)));
+
+            AddItemCommand = new RelayCommand(AddItem);
+            DeleteItemCommand = new RelayCommand<QueryItemViewModel>(DeleteItem);
+        }
+
+
+        private void AddItem()
+        {
+            var newItem = QueryGroup.AddItem();
+            QueryItems.Add(new QueryItemViewModel(newItem,this));
+        }
+
+        private void DeleteItem(QueryItemViewModel item)
+        {
+            QueryGroup.QueryItems.Remove(item.QueryItem);
+            QueryItems.Remove(item);
         }
     }
 }

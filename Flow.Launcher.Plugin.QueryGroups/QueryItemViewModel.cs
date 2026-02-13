@@ -6,7 +6,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
     {
         public QueryItem QueryItem;
 
-        public QueryGroupViewModel ParentGroup;
+        public QueryGroupViewModel ParentGroup {get;set;}
 
         private string _editName;
 
