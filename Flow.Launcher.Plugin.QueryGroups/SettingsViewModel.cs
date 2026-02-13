@@ -28,7 +28,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
             DeleteGroupCommand = new RelayCommand<QueryGroupViewModel>(DeleteGroup);
 
             AddItemCommand = new RelayCommand<QueryGroupViewModel>(AddItem);
-            DeleteItemCommand = new RelayCommand<QueryItem>(DeleteItem);
+            DeleteItemCommand = new RelayCommand<QueryItemViewModel>(DeleteItem);
 
         }
 
@@ -48,16 +48,18 @@ namespace Flow.Launcher.Plugin.QueryGroups
 
         private void AddItem(QueryGroupViewModel group)
         {
-            group.QueryGroup.AddItem();
+            var newItem = group.QueryGroup.AddItem();
+            group.QueryItems.Add(new QueryItemViewModel(newItem,group));
         }
 
-        private void DeleteItem(QueryItem item)
+        private void DeleteItem(QueryItemViewModel item)
         {
-            item.Name = "Deleting...";
-            var group = Settings.QueryGroups.FirstOrDefault(g => g.QueryItems.Contains(item));
+            item.EditName = "Deleting...";
+            var group = Settings.QueryGroups.FirstOrDefault(g => g.QueryItems.Contains(item.QueryItem));
             if (group != null)
-                group.QueryItems.Remove(item);
+                group.QueryItems.Remove(item.QueryItem);
 
+            item.ParentGroup.QueryItems.Remove(item);
             
         }
     }

@@ -1,15 +1,12 @@
 using System.Collections.ObjectModel;
-using System.Linq;
 
 namespace Flow.Launcher.Plugin.QueryGroups
 {
-    public class QueryGroupViewModel: BaseModel
+    public class QueryItemViewModel: BaseModel
     {
-        public QueryGroup QueryGroup;
+        public QueryItem QueryItem;
 
-        public ObservableCollection<QueryItemViewModel> QueryItems {get; set;}
-
-        private SettingsViewModel _settings;
+        public QueryGroupViewModel ParentGroup;
 
         private string _editName;
 
@@ -29,14 +26,14 @@ namespace Flow.Launcher.Plugin.QueryGroups
             {
                 _editName = value;
 
-                if (_editName == QueryGroup.Name)
+                if (_editName == QueryItem.Name)
                 {
                     isEditNameInvalid = false;
                 }
                 
-                else if (_settings.Settings.isNewGroupNameValid(EditName))
+                else if (ParentGroup.QueryGroup.isNewItemNameValid(EditName))
                 {
-                    QueryGroup.Name = _editName;
+                    QueryItem.Name = _editName;
                     isEditNameInvalid = false;
                 }
                 else
@@ -46,18 +43,27 @@ namespace Flow.Launcher.Plugin.QueryGroups
             }
         }
 
-         public QueryGroupViewModel(
-            QueryGroup queryGroup,
-            SettingsViewModel settings
+        public string Query
+        {
+            get
+            {
+                return QueryItem.Query;
+            }
+            set
+            {
+                QueryItem.Query = value;
+                OnPropertyChanged();
+            }
+        }
+
+         public QueryItemViewModel(
+            QueryItem queryItem,
+            QueryGroupViewModel parentGroup
         )
         {
-            _settings = settings;
-            QueryGroup = queryGroup;
-            EditName = queryGroup.Name;
-
-            QueryItems = new ObservableCollection<QueryItemViewModel>(
-                queryGroup.QueryItems
-                    .Select(qi => new QueryItemViewModel(qi, this)));
+            QueryItem = queryItem;
+            ParentGroup = parentGroup;
+            EditName = queryItem.Name;
         }
     }
 }

@@ -122,10 +122,20 @@
                                                     <!-- Row 2: Name -->
                                                     <DockPanel Margin="0,0,0,5">
                                                         <TextBlock Text="Name:" Width="120" VerticalAlignment="Center" />
-                                                        <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                                                        <TextBox Text="{Binding EditName, UpdateSourceTrigger=PropertyChanged}"
                                                                 HorizontalAlignment="Stretch"
                                                                 MinWidth="200" />
+                                                        <TextBlock
+                                                            Text="Invalid!"
+                                                            FontWeight="Bold"
+                                                            VerticalAlignment="Center"
+                                                            Margin="10,0,10,0" 
+                                                            Foreground="Red"
+                                                            Visibility="{Binding isEditNameInvalid, Converter={StaticResource BoolToVis}, ConverterParameter=False}"
+                                                        />
                                                     </DockPanel>
+
+                                                    
 
                                                     <!-- Delete button for group item -->
                                                     <DockPanel>
