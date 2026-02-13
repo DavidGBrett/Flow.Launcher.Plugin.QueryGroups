@@ -9,11 +9,6 @@ namespace Flow.Launcher.Plugin.QueryGroups
 
         public string Name {
             set {
-                if( !isValidName(value))
-                {
-                    throw new ArgumentException($"Invalid Name:{value}");
-                }
-
                 _name = value;
             }
             get {
