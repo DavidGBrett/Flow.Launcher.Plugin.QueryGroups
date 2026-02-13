@@ -75,16 +75,14 @@ namespace Flow.Launcher.Plugin.QueryGroups
 
                     foreach (QueryGroup oldGroup in e.OldItems)
                     {
-                        QueryGroupViewModel toRemove = QueryGroupVMs.FirstOrDefault((vm)=> vm.QueryGroup.Name == oldGroup.Name);
-                        QueryGroupVMs.Remove(toRemove);
+                        RemoveQueryGroupVMByModel(oldGroup);
                     }
                     break;
 
                 case NotifyCollectionChangedAction.Replace:
                     foreach (QueryGroup oldGroup in e.OldItems)
                     {
-                        QueryGroupViewModel toRemove = QueryGroupVMs.FirstOrDefault((vm)=> vm.QueryGroup.Name == oldGroup.Name);
-                        QueryGroupVMs.Remove(toRemove);
+                        RemoveQueryGroupVMByModel(oldGroup);
                     }
                     foreach (QueryGroup newGroup in e.NewItems)
                     {
@@ -101,6 +99,12 @@ namespace Flow.Launcher.Plugin.QueryGroups
                             .Select(g => new QueryGroupViewModel(g, this)));
                     break;
             }
+        }
+
+        private void RemoveQueryGroupVMByModel(QueryGroup removedGroup)
+        {
+            QueryGroupViewModel toRemove = QueryGroupVMs.FirstOrDefault((vm)=> vm.QueryGroup.Name == removedGroup.Name);
+            QueryGroupVMs.Remove(toRemove);
         }
     }
 }
