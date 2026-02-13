@@ -38,6 +38,9 @@ namespace Flow.Launcher.Plugin.QueryGroups
 
         public void RenameItem(string existingName, string newName)
         {
+            // stop if no change needed
+            if (existingName == newName) return;
+
             if (! isNewItemNameValid(newName))
             {
                 throw new ArgumentException($"Invalid Name:{newName}");
