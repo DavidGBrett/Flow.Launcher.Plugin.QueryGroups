@@ -35,7 +35,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                 return false;
             }
             
-            if (Name.Contains("-"))
+            if (Name.Contains(PluginConstants.QuerySeparator))
             {
                 return false;
             }

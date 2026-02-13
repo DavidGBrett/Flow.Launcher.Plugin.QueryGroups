@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Flow.Launcher.Plugin.QueryGroups;
 
 namespace Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax
 {
@@ -21,9 +22,10 @@ namespace Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax
             return hasKeywordInRightPart;
         }
 
-        public string BuildQuery(string pluginKeyword, string separator, string queryGroup, string newQueryName = "")
+        public string BuildQuery(string pluginKeyword, string queryGroup, string newQueryName = "")
         {
-            return $"{pluginKeyword} {queryGroup}{separator}{QUERY_KEYWORD}{separator}{newQueryName}";
+            var sep = PluginConstants.QuerySeparator;
+            return $"{pluginKeyword} {queryGroup}{sep}{QUERY_KEYWORD}{sep}{newQueryName}";
         }
 
         public (string selectedGroup, string itemQuery) ParseQuery(QueryPartsInfo queryPartsInfo)
@@ -36,7 +38,7 @@ namespace Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax
             string itemQuery = "";
             if (queryPartsInfo.Parts.Count > 2)
             {
-                itemQuery = string.Join(queryPartsInfo.Separator, queryPartsInfo.Parts.Skip(2));
+                itemQuery = string.Join(PluginConstants.QuerySeparator, queryPartsInfo.Parts.Skip(2));
             }
 
             return (

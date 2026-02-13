@@ -1,6 +1,7 @@
 
 using System.Collections.Generic;
 using System.Diagnostics;
+using Flow.Launcher.Plugin.QueryGroups;
 
 namespace Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax
 {
@@ -14,9 +15,10 @@ namespace Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax
             return isEmptyGroupSearch || queryPartsInfo.Parts.Count == 2;
         }
 
-        public string BuildQuery(string pluginKeyword, string separator, string queryGroup, string querySearch = "")
+        public string BuildQuery(string pluginKeyword, string queryGroup, string querySearch = "")
         {
-            return $"{pluginKeyword} {queryGroup}{separator}{querySearch}";
+            var sep = PluginConstants.QuerySeparator;
+            return $"{pluginKeyword} {queryGroup}{sep}{querySearch}";
         }
 
         public (string selectedGroup, string itemQuery) ParseQuery(QueryPartsInfo queryPartsInfo)

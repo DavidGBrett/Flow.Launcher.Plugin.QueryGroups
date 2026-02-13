@@ -1,6 +1,7 @@
 
 using System.Collections.Generic;
 using System.Diagnostics;
+using Flow.Launcher.Plugin.QueryGroups;
 
 namespace Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax
 {
@@ -14,9 +15,9 @@ namespace Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax
             return queryPartsInfo.Parts[0] == QUERY_KEYWORD;
         }
 
-        public string BuildQuery(string pluginKeyword, string separator, string newGroupName = "")
+        public string BuildQuery(string pluginKeyword, string newGroupName = "")
         {
-            return $"{pluginKeyword} {QUERY_KEYWORD}{separator}{newGroupName}";
+            return $"{pluginKeyword} {QUERY_KEYWORD}{PluginConstants.QuerySeparator}{newGroupName}";
         }
 
         public string ParseQuery(QueryPartsInfo queryPartsInfo)
