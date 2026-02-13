@@ -13,6 +13,17 @@ namespace Flow.Launcher.Plugin.QueryGroups
 
         public ObservableCollection<QueryGroupViewModel> QueryGroupVMs {get; set;}
 
+        public bool PrioritizeGroupResults {
+            get
+            {
+                return Settings.PrioritizeGroupResults;
+            }
+            set
+            {
+                Settings.PrioritizeGroupResults = value;
+            }
+        }
+
         public SettingsViewModel(Settings settings)
         {
             Settings = settings;

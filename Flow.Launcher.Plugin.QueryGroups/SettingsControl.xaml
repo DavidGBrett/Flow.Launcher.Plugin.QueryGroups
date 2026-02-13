@@ -19,7 +19,7 @@
 
         <!-- Prioritize group results checkbox -->
         <CheckBox Content="Prioritize Query Groups in Search Results"
-                  IsChecked="{Binding Settings.PrioritizeGroupResults}"
+                  IsChecked="{Binding PrioritizeGroupResults}"
                   Margin="0,0,0,10" />
 
 
