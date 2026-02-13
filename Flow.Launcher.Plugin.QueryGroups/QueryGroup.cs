@@ -14,26 +14,30 @@ namespace Flow.Launcher.Plugin.QueryGroups
 
         };
 
-        public void AddItem(string Query="")
+        public QueryItem AddItem(string Query="")
         {
             string nextDefaultName = GetNextDefaultItemName();
             
-            AddItem(
+            return AddItem(
                 Name:nextDefaultName,
                 Query:Query
             );
         }
-        public void AddItem(string Name,string Query="")
+        public QueryItem AddItem(string Name,string Query="")
         {
             if (! isNewItemNameValid(Name))
             {
                 throw new ArgumentException($"Invalid Name:{Name}");
             }
 
-            QueryItems.Add(new QueryItem(
+            var newItem = new QueryItem(
                 Name:Name,
                 Query:Query
-            ));
+            );
+
+            QueryItems.Add(newItem);
+
+            return newItem;
         }
 
         public void RenameItem(string existingName, string newName)

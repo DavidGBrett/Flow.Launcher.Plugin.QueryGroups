@@ -1,0 +1,85 @@
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows.Input;
+using CommunityToolkit.Mvvm.Input;
+
+namespace Flow.Launcher.Plugin.QueryGroups
+{
+    public class QueryGroupViewModel: BaseModel
+    {
+        public QueryGroup QueryGroup;
+        public ObservableCollection<QueryItemViewModel> QueryItemVMs {get; set;}
+
+        private SettingsViewModel _settingsVM;
+
+
+        public ICommand AddItemCommand { get; }
+        
+        public ICommand DeleteItemCommand { get; }
+
+        private string _editName;
+
+        private bool _isEditNameInvalid = false;
+        public bool isEditNameInvalid {
+            get { return _isEditNameInvalid;} 
+            private set
+            {
+                _isEditNameInvalid = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string EditName {
+            get {return _editName;}
+            set
+            {
+                _editName = value;
+
+                if (_editName == QueryGroup.Name)
+                {
+                    isEditNameInvalid = false;
+                }
+                
+                else if (_settingsVM.Settings.isNewGroupNameValid(EditName))
+                {
+                    QueryGroup.Name = _editName;
+                    isEditNameInvalid = false;
+                }
+                else
+                {
+                    isEditNameInvalid = true;
+                }
+            }
+        }
+
+         public QueryGroupViewModel(
+            QueryGroup queryGroup,
+            SettingsViewModel settingsVM
+        )
+        {
+            _settingsVM = settingsVM;
+            QueryGroup = queryGroup;
+            EditName = queryGroup.Name;
+
+            QueryItemVMs = new ObservableCollection<QueryItemViewModel>(
+                queryGroup.QueryItems
+                    .Select(qi => new QueryItemViewModel(qi, this)));
+
+            AddItemCommand = new RelayCommand(AddItem);
+            DeleteItemCommand = new RelayCommand<QueryItemViewModel>(DeleteItem);
+        }
+
+
+        private void AddItem()
+        {
+            var newItem = QueryGroup.AddItem();
+            QueryItemVMs.Add(new QueryItemViewModel(newItem,this));
+        }
+
+        private void DeleteItem(QueryItemViewModel itemVM)
+        {
+            QueryGroup.QueryItems.Remove(itemVM.QueryItem);
+            QueryItemVMs.Remove(itemVM);
+        }
+    }
+}
