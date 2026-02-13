@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
@@ -5,7 +6,7 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace Flow.Launcher.Plugin.QueryGroups
 {
-    public class SettingsViewModel
+    public class SettingsViewModel: BaseModel
     {
         public ICommand AddItemCommand { get; }
         public ICommand DeleteGroupCommand { get; }
@@ -13,14 +14,20 @@ namespace Flow.Launcher.Plugin.QueryGroups
         public ICommand AddGroupCommand { get; }
         public ICommand DeleteItemCommand { get; }
 
+        public ObservableCollection<QueryGroupViewModel> QueryGroups {get; set;}
+
         public SettingsViewModel(Settings settings)
         {
             Settings = settings;
 
-            AddGroupCommand = new RelayCommand(AddGroup);
-            DeleteGroupCommand = new RelayCommand<QueryGroup>(DeleteGroup);
+            QueryGroups = new ObservableCollection<QueryGroupViewModel>(
+                Settings.QueryGroups
+                    .Select(g => new QueryGroupViewModel(g, this)));
 
-            AddItemCommand = new RelayCommand<QueryGroup>(AddItem);
+            AddGroupCommand = new RelayCommand(AddGroup);
+            DeleteGroupCommand = new RelayCommand<QueryGroupViewModel>(DeleteGroup);
+
+            AddItemCommand = new RelayCommand<QueryGroupViewModel>(AddItem);
             DeleteItemCommand = new RelayCommand<QueryItem>(DeleteItem);
 
         }
@@ -29,17 +36,19 @@ namespace Flow.Launcher.Plugin.QueryGroups
 
         private void AddGroup()
         {
-            Settings.AddGroup();
+            var newGroup = Settings.AddGroup();
+            QueryGroups.Add(new QueryGroupViewModel(newGroup,this));
         }
 
-        private void DeleteGroup(QueryGroup group)
+        private void DeleteGroup(QueryGroupViewModel group)
         {
-            Settings.QueryGroups.Remove(group);
+            Settings.QueryGroups.Remove(group.QueryGroup);
+            QueryGroups.Remove(group);
         }
 
-        private void AddItem(QueryGroup group)
+        private void AddItem(QueryGroupViewModel group)
         {
-            group.AddItem();
+            group.QueryGroup.AddItem();
         }
 
         private void DeleteItem(QueryItem item)
