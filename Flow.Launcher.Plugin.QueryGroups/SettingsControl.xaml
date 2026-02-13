@@ -121,10 +121,10 @@
 
                                                     <!-- Row 2: Name -->
                                                     <DockPanel Margin="0,0,0,5">
-                                                        <TextBlock Text="Name:" Width="120" VerticalAlignment="Center" />
-                                                        <TextBox Text="{Binding EditName, UpdateSourceTrigger=PropertyChanged}"
-                                                                HorizontalAlignment="Stretch"
-                                                                MinWidth="200" />
+                                                        <TextBlock Text="Name:" Width="60" VerticalAlignment="Center" />
+                                                        <TextBox 
+                                                            Text="{Binding EditName, UpdateSourceTrigger=PropertyChanged}"
+                                                        />
                                                         <TextBlock
                                                             Text="Invalid!"
                                                             FontWeight="Bold"
