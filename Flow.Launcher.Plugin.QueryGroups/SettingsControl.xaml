@@ -111,9 +111,29 @@
                                                     <!-- Row 1: Name -->
                                                     <DockPanel Margin="0,0,0,5">
                                                         <TextBlock Text="Name:" Width="60" VerticalAlignment="Center" />
-                                                        <TextBox 
-                                                            Text="{Binding EditName, UpdateSourceTrigger=PropertyChanged}"
-                                                        />
+
+                                                        <!-- Red Outline if Invalid EditName -->
+                                                        <Border CornerRadius="3" Margin="0,0,0,0">
+                                                            <Border.Style>
+                                                                <Style TargetType="Border">
+                                                                    <Setter Property="BorderThickness" Value="0"/>
+                                                                    <Setter Property="BorderBrush" Value="Transparent"/>
+                                                                    <Style.Triggers>
+                                                                        <DataTrigger Binding="{Binding isEditNameInvalid}" Value="True">
+                                                                            <Setter Property="BorderThickness" Value="2"/>
+                                                                            <Setter Property="BorderBrush" Value="Red"/>
+                                                                        </DataTrigger>
+                                                                    </Style.Triggers>
+                                                                </Style>
+                                                            </Border.Style>
+                                                            
+                                                            <!-- Editable Box for Name via EditName -->
+                                                            <TextBox 
+                                                                Text="{Binding EditName, UpdateSourceTrigger=PropertyChanged}"
+                                                            />
+                                                        </Border>
+
+                                                        <!-- Warning Message that shows if EditName is not a valid Name -->
                                                         <TextBlock
                                                             Text="Invalid!"
                                                             FontWeight="Bold"
