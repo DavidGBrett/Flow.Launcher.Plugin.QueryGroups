@@ -54,13 +54,8 @@ namespace Flow.Launcher.Plugin.QueryGroups
 
         private void DeleteItem(QueryItemViewModel item)
         {
-            item.EditName = "Deleting...";
-            var group = Settings.QueryGroups.FirstOrDefault(g => g.QueryItems.Contains(item.QueryItem));
-            if (group != null)
-                group.QueryItems.Remove(item.QueryItem);
-
+            item.ParentGroup.QueryGroup.QueryItems.Remove(item.QueryItem);
             item.ParentGroup.QueryItems.Remove(item);
-            
         }
     }
 }
