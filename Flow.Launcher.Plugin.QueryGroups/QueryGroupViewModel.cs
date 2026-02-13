@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
@@ -67,19 +68,71 @@ namespace Flow.Launcher.Plugin.QueryGroups
 
             AddItemCommand = new RelayCommand(AddItem);
             DeleteItemCommand = new RelayCommand<QueryItemViewModel>(DeleteItem);
+
+            queryGroup.QueryItems.CollectionChanged += OnQueryItemsChanged;
         }
 
 
         private void AddItem()
         {
-            var newItem = QueryGroup.AddItem();
-            QueryItemVMs.Add(new QueryItemViewModel(newItem,this));
+            QueryGroup.AddItem();
         }
 
         private void DeleteItem(QueryItemViewModel itemVM)
         {
             QueryGroup.QueryItems.Remove(itemVM.QueryItem);
-            QueryItemVMs.Remove(itemVM);
+        }
+
+        private void OnQueryItemsChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            switch (e.Action)
+            {
+                case NotifyCollectionChangedAction.Add:
+                    if (e.NewItems == null || QueryGroup.QueryItems.Count == QueryItemVMs.Count)
+                    {
+                        return;
+                    }
+
+                    foreach (QueryItem newItem in e.NewItems)
+                    {
+                        QueryItemVMs.Add(new QueryItemViewModel(newItem,this));
+                    }
+                    break;
+
+                case NotifyCollectionChangedAction.Remove:
+                    if (e.OldItems == null || QueryGroup.QueryItems.Count == QueryItemVMs.Count)
+                    {
+                        return;
+                    }
+
+                    foreach (QueryItem oldItem in e.OldItems)
+                    {
+                        QueryItemViewModel toRemove = QueryItemVMs.FirstOrDefault((vm)=> vm.QueryItem.Name == oldItem.Name);
+                        QueryItemVMs.Remove(toRemove);
+                    }
+                    break;
+
+                case NotifyCollectionChangedAction.Replace:
+                    foreach (QueryItem oldItem in e.OldItems)
+                    {
+                        QueryItemViewModel toRemove = QueryItemVMs.FirstOrDefault((vm)=> vm.QueryItem.Name == oldItem.Name);
+                        QueryItemVMs.Remove(toRemove);
+                    }
+                    foreach (QueryItem newItem in e.NewItems)
+                    {
+                        QueryItemVMs.Add(new QueryItemViewModel(newItem,this));
+                    }
+                    break;
+
+                case NotifyCollectionChangedAction.Move:
+                    break;
+
+                case NotifyCollectionChangedAction.Reset:
+                    QueryItemVMs = new ObservableCollection<QueryItemViewModel>(
+                        QueryGroup.QueryItems
+                            .Select(qi => new QueryItemViewModel(qi, this)));
+                    break;
+            }
         }
     }
 }
