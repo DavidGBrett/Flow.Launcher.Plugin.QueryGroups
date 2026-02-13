@@ -108,18 +108,7 @@
                                                     Margin="0,0,0,10">
                                                 <StackPanel>
 
-                                                    <!-- Row 1: Query -->
-                                                    <DockPanel Margin="0,0,0,5">
-                                                        <TextBlock Text="Query:" Width="60" VerticalAlignment="Center" />
-
-                                                        <TextBox Text="{Binding Query, UpdateSourceTrigger=PropertyChanged}"
-                                                                HorizontalAlignment="Stretch"
-                                                                MinWidth="200"
-                                                                AcceptsReturn="True"
-                                                                TextWrapping="Wrap" />
-                                                    </DockPanel>
-
-                                                    <!-- Row 2: Name -->
+                                                    <!-- Row 1: Name -->
                                                     <DockPanel Margin="0,0,0,5">
                                                         <TextBlock Text="Name:" Width="60" VerticalAlignment="Center" />
                                                         <TextBox 
@@ -135,7 +124,16 @@
                                                         />
                                                     </DockPanel>
 
-                                                    
+                                                    <!-- Row 2: Query -->
+                                                    <DockPanel Margin="0,0,0,5">
+                                                        <TextBlock Text="Query:" Width="60" VerticalAlignment="Center" />
+
+                                                        <TextBox Text="{Binding Query, UpdateSourceTrigger=PropertyChanged}"
+                                                                HorizontalAlignment="Stretch"
+                                                                MinWidth="200"
+                                                                AcceptsReturn="True"
+                                                                TextWrapping="Wrap" />
+                                                    </DockPanel>
 
                                                     <!-- Delete button for group item -->
                                                     <DockPanel>
