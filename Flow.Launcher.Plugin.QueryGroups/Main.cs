@@ -266,6 +266,34 @@ namespace Flow.Launcher.Plugin.QueryGroups
 
         private List<Result> GetAddGroupResults(string queryString)
         {
+            // Explain to user they need to start
+            if (string.IsNullOrEmpty(queryString))
+            {
+                return new List<Result>
+                {
+                    new Result
+                    {
+                        Title = "Add:",
+                        SubTitle = "Start typing!",
+                        Glyph = new GlyphInfo("sans-serif","＋"),
+                    }
+                };
+            }
+
+            // show error if name is not valid, eg is duplicate
+            if (! _settings.isNewGroupNameValid(queryString))
+            {
+                return new List<Result>
+                {
+                    new Result
+                    {
+                        Title = "Invalid Name!",
+                        SubTitle = queryString,
+                        Glyph = new GlyphInfo("sans-serif","X"),
+                    }
+                };
+            }
+
             return new List<Result>
             {
                 new Result
@@ -276,7 +304,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                     Score = 0,
                     Action = _ =>
                     {
-                        _settings.QueryGroups.Add(new QueryGroup { Name = queryString });
+                        _settings.AddGroup(Name:queryString);
                         _context.API.SavePluginSettings();
                         
                         // Change to the new group's search query
@@ -317,7 +345,8 @@ namespace Flow.Launcher.Plugin.QueryGroups
                         while (group.QueryItems.Any(i => i.Name == itemName ));
 
                         
-                        group.QueryItems.Add(new QueryItem { Query = itemQuery, Name = itemName });
+                        group.AddItem(Name:itemName,Query:itemQuery);
+
                         _context.API.SavePluginSettings();
                         
                         // change to rename query for the new item
@@ -337,6 +366,22 @@ namespace Flow.Launcher.Plugin.QueryGroups
 
         private List<Result> GetRenameGroupResults(string selectedGroup, string newName)
         {
+            var group =_settings.QueryGroups.FirstOrDefault(g => g.Name == selectedGroup);
+
+            // show error if name is not valid, eg is duplicate
+            if (selectedGroup!=newName && ! _settings.isNewGroupNameValid(newName))
+            {
+                return new List<Result>
+                {
+                    new Result
+                    {
+                        Title = "Invalid Name!",
+                        SubTitle = newName,
+                        Glyph = new GlyphInfo("sans-serif","X"),
+                    }
+                };
+            }
+
             return new List<Result>
             {
                 new Result
@@ -346,7 +391,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                     Glyph = new GlyphInfo("sans-serif","N"),
                     Action = _ =>
                     {
-                        var group =_settings.QueryGroups.FirstOrDefault(g => g.Name == selectedGroup);
+                        
                         if (group is not null)
                         {
                             group.Name = newName;
@@ -368,6 +413,22 @@ namespace Flow.Launcher.Plugin.QueryGroups
 
         private List<Result> GetRenameItemResults(string selectedGroup, string selectedItem, string newItemName)
         {
+            var group =_settings.QueryGroups.FirstOrDefault(g => g.Name == selectedGroup);
+
+            // show error if name is not valid, eg is duplicate
+            if (selectedItem!=newItemName && ! group.isNewItemNameValid(newItemName))
+            {
+                return new List<Result>
+                {
+                    new Result
+                    {
+                        Title = "Invalid Name!",
+                        SubTitle = newItemName,
+                        Glyph = new GlyphInfo("sans-serif","X"),
+                    }
+                };
+            }
+
             return new List<Result>
             {
                 new Result
@@ -377,12 +438,8 @@ namespace Flow.Launcher.Plugin.QueryGroups
                     Glyph = new GlyphInfo("sans-serif","N"),
                     Action = _ =>
                     {
-                        var group =_settings.QueryGroups.FirstOrDefault(g => g.Name == selectedGroup);
-                        var item = group?.QueryItems.FirstOrDefault(i => i.Name == selectedItem);
-                        if (item is not null)
-                        {
-                            item.Name = newItemName;
-                        }
+                       
+                        group.RenameItem(selectedItem,newItemName);
 
                         _context.API.SavePluginSettings();
 

@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
@@ -5,23 +6,34 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace Flow.Launcher.Plugin.QueryGroups
 {
-    public class SettingsViewModel
+    public class SettingsViewModel: BaseModel
     {
-        public ICommand AddItemCommand { get; }
         public ICommand DeleteGroupCommand { get; }
-        
         public ICommand AddGroupCommand { get; }
-        public ICommand DeleteItemCommand { get; }
+
+        public ObservableCollection<QueryGroupViewModel> QueryGroupVMs {get; set;}
+
+        public bool PrioritizeGroupResults {
+            get
+            {
+                return Settings.PrioritizeGroupResults;
+            }
+            set
+            {
+                Settings.PrioritizeGroupResults = value;
+            }
+        }
 
         public SettingsViewModel(Settings settings)
         {
             Settings = settings;
 
-            AddGroupCommand = new RelayCommand(AddGroup);
-            DeleteGroupCommand = new RelayCommand<QueryGroup>(DeleteGroup);
+            QueryGroupVMs = new ObservableCollection<QueryGroupViewModel>(
+                Settings.QueryGroups
+                    .Select(g => new QueryGroupViewModel(g, this)));
 
-            AddItemCommand = new RelayCommand<QueryGroup>(AddItem);
-            DeleteItemCommand = new RelayCommand<QueryItem>(DeleteItem);
+            AddGroupCommand = new RelayCommand(AddGroup);
+            DeleteGroupCommand = new RelayCommand<QueryGroupViewModel>(DeleteGroup);
 
         }
 
@@ -29,29 +41,14 @@ namespace Flow.Launcher.Plugin.QueryGroups
 
         private void AddGroup()
         {
-            Settings.QueryGroups.Add(
-                new QueryGroup()
-            );
+            var newGroup = Settings.AddGroup();
+            QueryGroupVMs.Add(new QueryGroupViewModel(newGroup,this));
         }
 
-        private void DeleteGroup(QueryGroup group)
+        private void DeleteGroup(QueryGroupViewModel groupVM)
         {
-            Settings.QueryGroups.Remove(group);
-        }
-
-        private void AddItem(QueryGroup group)
-        {
-            group.QueryItems.Add(new QueryItem());
-        }
-
-        private void DeleteItem(QueryItem item)
-        {
-            item.Name = "Deleting...";
-            var group = Settings.QueryGroups.FirstOrDefault(g => g.QueryItems.Contains(item));
-            if (group != null)
-                group.QueryItems.Remove(item);
-
-            
+            Settings.QueryGroups.Remove(groupVM.QueryGroup);
+            QueryGroupVMs.Remove(groupVM);
         }
     }
 }
