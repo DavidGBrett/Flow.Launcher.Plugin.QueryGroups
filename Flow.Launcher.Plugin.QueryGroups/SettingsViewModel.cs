@@ -11,13 +11,13 @@ namespace Flow.Launcher.Plugin.QueryGroups
         public ICommand DeleteGroupCommand { get; }
         public ICommand AddGroupCommand { get; }
 
-        public ObservableCollection<QueryGroupViewModel> QueryGroups {get; set;}
+        public ObservableCollection<QueryGroupViewModel> QueryGroupVMs {get; set;}
 
         public SettingsViewModel(Settings settings)
         {
             Settings = settings;
 
-            QueryGroups = new ObservableCollection<QueryGroupViewModel>(
+            QueryGroupVMs = new ObservableCollection<QueryGroupViewModel>(
                 Settings.QueryGroups
                     .Select(g => new QueryGroupViewModel(g, this)));
 
@@ -31,13 +31,13 @@ namespace Flow.Launcher.Plugin.QueryGroups
         private void AddGroup()
         {
             var newGroup = Settings.AddGroup();
-            QueryGroups.Add(new QueryGroupViewModel(newGroup,this));
+            QueryGroupVMs.Add(new QueryGroupViewModel(newGroup,this));
         }
 
         private void DeleteGroup(QueryGroupViewModel group)
         {
             Settings.QueryGroups.Remove(group.QueryGroup);
-            QueryGroups.Remove(group);
+            QueryGroupVMs.Remove(group);
         }
     }
 }

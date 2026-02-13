@@ -31,7 +31,7 @@
                 Margin="0,0,0,10" />
 
         <!-- List of Groups -->
-        <ItemsControl x:Name="groups" ItemsSource="{Binding QueryGroups}">
+        <ItemsControl x:Name="groups" ItemsSource="{Binding QueryGroupVMs}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <VirtualizingStackPanel 
@@ -93,7 +93,7 @@
                             <StackPanel Margin="20,5,0,5">
 
                                 <!-- Group Items -->
-                                <ItemsControl ItemsSource="{Binding QueryItems}">
+                                <ItemsControl ItemsSource="{Binding QueryItemVMs}">
                                     
                                     
                                     <ItemsControl.ItemTemplate>
@@ -140,7 +140,7 @@
                                                     <!-- Delete button for group item -->
                                                     <DockPanel>
                                                         <Button Content="Delete"
-                                                                Command="{Binding ParentGroup.DeleteItemCommand}"
+                                                                Command="{Binding ParentGroupVM.DeleteItemCommand}"
                                                                 CommandParameter="{Binding}" />
                                                     </DockPanel>
 

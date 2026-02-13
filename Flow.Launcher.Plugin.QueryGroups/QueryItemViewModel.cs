@@ -6,7 +6,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
     {
         public QueryItem QueryItem;
 
-        public QueryGroupViewModel ParentGroup {get;set;}
+        public QueryGroupViewModel ParentGroupVM {get;set;}
 
         private string _editName;
 
@@ -31,7 +31,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                     isEditNameInvalid = false;
                 }
                 
-                else if (ParentGroup.QueryGroup.isNewItemNameValid(EditName))
+                else if (ParentGroupVM.QueryGroup.isNewItemNameValid(EditName))
                 {
                     QueryItem.Name = _editName;
                     isEditNameInvalid = false;
@@ -58,11 +58,11 @@ namespace Flow.Launcher.Plugin.QueryGroups
 
          public QueryItemViewModel(
             QueryItem queryItem,
-            QueryGroupViewModel parentGroup
+            QueryGroupViewModel parentGroupVM
         )
         {
             QueryItem = queryItem;
-            ParentGroup = parentGroup;
+            ParentGroupVM = parentGroupVM;
             EditName = queryItem.Name;
         }
     }

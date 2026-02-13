@@ -8,7 +8,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
     public class QueryGroupViewModel: BaseModel
     {
         public QueryGroup QueryGroup;
-        public ObservableCollection<QueryItemViewModel> QueryItems {get; set;}
+        public ObservableCollection<QueryItemViewModel> QueryItemVMs {get; set;}
 
         private SettingsViewModel _settings;
 
@@ -61,7 +61,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
             QueryGroup = queryGroup;
             EditName = queryGroup.Name;
 
-            QueryItems = new ObservableCollection<QueryItemViewModel>(
+            QueryItemVMs = new ObservableCollection<QueryItemViewModel>(
                 queryGroup.QueryItems
                     .Select(qi => new QueryItemViewModel(qi, this)));
 
@@ -73,13 +73,13 @@ namespace Flow.Launcher.Plugin.QueryGroups
         private void AddItem()
         {
             var newItem = QueryGroup.AddItem();
-            QueryItems.Add(new QueryItemViewModel(newItem,this));
+            QueryItemVMs.Add(new QueryItemViewModel(newItem,this));
         }
 
         private void DeleteItem(QueryItemViewModel item)
         {
             QueryGroup.QueryItems.Remove(item.QueryItem);
-            QueryItems.Remove(item);
+            QueryItemVMs.Remove(item);
         }
     }
 }
