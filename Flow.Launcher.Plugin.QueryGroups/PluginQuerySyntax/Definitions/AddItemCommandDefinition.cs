@@ -1,6 +1,7 @@
 
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax
 {
@@ -11,11 +12,13 @@ namespace Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax
 
         public bool Matches(QueryPartsInfo queryPartsInfo)
         {
-            bool isRightLength = queryPartsInfo.Parts.Count == 3;
+            // bool isRightLength = queryPartsInfo.Parts.Count == 3;
 
             bool hasKeywordInRightPart = queryPartsInfo.Parts[1] == QUERY_KEYWORD;
 
-            return hasKeywordInRightPart && isRightLength;
+            // return hasKeywordInRightPart && isRightLength;
+
+            return hasKeywordInRightPart;
         }
 
         public string BuildQuery(string pluginKeyword, string separator, string queryGroup, string newQueryName = "")
@@ -26,7 +29,15 @@ namespace Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax
         public (string selectedGroup, string itemQuery) ParseQuery(QueryPartsInfo queryPartsInfo)
         {
             string selectedGroup = queryPartsInfo.Parts[0];
-            string itemQuery = queryPartsInfo.Parts.Count > 2 ? queryPartsInfo.Parts[2] : "";
+            // string itemQuery = queryPartsInfo.Parts.Count > 2 ? queryPartsInfo.Parts[2] : "";
+
+
+            // item query is everything after the second separator
+            string itemQuery = "";
+            if (queryPartsInfo.Parts.Count > 2)
+            {
+                itemQuery = string.Join(queryPartsInfo.Separator, queryPartsInfo.Parts.Skip(2));
+            }
 
             return (
                 selectedGroup,
