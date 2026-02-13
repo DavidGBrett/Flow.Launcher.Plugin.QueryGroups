@@ -45,10 +45,10 @@ namespace Flow.Launcher.Plugin.QueryGroups
             QueryGroupVMs.Add(new QueryGroupViewModel(newGroup,this));
         }
 
-        private void DeleteGroup(QueryGroupViewModel group)
+        private void DeleteGroup(QueryGroupViewModel groupVM)
         {
-            Settings.QueryGroups.Remove(group.QueryGroup);
-            QueryGroupVMs.Remove(group);
+            Settings.QueryGroups.Remove(groupVM.QueryGroup);
+            QueryGroupVMs.Remove(groupVM);
         }
     }
 }

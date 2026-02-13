@@ -10,7 +10,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
         public QueryGroup QueryGroup;
         public ObservableCollection<QueryItemViewModel> QueryItemVMs {get; set;}
 
-        private SettingsViewModel _settings;
+        private SettingsViewModel _settingsVM;
 
 
         public ICommand AddItemCommand { get; }
@@ -40,7 +40,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                     isEditNameInvalid = false;
                 }
                 
-                else if (_settings.Settings.isNewGroupNameValid(EditName))
+                else if (_settingsVM.Settings.isNewGroupNameValid(EditName))
                 {
                     QueryGroup.Name = _editName;
                     isEditNameInvalid = false;
@@ -54,10 +54,10 @@ namespace Flow.Launcher.Plugin.QueryGroups
 
          public QueryGroupViewModel(
             QueryGroup queryGroup,
-            SettingsViewModel settings
+            SettingsViewModel settingsVM
         )
         {
-            _settings = settings;
+            _settingsVM = settingsVM;
             QueryGroup = queryGroup;
             EditName = queryGroup.Name;
 
@@ -76,10 +76,10 @@ namespace Flow.Launcher.Plugin.QueryGroups
             QueryItemVMs.Add(new QueryItemViewModel(newItem,this));
         }
 
-        private void DeleteItem(QueryItemViewModel item)
+        private void DeleteItem(QueryItemViewModel itemVM)
         {
-            QueryGroup.QueryItems.Remove(item.QueryItem);
-            QueryItemVMs.Remove(item);
+            QueryGroup.QueryItems.Remove(itemVM.QueryItem);
+            QueryItemVMs.Remove(itemVM);
         }
     }
 }
