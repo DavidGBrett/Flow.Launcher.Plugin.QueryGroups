@@ -10,13 +10,24 @@ namespace Flow.Launcher.Plugin.QueryGroups
         public string Name {
             set {
                 _name = value;
+                OnPropertyChanged();
             }
             get {
                 return _name;
             }
         }
 
-        public string Query { get; set; }
+        private string _query;
+
+        public string Query {
+            set {
+                _query = value;
+                OnPropertyChanged();
+            }
+            get {
+                return _query;
+            }
+        }
 
         public QueryItem(string Name,string Query="")
         {
