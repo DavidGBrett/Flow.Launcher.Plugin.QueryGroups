@@ -146,7 +146,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
         {
             switch (e.PropertyName)
             {
-                case "Name":
+                case nameof(QueryGroup.Name):
                     // directly update the internal editName, so it doesnt try to edit Name again
                     _editName = QueryGroup.Name;
 

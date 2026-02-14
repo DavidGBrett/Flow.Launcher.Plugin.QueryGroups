@@ -73,7 +73,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
         {
             switch (e.PropertyName)
             {
-                case "Name":
+                case nameof(QueryItem.Name):
                     // directly update the internal editName, so it doesnt try to edit Name again
                     _editName = QueryItem.Name;
 
@@ -82,7 +82,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                     
                     break;
                     
-                case "Query":
+                case nameof(QueryItem.Query):
                     // Query just returns the model's query so we only need to tell the ui it changed
                     OnPropertyChanged(nameof(Query));
                     
