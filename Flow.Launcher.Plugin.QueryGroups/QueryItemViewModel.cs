@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace Flow.Launcher.Plugin.QueryGroups
 {
@@ -64,6 +65,29 @@ namespace Flow.Launcher.Plugin.QueryGroups
             QueryItem = queryItem;
             ParentGroupVM = parentGroupVM;
             EditName = queryItem.Name;
+
+            QueryItem.PropertyChanged += OnItemPropChanged;
+        }
+
+        private void OnItemPropChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case nameof(QueryItem.Name):
+                    // directly update the internal editName, so it doesnt try to edit Name again
+                    _editName = QueryItem.Name;
+
+                    // tell the ui it changed
+                    OnPropertyChanged(nameof(EditName));
+                    
+                    break;
+                    
+                case nameof(QueryItem.Query):
+                    // Query just returns the model's query so we only need to tell the ui it changed
+                    OnPropertyChanged(nameof(Query));
+                    
+                    break;
+            }
         }
     }
 }
