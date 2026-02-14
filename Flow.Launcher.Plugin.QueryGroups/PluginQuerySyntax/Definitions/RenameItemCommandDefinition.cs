@@ -1,6 +1,7 @@
 
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using Flow.Launcher.Plugin.QueryGroups;
 
 namespace Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax
@@ -25,7 +26,14 @@ namespace Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax
         {
             string selectedGroup = queryPartsInfo.Parts[0];
             string selectedItem = queryPartsInfo.Parts[1];
-            string newItemName = queryPartsInfo.Parts.Count > 3 ? queryPartsInfo.Parts[3] : "";
+
+            // newItemName is everything after the first separator
+            // this will catch separators that we dont want, but its important to show an error than silently ignore
+            string newItemName = "";
+            if (queryPartsInfo.Parts.Count > 3)
+            {
+                newItemName = string.Join(PluginConstants.QuerySeparator, queryPartsInfo.Parts.Skip(3));
+            }
 
             return (
                 selectedGroup,
