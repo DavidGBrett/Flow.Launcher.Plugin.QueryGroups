@@ -7,7 +7,17 @@ namespace Flow.Launcher.Plugin.QueryGroups
 {
     public class QueryGroup : BaseModel
     {
-        public string Name { get; set; }
+        private string _name;
+
+        public string Name {
+            set {
+                _name = value;
+                OnPropertyChanged();
+            }
+            get {
+                return _name;
+            }
+        }
 
         public ObservableCollection<QueryItem> QueryItems { get; set; } = new ObservableCollection<QueryItem>
         {
