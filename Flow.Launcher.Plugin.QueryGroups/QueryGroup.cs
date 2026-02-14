@@ -23,18 +23,11 @@ namespace Flow.Launcher.Plugin.QueryGroups
         {
 
         };
+        
+        public QueryItem AddItem(string Name=null,string Query="")
+        {
+            Name = Name ?? GetNextDefaultItemName();
 
-        public QueryItem AddItem(string Query="")
-        {
-            string nextDefaultName = GetNextDefaultItemName();
-            
-            return AddItem(
-                Name:nextDefaultName,
-                Query:Query
-            );
-        }
-        public QueryItem AddItem(string Name,string Query="")
-        {
             if (! isNewItemNameValid(Name))
             {
                 throw new ArgumentException($"Invalid Name:{Name}");
