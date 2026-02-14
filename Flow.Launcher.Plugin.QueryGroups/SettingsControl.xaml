@@ -80,7 +80,7 @@
 
                                         <!-- Editable TextBox for the Group's Name -->
                                         <TextBox 
-                                            Text="{Binding EditName, UpdateSourceTrigger=PropertyChanged}"
+                                            Text="{Binding EditName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                             FontWeight="Bold"
                                             VerticalAlignment="Center"
                                             Margin="0,0,0,0" 

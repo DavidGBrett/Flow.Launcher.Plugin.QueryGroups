@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
@@ -70,6 +71,8 @@ namespace Flow.Launcher.Plugin.QueryGroups
             DeleteItemCommand = new RelayCommand<QueryItemViewModel>(DeleteItem);
 
             queryGroup.QueryItems.CollectionChanged += OnQueryItemsChanged;
+
+            queryGroup.PropertyChanged += OnGroupPropChanged;
         }
 
 
@@ -137,6 +140,21 @@ namespace Flow.Launcher.Plugin.QueryGroups
         {
             QueryItemViewModel toRemove = QueryItemVMs.FirstOrDefault((vm)=> vm.QueryItem.Name == removedItem.Name);
             QueryItemVMs.Remove(toRemove);
+        }
+
+        private void OnGroupPropChanged(object sender, PropertyChangedEventArgs e)
+        {
+            switch (e.PropertyName)
+            {
+                case "Name":
+                    // directly update the internal editName, so it doesnt try to edit Name again
+                    _editName = QueryGroup.Name;
+
+                    // tell the ui it changed
+                    OnPropertyChanged(nameof(EditName));
+                    
+                    break;
+            }
         }
     }
 }
