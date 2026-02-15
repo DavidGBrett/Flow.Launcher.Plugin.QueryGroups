@@ -327,16 +327,9 @@ namespace Flow.Launcher.Plugin.QueryGroups
                         var group = _settings.QueryGroups.FirstOrDefault(g => g.Name == selectedGroup);
                         if (group is null) return false;
 
-                        int i = 0;
-                        string defaultPrefix = "query";
-                        string itemName;
-                        
-                        do {
-                            i+=1;
-                            itemName = $"{defaultPrefix}{i}";
-                        }
-                        while (group.QueryItems.Any(i => i.Name == itemName ));
-
+                        string itemName = group.isNewItemNameValid(itemQuery) 
+                            ? itemQuery 
+                            : group.GetNextDefaultItemName();
                         
                         group.AddItem(Name:itemName,Query:itemQuery);
 
