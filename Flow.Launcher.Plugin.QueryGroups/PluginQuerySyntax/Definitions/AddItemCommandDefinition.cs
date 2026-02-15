@@ -18,10 +18,10 @@ namespace Flow.Launcher.Plugin.QueryGroups.PluginQuerySyntax
             return hasKeywordInRightPart;
         }
 
-        public string BuildQuery(string pluginKeyword, string queryGroup, string newQueryName = "")
+        public string BuildQuery(string pluginKeyword, string queryGroup, string queryValue = "")
         {
             var sep = PluginConstants.QuerySeparator;
-            return $"{pluginKeyword} {queryGroup}{sep}{QUERY_KEYWORD}{sep}{newQueryName}";
+            return $"{pluginKeyword} {queryGroup}{sep}{QUERY_KEYWORD}{sep}{queryValue}";
         }
 
         public (string selectedGroup, string itemQuery) ParseQuery(QueryPartsInfo queryPartsInfo)

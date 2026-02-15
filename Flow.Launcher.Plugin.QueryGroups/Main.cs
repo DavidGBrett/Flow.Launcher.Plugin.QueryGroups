@@ -252,7 +252,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                     _context.API.ChangeQuery(new AddItemCommandDefinition().BuildQuery(
                         pluginKeyword: mainPluginKeyword,
                         queryGroup: selectedGroup,
-                        newQueryName: restOfQuery
+                        queryValue: restOfQuery
                     ), false);
 
                     return false;
