@@ -49,7 +49,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                 case CommandType.Keywordless:
                     {
                         string search = new KeywordlessCommandDefinition().ParseQuery(queryPartsInfo);
-                        List<Result> results = GetGroupsResults(search);
+                        List<Result> results = CreateGroupsResults(search);
                         return results;
                     }
 
@@ -57,8 +57,8 @@ namespace Flow.Launcher.Plugin.QueryGroups
                     {
                         string groupQuery = new SearchGroupsCommandDefinition().ParseQuery(queryPartsInfo);
 
-                        List<Result> results = GetGroupsResults(groupQuery);
-                        results.Add(GetGoToAddGroupResult(groupQuery));
+                        List<Result> results = CreateGroupsResults(groupQuery);
+                        results.Add(CreateGoToAddGroupResult(groupQuery));
 
                         return results;
                     }
@@ -66,15 +66,15 @@ namespace Flow.Launcher.Plugin.QueryGroups
                 case CommandType.AddGroup:
                     {
                         string newGroupName = new AddGroupCommandDefinition().ParseQuery(queryPartsInfo);
-                        return GetAddGroupResults(newGroupName);
+                        return CreateAddGroupResults(newGroupName);
                     }
 
                 case CommandType.SearchGroup:
                     {
                         (string selectedGroup, string itemQuery) = new SearchGroupCommandDefinition().ParseQuery(queryPartsInfo);
 
-                        List<Result> results = GetGroupItemsResults(selectedGroup, itemQuery);
-                        results.Add(GetGoToAddItemResult(selectedGroup, itemQuery));
+                        List<Result> results = CreateGroupItemsResults(selectedGroup, itemQuery);
+                        results.Add(CreateGoToAddItemResult(selectedGroup, itemQuery));
 
                         return results;
                     }
@@ -83,28 +83,28 @@ namespace Flow.Launcher.Plugin.QueryGroups
                     {
                         (string selectedGroup, string itemQuery) = new AddItemCommandDefinition().ParseQuery(queryPartsInfo);
 
-                        return GetAddItemResults(selectedGroup, itemQuery);
+                        return CreateAddItemResults(selectedGroup, itemQuery);
                     }
 
                 case CommandType.RenameGroup:
                     {
                         (string selectedGroup, string newName) = new RenameGroupCommandDefinition().ParseQuery(queryPartsInfo);
 
-                        return GetRenameGroupResults(selectedGroup,newName);
+                        return CreateRenameGroupResults(selectedGroup,newName);
                     }
 
                 case CommandType.RenameItem:
                     {
                         (string selectedGroup, string selectedItem, string newItemName) = new RenameItemCommandDefinition().ParseQuery(queryPartsInfo);
 
-                        return GetRenameItemResults(selectedGroup, selectedItem, newItemName);
+                        return CreateRenameItemResults(selectedGroup, selectedItem, newItemName);
                     }
                 
                 case CommandType.SetItemQuery:
                     {
                         (string selectedGroup, string selectedItem, string newItemQuery) = new ItemQueryAssignmentCommandDefinition().ParseQuery(queryPartsInfo);
 
-                        return GetSetItemQueryResults(selectedGroup, selectedItem, newItemQuery);
+                        return CreateSetItemQueryResults(selectedGroup, selectedItem, newItemQuery);
                     }
 
                 default:
@@ -112,7 +112,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
             }
         }
 
-        private List<Result> GetGroupItemsResults(string selectedGroup, string itemQuery)
+        private List<Result> CreateGroupItemsResults(string selectedGroup, string itemQuery)
         {
             List<Result> results = new List<Result>();
 
@@ -164,7 +164,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
             return results;
         }
 
-        private List<Result> GetGroupsResults(string queryString)
+        private List<Result> CreateGroupsResults(string queryString)
         {
             List<Result> results = new List<Result>();
 
@@ -219,7 +219,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
             return results;
         }
 
-        private Result GetGoToAddGroupResult(string queryString)
+        private Result CreateGoToAddGroupResult(string queryString)
         {
             return new Result
             {
@@ -238,7 +238,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                 }
             };
         }
-        private Result GetGoToAddItemResult(string selectedGroup, string restOfQuery)
+        private Result CreateGoToAddItemResult(string selectedGroup, string restOfQuery)
         {
             return new Result
             {
@@ -260,7 +260,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
             };
         }
 
-        private List<Result> GetAddGroupResults(string queryString)
+        private List<Result> CreateAddGroupResults(string queryString)
         {
             // Explain to user they need to start
             if (string.IsNullOrEmpty(queryString))
@@ -315,7 +315,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
             };
         }   
 
-        private List<Result> GetAddItemResults(string selectedGroup, string itemQuery)
+        private List<Result> CreateAddItemResults(string selectedGroup, string itemQuery)
         {
             return new List<Result>
             {
@@ -351,7 +351,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
             };
         }
 
-        private List<Result> GetRenameGroupResults(string selectedGroup, string newName)
+        private List<Result> CreateRenameGroupResults(string selectedGroup, string newName)
         {
             var group =_settings.QueryGroups.FirstOrDefault(g => g.Name == selectedGroup);
 
@@ -398,7 +398,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
             };
         }   
 
-        private List<Result> GetRenameItemResults(string selectedGroup, string selectedItem, string newItemName)
+        private List<Result> CreateRenameItemResults(string selectedGroup, string selectedItem, string newItemName)
         {
             var group =_settings.QueryGroups.FirstOrDefault(g => g.Name == selectedGroup);
 
@@ -442,7 +442,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                 }
             };
         }
-        private List<Result> GetSetItemQueryResults(string selectedGroup, string selectedItem, string newItemQuery)
+        private List<Result> CreateSetItemQueryResults(string selectedGroup, string selectedItem, string newItemQuery)
         {
             return new List<Result>
             {
