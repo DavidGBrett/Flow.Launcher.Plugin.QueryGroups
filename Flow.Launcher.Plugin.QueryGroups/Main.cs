@@ -58,7 +58,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                         string groupQuery = new SearchGroupsCommandDefinition().ParseQuery(queryPartsInfo);
 
                         List<Result> results = GetGroupsResults(groupQuery);
-                        results.Add(GetAddGroupResult(groupQuery));
+                        results.Add(GetGoToAddGroupResult(groupQuery));
 
                         return results;
                     }
@@ -74,7 +74,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                         (string selectedGroup, string itemQuery) = new SearchGroupCommandDefinition().ParseQuery(queryPartsInfo);
 
                         List<Result> results = GetGroupItemsResults(selectedGroup, itemQuery);
-                        results.Add(GetAddItemResult(selectedGroup, itemQuery));
+                        results.Add(GetGoToAddItemResult(selectedGroup, itemQuery));
 
                         return results;
                     }
@@ -219,7 +219,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
             return results;
         }
 
-        private Result GetAddGroupResult(string queryString)
+        private Result GetGoToAddGroupResult(string queryString)
         {
             return new Result
             {
@@ -238,7 +238,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                 }
             };
         }
-        private Result GetAddItemResult(string selectedGroup, string restOfQuery)
+        private Result GetGoToAddItemResult(string selectedGroup, string restOfQuery)
         {
             return new Result
             {
