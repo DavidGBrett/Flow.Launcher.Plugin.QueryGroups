@@ -58,7 +58,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                         string groupQuery = new SearchGroupsCommandDefinition().ParseQuery(queryPartsInfo);
 
                         List<Result> results = GetGroupsResults(groupQuery);
-                        results.Add(GetAddGroupResult());
+                        results.Add(GetAddGroupResult(groupQuery));
 
                         return results;
                     }
@@ -74,7 +74,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
                         (string selectedGroup, string itemQuery) = new SearchGroupCommandDefinition().ParseQuery(queryPartsInfo);
 
                         List<Result> results = GetGroupItemsResults(selectedGroup, itemQuery);
-                        results.Add(GetAddItemResult(selectedGroup));
+                        results.Add(GetAddItemResult(selectedGroup, itemQuery));
 
                         return results;
                     }
@@ -219,7 +219,7 @@ namespace Flow.Launcher.Plugin.QueryGroups
             return results;
         }
 
-        private Result GetAddGroupResult()
+        private Result GetAddGroupResult(string queryString)
         {
             return new Result
             {
@@ -231,13 +231,14 @@ namespace Flow.Launcher.Plugin.QueryGroups
                 {
                     // Change to the add group query
                     _context.API.ChangeQuery(new AddGroupCommandDefinition().BuildQuery(
-                        pluginKeyword: mainPluginKeyword
+                        pluginKeyword: mainPluginKeyword,
+                        newGroupName: queryString
                     ), false);
                     return false;
                 }
             };
         }
-        private Result GetAddItemResult(string selectedGroup)
+        private Result GetAddItemResult(string selectedGroup, string restOfQuery)
         {
             return new Result
             {
@@ -250,7 +251,8 @@ namespace Flow.Launcher.Plugin.QueryGroups
                     // Change to the add item query for the selected group
                     _context.API.ChangeQuery(new AddItemCommandDefinition().BuildQuery(
                         pluginKeyword: mainPluginKeyword,
-                        queryGroup: selectedGroup
+                        queryGroup: selectedGroup,
+                        newQueryName: restOfQuery
                     ), false);
 
                     return false;
